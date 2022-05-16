@@ -3,20 +3,15 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../redux/actions/loginAction";
 import { LOGIN } from "../../redux/types/userLoginType";
+import { userServices } from "../../services/baseService";
 
 export default function Login(props) {
-  let loginStatus = JSON.parse(localStorage.getItem(LOGIN));
-
-  const checkLogin = () => {
-    // if (loginStatus) {
-    //   props.history.push("/register");
-    // }
-    return loginStatus ? props.history.push("/projectmanagement") : null;
-  };
-
   useEffect(() => {
-    checkLogin();
-  }, [loginStatus]);
+    userServices.checkLogin(props);
+    return () => {
+      console.log("asd");
+    };
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -67,10 +62,16 @@ export default function Login(props) {
         <NavLink to={"/register"}>Register now</NavLink>
       </p>
       <div className="social mt-2">
-        <button className="rounded-full bg-[#3b5998] text-white h-10 w-10 mr-4">
+        <button
+          className="rounded-full bg-[#3b5998] text-white h-10 w-10 mr-4"
+          type="button"
+        >
           <i className="fab fa-facebook-f"></i>
         </button>
-        <button className="rounded-full bg-[#1890ff] text-white h-10 w-10">
+        <button
+          className="rounded-full bg-[#1890ff] text-white h-10 w-10"
+          type="button"
+        >
           <i className="fab fa-twitter"></i>
         </button>
       </div>

@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import bg from "../../assets/img/bg.png";
 import { Route } from "react-router-dom";
 
-export default function HomeTemplate(props) {
+export default function LoginTemplate(props) {
   // const onFinish = (values) => {
   //   console.log("Success:", values);
   // };

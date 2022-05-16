@@ -11,7 +11,7 @@ export const loginAction = (userLogin, props) => {
           type: LOGIN,
           value: result.data.content,
         });
-        props.history.push("/projectmanagement");
+        props.history.push("/");
       }
     } catch (error) {
       console.log(error);
