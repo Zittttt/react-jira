@@ -7,6 +7,7 @@ import { createBrowserHistory } from "history";
 import LoginTemplate from "./template/LoginTemplate/LoginTemplate";
 import HomeTemplate from "./template/HomeTemplate/HomeTemplate";
 import CreateProject from "./pages/CreateProject/CreateProject";
+import User from "./pages/User/User";
 
 export const history = createBrowserHistory();
 
@@ -18,6 +19,7 @@ function App() {
         <LoginTemplate exact path={"/register"} Component={Register} />
         <HomeTemplate exact path={"/"} Component={ProjectManagement} />
         <HomeTemplate exact path={"/createproject"} Component={CreateProject} />
+        <HomeTemplate exact path={"/user"} Component={User} />
       </Switch>
     </BrowserRouter>
   );

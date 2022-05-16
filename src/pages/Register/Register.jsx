@@ -138,7 +138,7 @@ export default function Register(props) {
         onChange={handleChange}
       /> */}
       <button
-        className="loginButton bg-[#0052cc] w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:border-cyan-400"
+        className="loginButton bg-[#345da7] w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:border-[#4bb4de]"
         type="submit"
       >
         Register

@@ -13,7 +13,7 @@ export default function LoginTemplate(props) {
   const { Component, path } = props;
 
   const inputStyle =
-    "border-2 rounded-md p-2 pl-4 w-2/5 border-gray outline-[#0052cc] mt-5";
+    "border-2 rounded-md p-2 pl-4 w-2/5 border-gray outline-[#345da7] mt-5 border-transparent border-2 hover:border-[#3B8AC4]";
   return (
     <Route
       exact
