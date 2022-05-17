@@ -1,5 +1,5 @@
 import { userServices } from "../../services/baseService";
-import { LOGIN } from "../types/userLoginType";
+import { LOGIN } from "../types/userType";
 
 export const loginAction = (userLogin, props) => {
   return async (dispatch) => {

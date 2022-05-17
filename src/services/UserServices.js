@@ -1,4 +1,4 @@
-import { LOGIN } from "../redux/types/userLoginType";
+import { LOGIN } from "../redux/types/userType";
 import { http } from "../util/config";
 
 export default class UserServices {

@@ -69,6 +69,42 @@ body {
 
 #root > div > section > section > div > div.table-project > div > div > ul {
   position: fixed;
-  bottom: 50px;
-  right: 50px;
+  bottom: 10px;
+  right: 30px;
+}
+
+#root
+  > div
+  > section
+  > section
+  > div
+  > div
+  > div
+  > div
+  > ul
+  > li.ant-pagination-prev
+  > button,
+#root
+  > div
+  > section
+  > section
+  > div
+  > div
+  > div
+  > div
+  > ul
+  > li.ant-pagination-next
+  > button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-table-tbody > tr {
+  height: 60px !important;
+}
+
+.ant-table-tbody > tr > * {
+  padding: , 0 !important;
 }

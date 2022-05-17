@@ -13,45 +13,47 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { LOGIN } from "../../redux/types/userLoginType";
-
-const { Header, Content, Footer, Sider } = Layout;
-
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
-const items = [
-  getItem("Project", "project", <PieChartOutlined />, [
-    getItem("Project Management", ""),
-    getItem("Create Project", "/createproject"),
-  ]),
-  getItem("User", "/user", <UserOutlined />),
-];
-
-const avatar = JSON.parse(localStorage.getItem(LOGIN)).avatar;
-
-const name = JSON.parse(localStorage.getItem(LOGIN)).name;
-
-console.log(name);
-
-const profile = [
-  getItem(
-    name,
-    "User",
-    <img src={avatar} className="w-[35px] rounded-full h-[35px]" />,
-    [getItem("Profile", "profile"), getItem("Log out", "/logout")]
-  ),
-];
+import { LOGIN } from "../../redux/types/userType";
+import useSelection from "antd/lib/table/hooks/useSelection";
+import { useSelector } from "react-redux";
 
 export default function HomeTemplate(props) {
   const { Component, path } = props;
   const [state, setState] = useState({ collapsed: false });
+
+  const { Header, Content, Footer, Sider } = Layout;
+
+  function getItem(label, key, icon, children) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    };
+  }
+
+  const items = [
+    getItem("Project", "project", <PieChartOutlined />, [
+      getItem("Project Management", ""),
+      getItem("Create Project", "/createproject"),
+    ]),
+    getItem("User", "/user", <UserOutlined />),
+  ];
+
+  const account = useSelector(
+    (rootReducer) => rootReducer.userReducer.userLogin
+  );
+  const avatar = account.avatar;
+  const name = account.name;
+
+  const profile = [
+    getItem(
+      name,
+      "User",
+      <img src={avatar} className="w-[35px] rounded-full h-[35px]" />,
+      [getItem("Profile", "profile"), getItem("Log out", "/logout")]
+    ),
+  ];
 
   const onCollapse = (collapsed) => {
     console.log(collapsed);

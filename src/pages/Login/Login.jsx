@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../redux/actions/loginAction";
-import { LOGIN } from "../../redux/types/userLoginType";
+import { LOGIN } from "../../redux/types/userType";
 import { userServices } from "../../services/baseService";
 
 export default function Login(props) {
