@@ -17,3 +17,58 @@
 body {
   font-family: "Roboto", sans-serif;
 }
+
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  /* background-color: #002380 !important; */
+}
+
+.ant-menu.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub,
+.ant-menu.ant-menu-dark .ant-menu-sub {
+  /* background-color: #0049b0 !important; */
+}
+
+.ant-layout-sider-children {
+  position: relative;
+}
+
+#root
+  > div
+  > section
+  > aside
+  > div.ant-layout-sider-children
+  > ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
+  > li
+  > div {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root
+  > div
+  > section
+  > aside
+  > div.ant-layout-sider-children
+  > ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
+  > li
+  > div
+  > span {
+  display: none;
+}
+
+.account .ant-menu-item-selected {
+  background-color: #000c17 !important;
+}
+
+/* .account .; */
+.account > li > ul li:hover {
+  background-color: #1890ff !important;
+}
+
+#root > div > section > section > div > div.table-project > div > div > ul {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}

@@ -1,9 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link, Route, useHistory } from "react-router-dom";
+import { Link, NavLink, Route, useHistory } from "react-router-dom";
 import HeaderHome from "./HeaderHome";
 import ProjectManagement from "../../pages/ProjectManagement/ProjectManagement";
 
-import { Layout, Menu, Breadcrumb } from "antd";
+import logo from "../../assets/img/logo.png";
+
+import { Layout, Menu, Breadcrumb, Button } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -11,6 +13,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { LOGIN } from "../../redux/types/userLoginType";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,6 +32,21 @@ const items = [
     getItem("Create Project", "/createproject"),
   ]),
   getItem("User", "/user", <UserOutlined />),
+];
+
+const avatar = JSON.parse(localStorage.getItem(LOGIN)).avatar;
+
+const name = JSON.parse(localStorage.getItem(LOGIN)).name;
+
+console.log(name);
+
+const profile = [
+  getItem(
+    name,
+    "User",
+    <img src={avatar} className="w-[35px] rounded-full h-[35px]" />,
+    [getItem("Profile", "profile"), getItem("Log out", "/logout")]
+  ),
 ];
 
 export default function HomeTemplate(props) {
@@ -53,21 +71,37 @@ export default function HomeTemplate(props) {
           collapsible
           collapsed={collapsed}
           onCollapse={onCollapse}
-          className="pt-16"
+          className="pt-2 relative"
         >
-          <div className="logo" />
+          <NavLink to={"/"} className="logo flex justify-center py-10">
+            <img src={logo} width={"50px"} />
+          </NavLink>
           <Menu
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={[""]}
             mode="inline"
             items={items}
+            className="pt-2"
             onClick={(e) => {
               history.push(e.key);
             }}
           />
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={[""]}
+            mode="inline"
+            items={profile}
+            className="absolute bottom-10 w-full account"
+            onClick={(e) => {
+              history.push(e.key);
+            }}
+          />
+          {/* <button className="w-full absolute bottom-0 flex justify-center py-10">
+            <img src={logo} width={"50px"} />
+          </button> */}
         </Sider>
-        <Layout className="site-layout">
-          <HeaderHome />
+        <Layout className="site-layout m-10">
+          {/* <HeaderHome /> */}
           <Route
             exact
             path={path}
