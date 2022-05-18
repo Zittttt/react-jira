@@ -1,142 +1,64 @@
-import { message } from "antd";
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { userServices, validationService } from "../../services/baseService";
+import * as Yup from "yup";
+import { withFormik } from "formik";
 
-export default function Register(props) {
-  console.log(props);
-  const registerRef = useRef({
-    email: "",
-    passWord: "",
-    name: "",
-    phoneNumber: "",
-  });
-  const nameError = useRef();
-  const phoneNumberError = useRef();
-  const emailError = useRef();
-  const passwordError = useRef();
-
-  const handleChange = (e) => {
-    let { value, id, name } = e.target;
-    registerRef.current[id] = value;
-    console.log(registerRef.current);
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    // console.log(nameRef.current);
-    let { email, passWord, name, phoneNumber } = e.target;
-
-    let valid = true;
-
-    const {
-      checkBlank,
-      checkStringLength,
-      checkName,
-      checkNumber,
-      checkEmail,
-    } = validationService;
-
-    //valid name
-    valid &=
-      checkBlank(name, nameError.current) &&
-      checkStringLength(name, nameError.current, 5, 30) &&
-      checkName(name, nameError.current);
-
-    //valid phoneNumber
-    valid &=
-      checkBlank(phoneNumber, phoneNumberError.current) &&
-      checkNumber(phoneNumber, phoneNumberError.current) &&
-      checkStringLength(phoneNumber, phoneNumberError.current, 9, 13);
-
-    //valid email
-    valid &=
-      checkBlank(email, emailError.current) &&
-      checkEmail(email, emailError.current);
-    //valid password
-    valid &=
-      checkBlank(passWord, passwordError.current) &&
-      checkStringLength(passWord, passwordError.current, 8, 16);
-
-    if (!valid) {
-      console.log(false);
-      return;
-    }
-
-    console.log(true);
-    try {
-      let result = await userServices.register(registerRef.current);
-      console.log(result);
-      alert(result.data.message);
-      //   if (result.data.statusCode === 200) {
-      // }
-    } catch (error) {
-      console.log("error", error);
-      alert(error.response.data.message);
-    }
-  };
+function Register(props) {
+  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+    props;
 
   return (
     <form
       className="flex flex-col justify-center items-center w-screen/2 h-screen"
-      onSubmit={handleRegister}
+      onSubmit={handleSubmit}
     >
       <h3 className="text-4xl m-0">Register</h3>
       <input
         type="text"
         className={props.inputStyle}
         placeholder="Name"
-        id="name"
-        name="Name"
+        name="name"
         onChange={handleChange}
       />
-      <p id="nameError" className="m-0 text-red-600" ref={nameError}></p>
+      <p className="m-0 text-red-600">{errors.name}</p>
       <input
         type="text"
         className={props.inputStyle}
         placeholder="Phone Number"
-        name="Phone Number"
-        id="phoneNumber"
+        name="phoneNumber"
         onChange={handleChange}
       />
-      <p
-        id="phoneNumberError"
-        className="m-0 text-red-600"
-        ref={phoneNumberError}
-      ></p>
+      <p className="m-0 text-red-600">{errors.phoneNumber}</p>
 
       <input
         type="text"
         className={props.inputStyle}
         placeholder="Email"
-        name="Email"
-        id="email"
+        name="email"
         onChange={handleChange}
       />
-      <p id="emailError" className="m-0 text-red-600" ref={emailError}></p>
+      <p className="m-0 text-red-600">{errors.email}</p>
 
       <input
         type="password"
         className={props.inputStyle}
         placeholder="Password"
-        name="Password"
-        id="passWord"
+        name="password"
         onChange={handleChange}
         data-type="name"
       />
-      <p
-        id="passwordError"
-        className="m-0 text-red-600"
-        ref={passwordError}
-      ></p>
+      <p className="m-0 text-red-600">{errors.password}</p>
 
-      {/* <input
+      <input
         type="password"
         className={props.inputStyle}
-        placeholder="Re-Password"
-        id="re-password"
+        placeholder="Confirm Password"
+        name="confirmPassword"
         onChange={handleChange}
-      /> */}
+      />
+      <p className="m-0 text-red-600">{errors.confirmPassword}</p>
+
       <button
         className="loginButton bg-[#345da7] w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:border-[#4bb4de]"
         type="submit"
@@ -150,3 +72,51 @@ export default function Register(props) {
     </form>
   );
 }
+
+const RegisterWithFormik = withFormik({
+  mapPropsToValues: () => ({
+    email: "",
+    passWord: "",
+    name: "",
+    phoneNumber: "",
+    confirmPassword: "",
+  }),
+
+  handleSubmit: async (values, { props, setSubmitting }) => {
+    try {
+      let result = await userServices.register(values);
+      console.log(result);
+      alert(result.data.message);
+    } catch (error) {
+      console.log("error", error);
+      alert(error.response.data.message);
+    }
+    console.log("first");
+  },
+
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .required("Email is required!")
+      .email("Email is invalid!"),
+    password: Yup.string()
+      .required("Password is required!")
+      .min(6, "Password must have min 6 characters!")
+      .max(16, "Password must have max 18 characters!"),
+    name: Yup.string()
+      .required("Name is required!")
+      .matches(/^[A-Za-z0-9 ]*$/, "Please enter valid name"),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match!"
+    ),
+    phoneNumber: Yup.string()
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "Phone number is not valid!"
+      )
+      .length(10, "Phone Number must be exactly 10 characters")
+      .required("Phone Number is required!"),
+  }),
+})(Register);
+
+export default RegisterWithFormik;

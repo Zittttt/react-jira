@@ -106,5 +106,5 @@ body {
 }
 
 .ant-table-tbody > tr > * {
-  padding: , 0 !important;
+  padding: unset 0 !important;
 }

@@ -1,55 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../redux/actions/loginAction";
-import { LOGIN } from "../../redux/types/userType";
-import { userServices } from "../../services/baseService";
-import { testTokenAction } from "../../redux/actions/testTokenAction";
+import { withFormik } from "formik";
+import { connect } from "react-redux";
+import * as Yup from "yup";
 
-export default function Login(props) {
-  useEffect(() => {
-    let action = testTokenAction(props);
-    dispatch(action);
-    return () => {};
-  }, []);
-
-  const dispatch = useDispatch();
-  const loginRef = useRef({ email: "", password: "" });
-
-  const handleChange = (event) => {
-    const { value, id } = event.target;
-    loginRef.current[id] = value;
-    console.log(loginRef.current);
-  };
-
-  const handleLogin = (event) => {
-    event.preventDefault();
-    const action = loginAction(loginRef.current, props);
-    dispatch(action);
-  };
+function Login(props) {
+  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+    props;
 
   return (
     <form
       className="flex flex-col justify-center items-center w-screen/2 h-screen"
-      onSubmit={(event) => {
-        handleLogin(event);
-      }}
+      onSubmit={handleSubmit}
     >
-      <h3 className="text-4xl m-0">Login</h3>
+      <h3 className="text-4xl mb-10">Login</h3>
       <input
         type="text"
         className={props.inputStyle}
         placeholder="Email"
         onChange={handleChange}
         id="email"
+        name="email"
       />
+      {errors.email ? <p className="text-red-500">{errors.email}</p> : ""}
       <input
         type="password"
         className={props.inputStyle}
         placeholder="Password"
         onChange={handleChange}
         id="password"
+        name="password"
       />
+      {errors.password ? (
+        <p className="text-red-500 p-0 m-0">{errors.password}</p>
+      ) : (
+        ""
+      )}
+
       <button
         className="loginButton bg-[#345da7] w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:border-cyan-400"
         type="submit"
@@ -77,3 +65,24 @@ export default function Login(props) {
     </form>
   );
 }
+
+const LoginWithFormik = withFormik({
+  mapPropsToValues: () => ({ email: "", password: "" }),
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    const action = loginAction(values, props);
+    props.dispatch(action);
+  },
+
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .required("Email is required!")
+      .email("Email is invalid!"),
+    password: Yup.string()
+      .required("Password is required!")
+      .min(6, "Password must have min 6 characters!")
+      .max(16, "Password must have max 18 characters!"),
+  }),
+})(Login);
+
+export default connect()(LoginWithFormik);

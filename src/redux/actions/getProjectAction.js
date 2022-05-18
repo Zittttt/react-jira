@@ -5,11 +5,11 @@ export const getProjectAction = (keyword) => {
   return async (dispatch) => {
     try {
       //gọi api
-      let result = await projectService.getProject(keyword);
-      console.log(result)
+      let { data } = await projectService.getProject(keyword);
+      console.log(data);
       dispatch({
         type: GET_PROJECT,
-        value: result.data.content,
+        value: data.content,
       });
     } catch (error) {
       console.log(error);

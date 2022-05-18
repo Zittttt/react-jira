@@ -1,10 +1,11 @@
 import { useHistory } from "react-router-dom";
+import { USER_LOGIN } from "../../util/config";
 import { LOGIN } from "../types/userType";
 
 let user = {};
 
-if (localStorage.getItem(LOGIN)) {
-  user = JSON.parse(localStorage.getItem(LOGIN));
+if (localStorage.getItem(USER_LOGIN)) {
+  user = JSON.parse(localStorage.getItem(USER_LOGIN));
 }
 
 const stateDefault = {

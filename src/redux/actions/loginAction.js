@@ -1,23 +1,24 @@
+import { Redirect, useHistory } from "react-router-dom";
 import { userServices } from "../../services/baseService";
-import { TOKEN } from "../../util/config";
+import { STATUS_CODE, TOKEN, USER_LOGIN } from "../../util/config";
 import { LOGIN } from "../types/userType";
 
 export const loginAction = (userLogin, props) => {
   return async (dispatch) => {
     try {
-      let result = await userServices.login(userLogin);
-      console.log(result);
-      if (result.data.statusCode === 200) {
+      let { data, status } = await userServices.login(userLogin);
+      console.log(data);
+      if (status === STATUS_CODE.SUCCESS) {
         //login thành công, đưa dữ liệu lên localStorage và redux
-        localStorage.setItem(LOGIN, JSON.stringify(result.data.content));
-        localStorage.setItem("TOKEN", result.data.content.accessToken);
+        localStorage.setItem(USER_LOGIN, JSON.stringify(data.content));
+        localStorage.setItem(TOKEN, data.content.accessToken);
         dispatch({
           type: LOGIN,
-          value: result.data.content,
+          value: data.content,
         });
-        // console.log("TOKEN -", TOKEN);
-        //chuyển hướng đến home
+        // chuyển hướng đến home
         props.history.push("/");
+        console.log(props);
       }
     } catch (error) {
       console.log(error);
