@@ -93,7 +93,7 @@ export default function HomeTemplate(props) {
             defaultSelectedKeys={[""]}
             mode="inline"
             items={profile}
-            className="absolute bottom-10 w-full account"
+            className="absolute bottom-0 w-full account"
             onClick={(e) => {
               history.push(e.key);
             }}

@@ -1,5 +1,5 @@
 import { LOGIN } from "../redux/types/userType";
-import { http } from "../util/config";
+import { http, TOKEN } from "../util/config";
 
 export default class UserServices {
   login(data) {
@@ -10,8 +10,7 @@ export default class UserServices {
     return http.post("api/Users/signup", data);
   }
 
-  checkLogin(props) {
-    let loginStatus = JSON.parse(localStorage.getItem(LOGIN));
-    return loginStatus ? props.history.push("/") : props.history.push("/login");
-  }
+  checkLogin = () => {
+    return http.post("api/Users/TestToken");
+  };
 }

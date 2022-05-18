@@ -3,18 +3,16 @@ import { projectService, userServices } from "../../services/baseService";
 import { Table, Tag, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectAction } from "../../redux/actions/getProjectAction";
-import { http } from "../../util/config";
 import ProjectManagementTable from "../../component/ProjectManagementTable";
-import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
+import { testTokenAction } from "../../redux/actions/testTokenAction";
 
 export default function ProjectManagement(props) {
   const action = getProjectAction();
-  // const action2 = getProjectCategoryAction();
+  testTokenAction();
 
   useEffect(() => {
-    userServices.checkLogin(props);
     dispatch(action);
-    // dispatch(action2);
+    dispatch(testTokenAction(props));
   }, []);
 
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { TOKEN } from "../../util/config";
+import { useHistory } from "react-router-dom";
 import { LOGIN } from "../types/userType";
 
 let user = {};
@@ -14,8 +14,6 @@ const stateDefault = {
 export const userReducer = (state = stateDefault, action) => {
   switch (action.type) {
     case LOGIN: {
-      localStorage.setItem(LOGIN, JSON.stringify(action.value));
-      localStorage.setItem("TOKEN", action.value.accessToken);
       state.userLogin = action.value;
       return { ...state };
     }

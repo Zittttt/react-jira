@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../redux/actions/loginAction";
 import { LOGIN } from "../../redux/types/userType";
 import { userServices } from "../../services/baseService";
+import { testTokenAction } from "../../redux/actions/testTokenAction";
 
 export default function Login(props) {
   useEffect(() => {
-    userServices.checkLogin(props);
-    return () => {
-      console.log("asd");
-    };
+    let action = testTokenAction(props);
+    dispatch(action);
+    return () => {};
   }, []);
 
   const dispatch = useDispatch();
@@ -27,8 +27,6 @@ export default function Login(props) {
     const action = loginAction(loginRef.current, props);
     dispatch(action);
   };
-
-  console.log(props);
 
   return (
     <form
