@@ -8,6 +8,8 @@ import {
   OPEN_PROJECT_EDIT_FORM,
 } from "../../util/constant/configSystem";
 import EditProjectFormComponent from "../EditProjectFormComponent/EditProjectFormComponent";
+import { projectService } from "../../services/baseService";
+import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 
 export default function ProjectManagementTable(props) {
   //   const { data } = props;
@@ -79,10 +81,10 @@ export default function ProjectManagementTable(props) {
           <button
             className="mr-1 bg-cyan-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
             onClick={() => {
-              dispatch({
-                type: OPEN_PROJECT_EDIT_FORM,
-                Component: <EditProjectFormComponent />,
-              });
+              let { id } = project;
+              console.log(id);
+              let action = getProjectDetailAction(id);
+              dispatch(action);
             }}
           >
             <EditOutlined className="text-lg" />

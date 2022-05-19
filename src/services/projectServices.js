@@ -7,6 +7,10 @@ export default class ProjectServices {
       : http.get("api/Project/getAllProject");
   }
 
+  getProjectDetail(id) {
+    return http.get(`api/Project/getProjectDetail?id=${id}`);
+  }
+
   getProjectCategory() {
     return http.get("api/ProjectCategory");
   }

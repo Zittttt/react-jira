@@ -42,7 +42,7 @@ export default function Modal() {
   return (
     <>
       <Drawer
-        title="Project IDxxxx"
+        title="Edit Project"
         width={720}
         onClose={onClose}
         visible={visible}
@@ -50,7 +50,15 @@ export default function Modal() {
         footer={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={callBackSubmit} type="primary">
+            <Button
+              form="editProjectForm"
+              key="submit"
+              htmlType="submit"
+              type="primary"
+              onClick={() => {
+                callBackSubmit();
+              }}
+            >
               Submit
             </Button>
           </Space>
