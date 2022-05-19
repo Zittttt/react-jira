@@ -1,10 +1,18 @@
 import { Table } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectAction } from "../redux/actions/getProjectAction";
+import { getProjectAction } from "../../redux/actions/getProjectAction";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  OPEN_DRAWER,
+  OPEN_PROJECT_EDIT_FORM,
+} from "../../util/constant/configSystem";
+import EditProjectFormComponent from "../EditProjectFormComponent/EditProjectFormComponent";
 
 export default function ProjectManagementTable(props) {
   //   const { data } = props;
+
+  const dispatch = useDispatch();
 
   const categoryArr = useSelector(
     (rootReducer) => rootReducer.projectReducer.categoryArr
@@ -23,25 +31,12 @@ export default function ProjectManagementTable(props) {
       dataIndex: "projectName",
       defaultSortOrder: "descend",
       width: 400,
-      // sorter: (a, b) => a.projectName.length - b.projectName.length,
     },
     {
       title: "Category",
       key: "category",
       dataIndex: "categoryName",
       width: 200,
-
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      onFilter: (value, record) => record.category.indexOf(value) === 0,
     },
     {
       title: "Creator",
@@ -80,12 +75,20 @@ export default function ProjectManagementTable(props) {
         );
       }),
       action: (
-        <div>
-          <button className="mr-3 bg-cyan-500 w-8 h-6 rounded-md">
-            <i className="fa fa-edit" />
+        <div className="flex">
+          <button
+            className="mr-1 bg-cyan-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
+            onClick={() => {
+              dispatch({
+                type: OPEN_PROJECT_EDIT_FORM,
+                Component: <EditProjectFormComponent />,
+              });
+            }}
+          >
+            <EditOutlined className="text-lg" />
           </button>
-          <button className="bg-red-500 w-8 h-6 rounded-md">
-            <i className="fa fa-trash" />
+          <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
+            <DeleteOutlined className="text-lg" />
           </button>
         </div>
       ),

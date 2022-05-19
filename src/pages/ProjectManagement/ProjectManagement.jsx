@@ -3,16 +3,14 @@ import { projectService, userServices } from "../../services/baseService";
 import { Table, Tag, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectAction } from "../../redux/actions/getProjectAction";
-import ProjectManagementTable from "../../component/ProjectManagementTable";
+import ProjectManagementTable from "../../component/ProjectTableComponent/ProjectManagementTable";
 import { testTokenAction } from "../../redux/actions/testTokenAction";
 
 export default function ProjectManagement(props) {
   const action = getProjectAction();
-  testTokenAction();
 
   useEffect(() => {
     dispatch(action);
-    dispatch(testTokenAction(props));
   }, []);
 
   const dispatch = useDispatch();

@@ -2,30 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .loginCard {
-    background-color: rgba(17, 24, 39);
-    border-radius: theme("borderRadius.lg");
-    padding: theme("spacing.6");
-    box-shadow: theme("boxShadow.xl");
-  }
-  /* ... */
-}
-
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
 body {
   font-family: "Roboto", sans-serif;
-}
-
-.ant-menu-dark .ant-menu-inline.ant-menu-sub {
-  /* background-color: #002380 !important; */
-}
-
-.ant-menu.ant-menu-dark,
-.ant-menu-dark .ant-menu-sub,
-.ant-menu.ant-menu-dark .ant-menu-sub {
-  /* background-color: #0049b0 !important; */
 }
 
 .ant-layout-sider-children {
@@ -67,12 +47,14 @@ body {
   background-color: #1890ff !important;
 }
 
+/* page */
 #root > div > section > section > div > div.table-project > div > div > ul {
   position: fixed;
   bottom: 10px;
   right: 30px;
 }
 
+/* CSS button next, prev page table */
 #root
   > div
   > section
@@ -107,4 +89,10 @@ body {
 
 .ant-table-tbody > tr > * {
   padding: unset 0 !important;
+}
+
+.ant-notification-notice-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }

@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { USER_LOGIN } from "../../util/config";
+import { USER_LOGIN } from "../../util/constant/configSystem";
 import { LOGIN } from "../types/userType";
 
 let user = {};

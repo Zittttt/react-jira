@@ -3,6 +3,11 @@ import { NavLink } from "react-router-dom";
 import { userServices, validationService } from "../../services/baseService";
 import * as Yup from "yup";
 import { withFormik } from "formik";
+import { connect } from "react-redux";
+import {
+  NOTIFICATION_ICON,
+  SHOW_NOTIFICATION,
+} from "../../util/constant/configSystem";
 
 function Register(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
@@ -86,12 +91,24 @@ const RegisterWithFormik = withFormik({
     try {
       let result = await userServices.register(values);
       console.log(result);
-      alert(result.data.message);
+      props.dispatch({
+        type: SHOW_NOTIFICATION,
+        value: {
+          description: "Register successfully",
+          type: NOTIFICATION_ICON.SUCCESS,
+        },
+      });
     } catch (error) {
-      console.log("error", error);
-      alert(error.response.data.message);
+      const { message } = error.response.data;
+      console.log(message);
+      props.dispatch({
+        type: SHOW_NOTIFICATION,
+        value: {
+          description: "Email is already used",
+          type: NOTIFICATION_ICON.ERROR,
+        },
+      });
     }
-    console.log("first");
   },
 
   validationSchema: Yup.object().shape({
@@ -119,4 +136,4 @@ const RegisterWithFormik = withFormik({
   }),
 })(Register);
 
-export default RegisterWithFormik;
+export default connect()(RegisterWithFormik);

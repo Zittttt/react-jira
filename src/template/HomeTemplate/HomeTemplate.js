@@ -15,11 +15,24 @@ import {
 } from "@ant-design/icons";
 import { LOGIN } from "../../redux/types/userType";
 import useSelection from "antd/lib/table/hooks/useSelection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { TOKEN } from "../../util/config";
+import { testTokenAction } from "../../redux/actions/testTokenAction";
+import {
+  NOTIFICATION_ICON,
+  SHOW_NOTIFICATION,
+} from "../../util/constant/configSystem";
 
 export default function HomeTemplate(props) {
+  const dispatch = useDispatch();
   const { Component, path } = props;
   const [state, setState] = useState({ collapsed: false });
+
+  const history = useHistory();
+
+  useEffect(() => {
+    dispatch(testTokenAction(history));
+  }, []);
 
   const { Header, Content, Footer, Sider } = Layout;
 
@@ -51,7 +64,7 @@ export default function HomeTemplate(props) {
       name,
       "User",
       <img src={avatar} className="w-[35px] rounded-full h-[35px]" />,
-      [getItem("Profile", "profile"), getItem("Log out", "/logout")]
+      [getItem("Profile", "profile"), getItem("Log out", "logOut")]
     ),
   ];
 
@@ -63,8 +76,6 @@ export default function HomeTemplate(props) {
   };
 
   const { collapsed } = state;
-
-  const history = useHistory();
 
   return (
     <div>
@@ -95,7 +106,20 @@ export default function HomeTemplate(props) {
             items={profile}
             className="absolute bottom-0 w-full account"
             onClick={(e) => {
-              history.push(e.key);
+              if (e.key === "logOut") {
+                localStorage.removeItem(TOKEN);
+                history.push("/login");
+                dispatch({
+                  type: SHOW_NOTIFICATION,
+                  value: {
+                    message: "Logged out!",
+                    description: "",
+                    type: NOTIFICATION_ICON.INFO,
+                  },
+                });
+              } else {
+                history.push(e.key);
+              }
             }}
           />
           {/* <button className="w-full absolute bottom-0 flex justify-center py-10">

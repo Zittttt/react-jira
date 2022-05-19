@@ -3,11 +3,17 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { userReducer } from "./reducers/userReducer";
 import { projectReducer } from "./reducers/projectReducer";
+import loadingReducer from "./reducers/loadingReducer";
+import notificationReducer from "./reducers/notificationReducer";
+import { drawerReducer } from "./reducers/drawerReducer";
 
 const rootReducer = combineReducers({
   //state
-  userReducer: userReducer,
-  projectReducer: projectReducer,
+  userReducer,
+  projectReducer,
+  loadingReducer,
+  notificationReducer,
+  drawerReducer,
 });
 
 const middleware = [thunk];
