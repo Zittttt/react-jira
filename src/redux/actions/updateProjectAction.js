@@ -14,10 +14,10 @@ export const updateProjectAction = (data) => {
       console.log(result);
 
       dispatch(getProjectAction());
+      dispatch({ type: CLOSE_DRAWER });
 
       setTimeout(() => {
         dispatch({ type: HIDE_LOADING });
-        dispatch({ type: CLOSE_DRAWER });
       }, 500);
     } catch (error) {
       console.log(error);
