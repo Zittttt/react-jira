@@ -4,11 +4,11 @@ import { GET_CATEGORY } from "../types/projectType";
 export const getProjectCategoryAction = () => {
   return async (dispatch) => {
     try {
-      let result = await projectService.getProjectCategory();
-      console.log(result);
+      let { data } = await projectService.getProjectCategory();
+      console.log(data.content);
       const action = {
         type: GET_CATEGORY,
-        value: result.data.content,
+        value: data.content,
       };
       dispatch(action);
     } catch (error) {

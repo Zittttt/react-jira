@@ -1,120 +1,149 @@
 import React, { useEffect } from "react";
-import {
-  Drawer,
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  DatePicker,
-  Space,
-} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SUBMIT_EDIT_PROJECT_FUNCTION } from "../../util/constant/configSystem";
 import { connect } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
+import { projectService } from "../../services/baseService";
+import { updateProjectAction } from "../../redux/actions/updateProjectAction";
 
-const { Option } = Select;
 function EditProjectFormComponent(props) {
   const dispatch = useDispatch();
 
-  const { callBackSubmit } = useSelector((state) => state.drawerReducer);
-
-  const { id, projectCategory, description, projectName } = props.values;
-
-  const submitForm = (e) => {
-    // alert("success");
-    console.log("first");
-  };
+  const action = getProjectCategoryAction();
 
   useEffect(() => {
+    dispatch(action);
     dispatch({
       type: SET_SUBMIT_EDIT_PROJECT_FUNCTION,
-      function: submitForm,
+      function: handleSubmit,
     });
   }, []);
 
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
+  const { categoryArr } = useSelector((state) => state.projectReducer);
+  const { values, errors, handleChange, handleSubmit } = props;
+
+  let { id, projectName, categoryId, description } = values;
 
   return (
-    <Form
-      layout="vertical"
-      hideRequiredMark
-      id="editProjectForm"
-      onSubmitCapture={handleSubmit}
-    >
-      <Row gutter={16}>
-        <Col span={8}>
-          <Form.Item label="Project ID">
-            <Input disabled defaultValue={id} name="projectId" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label="Project Name">
-            <Input
-              placeholder="Please enter project name"
-              name="projectName"
-              defaultValue={projectName}
+    <form className="w-full h-full" onSubmit={handleSubmit}>
+      <div className="flex flex-wrap -mx-3 mb-6">
+        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="id"
+          >
+            PROJECT ID
+          </label>
+          <input
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            id="id"
+            type="text"
+            value={id}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap -mx-3 mb-2">
+        <div className="w-full md:w-1/2 px-3">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="grid-last-name"
+          >
+            PROJECT NAME
+          </label>
+          <input
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="projectName"
+            type="text"
+            value={projectName}
+            onChange={handleChange}
+            name="projectName"
+          />
+          <p className="text-red-500 text-xs italic">{errors.projectName}</p>
+        </div>
+        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="grid-state"
+          >
+            CATEGORY
+          </label>
+          <div className="relative">
+            <select
+              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="categoryId"
+              value={categoryId}
               onChange={handleChange}
-            />
-            <p className="m-0 text-red-600">{errors.projectName}</p>
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item name="projectCategory" label="Project Category">
-            <Select
-              placeholder="Choose the project category"
-              defaultValue={projectCategory.id}
+              name="categoryId"
             >
-              <Option value={1}>Dự án web</Option>
-              <Option value={2}>Dự án phần mềm"</Option>
-              <Option value={3}>Dự án di động</Option>
-            </Select>
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col span={24}>
-          <Form.Item label="Description">
-            <Input.TextArea
-              rows={20}
-              placeholder="Description"
-              defaultValue={description}
-              onChange={handleChange}
-              name="description"
-            />
-            <p className="m-0 text-red-600">{errors.description}</p>
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+              {categoryArr?.map((category, index) => {
+                return (
+                  <option value={category.id} key={index}>
+                    {category.projectCategoryName}
+                  </option>
+                );
+              })}
+            </select>
+
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-wrap -mx-3 h-1/2">
+        <div className="w-full px-3 h-full">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="grid-last-name"
+          >
+            DESCRIPTION
+          </label>
+          <textarea
+            className="appearance-none block w-full h-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="description"
+            type="text"
+            value={description}
+            onChange={handleChange}
+            name="description"
+          />
+          <p className="text-red-500 text-xs italic">{errors.description}</p>
+        </div>
+      </div>
+    </form>
   );
 }
 
 const EditProjectFormWithFormik = withFormik({
+  enableReinitialize: true,
+
   mapPropsToValues: (props) => {
     const { projectEdit } = props;
     return {
       id: projectEdit?.id,
       projectName: projectEdit.projectName,
-      projectCategory: projectEdit.projectCategory,
+      categoryId: projectEdit.projectCategory.id,
       description: projectEdit.description,
     };
   },
 
-  handleSubmit: (values, { props, setSubmitting }) => {
-    console.log("ád");
+  handleSubmit: async (values, { props, setSubmitting }) => {
+    console.log(values);
+
+    const action = updateProjectAction(values);
+    props.dispatch(action);
   },
 
   validationSchema: Yup.object().shape({
     projectName: Yup.string().required("Project name is required!"),
-    projectCategory: Yup.string().matches(/^\d+$/, "asd"),
     description: Yup.string().required("Description is required!"),
   }),
 })(EditProjectFormComponent);

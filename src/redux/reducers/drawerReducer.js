@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   visible: false,
-  formContent: <p>formContent</p>,
+  formContent: "",
   callBackSubmit: (props) => {
     alert("Submit");
   },

@@ -3,8 +3,15 @@ import { GET_CATEGORY, GET_PROJECT } from "../types/projectType";
 
 const stateDefault = {
   projectArr: [],
-  categoryArr: {},
-  projectEdit: {},
+  categoryArr: [],
+  projectEdit: {
+    alias: "project-ch",
+    creator: { id: 1779, name: "dinh" },
+    description: "<p>Hello</p>",
+    id: 4603,
+    projectCategory: { id: 1, name: "Dự án web" },
+    projectName: "Project CH",
+  },
 };
 
 export const projectReducer = (state = stateDefault, action) => {

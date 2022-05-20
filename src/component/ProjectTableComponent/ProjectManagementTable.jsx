@@ -11,6 +11,8 @@ import EditProjectFormComponent from "../EditProjectFormComponent/EditProjectFor
 import { projectService } from "../../services/baseService";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 
+import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
+
 export default function ProjectManagementTable(props) {
   //   const { data } = props;
 
@@ -82,9 +84,13 @@ export default function ProjectManagementTable(props) {
             className="mr-1 bg-cyan-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
             onClick={() => {
               let { id } = project;
-              console.log(id);
               let action = getProjectDetailAction(id);
               dispatch(action);
+              const actionOpenForm = {
+                type: OPEN_PROJECT_EDIT_FORM,
+                Component: <EditProjectFormWithFormik />,
+              };
+              dispatch(actionOpenForm);
             }}
           >
             <EditOutlined className="text-lg" />

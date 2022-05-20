@@ -14,4 +14,8 @@ export default class ProjectServices {
   getProjectCategory() {
     return http.get("api/ProjectCategory");
   }
+
+  updateProject(data) {
+    return http.put(`api/Project/updateProject?projectId=${data.id}`, data);
+  }
 }
