@@ -7,7 +7,7 @@ import {
 } from "../../util/constant/configSystem";
 import { getProjectAction } from "./getProjectAction";
 
-export const testTokenAction = (props) => {
+export const testTokenAction = (props, login) => {
   return async (dispatch) => {
     try {
       let result = await userServices.checkLogin();
@@ -15,9 +15,7 @@ export const testTokenAction = (props) => {
     } catch (error) {
       console.log(error);
       if (error.response.data.statusCode === STATUS_CODE.SERVER_ERROR) {
-        props.push("/");
-        const action = getProjectAction();
-        dispatch(action);
+        return login ? props.push("/") : props.push(props.location.pathname);
       } else {
         props.push("/login");
       }

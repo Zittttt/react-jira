@@ -18,4 +18,16 @@ export default class ProjectServices {
   updateProject(data) {
     return http.put(`api/Project/updateProject?projectId=${data.id}`, data);
   }
+
+  deleteProject(id) {
+    return http.delete(`api/Project/deleteProject?projectId=${id}`);
+  }
+
+  createProject(data) {
+    return http.post(`api/Project/createProject`, data);
+  }
+
+  createProjectAuthorize(data) {
+    return http.post(`api/Project/createProjectAuthorize`, data);
+  }
 }

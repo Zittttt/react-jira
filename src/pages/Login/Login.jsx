@@ -1,13 +1,20 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, useHistory } from "react-router-dom";
 import { loginAction } from "../../redux/actions/loginAction";
 import { withFormik } from "formik";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { testTokenAction } from "../../redux/actions/testTokenAction";
 
 function Login(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  useEffect(() => {
+    dispatch(testTokenAction(history, true));
+  }, []);
 
   return (
     <form

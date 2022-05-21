@@ -12,6 +12,7 @@ import { projectService } from "../../services/baseService";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 
 import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
+import { deleteProjectAction } from "../../redux/actions/deleteProjectAction";
 
 export default function ProjectManagementTable(props) {
   //   const { data } = props;
@@ -83,19 +84,29 @@ export default function ProjectManagementTable(props) {
           <button
             className="mr-1 bg-cyan-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
             onClick={() => {
-              let { id } = project;
-              let action = getProjectDetailAction(id);
+              const { id } = project;
+              //dispatch action getProjectDetailAction => gửi lên redux
+              const action = getProjectDetailAction(id);
               dispatch(action);
               const actionOpenForm = {
                 type: OPEN_PROJECT_EDIT_FORM,
                 Component: <EditProjectFormWithFormik />,
               };
+              //dispatch actionOpenForm với nội dung component là EditProjectFormWithFormik
               dispatch(actionOpenForm);
             }}
           >
             <EditOutlined className="text-lg" />
           </button>
-          <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
+          <button
+            className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1"
+            onClick={() => {
+              const { id } = project;
+              //dispatch action deleteProject
+              const action = deleteProjectAction(id);
+              dispatch(action);
+            }}
+          >
             <DeleteOutlined className="text-lg" />
           </button>
         </div>

@@ -6,6 +6,7 @@ import { projectReducer } from "./reducers/projectReducer";
 import loadingReducer from "./reducers/loadingReducer";
 import notificationReducer from "./reducers/notificationReducer";
 import { drawerReducer } from "./reducers/drawerReducer";
+import { editorContentReducer } from "./reducers/editorContentReducer";
 
 const rootReducer = combineReducers({
   //state
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   loadingReducer,
   notificationReducer,
   drawerReducer,
+  editorContentReducer,
 });
 
 const middleware = [thunk];

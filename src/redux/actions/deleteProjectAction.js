@@ -1,31 +1,25 @@
 import { projectService } from "../../services/baseService";
 import {
-  CLOSE_DRAWER,
   DISPLAY_LOADING,
   HIDE_LOADING,
-  NOTIFICATION_ICON,
-  SHOW_NOTIFICATION,
 } from "../../util/constant/configSystem";
 import { getProjectAction } from "./getProjectAction";
 
-export const updateProjectAction = (data) => {
+export const deleteProjectAction = (id) => {
   return async (dispatch) => {
     dispatch({ type: DISPLAY_LOADING });
     try {
-      let result = await projectService.updateProject(data);
+      //gọi api deleteProject
+      let result = await projectService.deleteProject(id);
       console.log(result);
 
+      //load lại project
       dispatch(getProjectAction());
-      dispatch({ type: CLOSE_DRAWER });
 
+      //ẩn loading sreen
       setTimeout(() => {
         dispatch({ type: HIDE_LOADING });
       }, 500);
-
-      dispatch({
-        type: SHOW_NOTIFICATION,
-        value: { description: "Edited !", type: NOTIFICATION_ICON.SUCCESS },
-      });
     } catch (error) {
       console.log(error);
       setTimeout(() => {

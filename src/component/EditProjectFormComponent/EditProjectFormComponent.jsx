@@ -42,6 +42,7 @@ function EditProjectFormComponent(props) {
             type="text"
             value={id}
             onChange={handleChange}
+            disabled
           />
         </div>
       </div>

@@ -48,7 +48,7 @@ export const loginAction = (userLogin, props) => {
         dispatch({
           type: SHOW_NOTIFICATION,
           value: {
-            message: "Login faild!",
+            message: "Login failed !",
             description: message,
             type: NOTIFICATION_ICON.ERROR,
           },

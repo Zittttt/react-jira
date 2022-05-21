@@ -29,7 +29,6 @@ export default function HomeTemplate(props) {
   const [state, setState] = useState({ collapsed: false });
 
   const history = useHistory();
-
   useEffect(() => {
     dispatch(testTokenAction(history));
   }, []);
