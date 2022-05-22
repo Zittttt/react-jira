@@ -2,6 +2,8 @@ import { projectService } from "../../services/baseService";
 import {
   DISPLAY_LOADING,
   HIDE_LOADING,
+  NOTIFICATION_ICON,
+  SHOW_NOTIFICATION,
 } from "../../util/constant/configSystem";
 import { getProjectAction } from "./getProjectAction";
 
@@ -20,6 +22,13 @@ export const deleteProjectAction = (id) => {
       setTimeout(() => {
         dispatch({ type: HIDE_LOADING });
       }, 500);
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        value: {
+          type: NOTIFICATION_ICON.SUCCESS,
+          description: "Deleted project successfully !",
+        },
+      });
     } catch (error) {
       console.log(error);
       setTimeout(() => {

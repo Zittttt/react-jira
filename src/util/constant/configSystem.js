@@ -26,3 +26,5 @@ export const CLOSE_DRAWER = "CLOSE_DRAWER";
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
 export const DISPLAY_LOADING = "DISPLAY_LOADING";
 export const HIDE_LOADING = "HIDE_LOADING";
+
+export const GET_ALL_USER = "GET_ALL_USER";

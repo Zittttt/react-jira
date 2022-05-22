@@ -1,8 +1,13 @@
-import { Table } from "antd";
-import React from "react";
+import { AutoComplete, Avatar, Popover, Table, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectAction } from "../../redux/actions/getProjectAction";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 import {
   OPEN_DRAWER,
   OPEN_PROJECT_EDIT_FORM,
@@ -13,11 +18,18 @@ import { getProjectDetailAction } from "../../redux/actions/getProjectDetailActi
 
 import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
 import { deleteProjectAction } from "../../redux/actions/deleteProjectAction";
+import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
+import { Popconfirm, Button } from "antd";
+import { getAllUserAction } from "../../redux/actions/getAllUserAction";
+import { assignUserProjectAction } from "../../redux/actions/assignUserProjectAction";
+import { removeUserFromProject } from "../../redux/actions/removeUserFromProjectAction";
 
 export default function ProjectManagementTable(props) {
-  //   const { data } = props;
-
   const dispatch = useDispatch();
+
+  const { userSearch } = useSelector((state) => state.userReducer);
+
+  const [value, setValue] = useState("");
 
   const categoryArr = useSelector(
     (rootReducer) => rootReducer.projectReducer.categoryArr
@@ -53,6 +65,126 @@ export default function ProjectManagementTable(props) {
       key: "member",
       dataIndex: "member",
       width: 500,
+      render: (text, record, index) => {
+        return (
+          <div className="flex">
+            <Popover
+              placement="bottom"
+              title={"Member"}
+              content={() => {
+                const dataSource = record.member.map((member, index) => {
+                  console.log(member);
+                  return {
+                    key: index,
+                    id: member.userId,
+                    name: member.name,
+                    avatar: <Avatar src={member.avatar}></Avatar>,
+                    action: (
+                      <button
+                        className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1"
+                        onClick={() => {
+                          console.log(record);
+                          const action = removeUserFromProject({
+                            projectId: record.id,
+                            userId: member.userId,
+                          });
+                          dispatch(action);
+                          // removeUserFromProject({ projectId: member.userid })
+                        }}
+                      >
+                        <DeleteOutlined className="text-lg" />
+                      </button>
+                    ),
+                  };
+                });
+
+                const columns = [
+                  {
+                    title: "ID",
+                    dataIndex: "id",
+                    key: "id",
+                    width: 1,
+                  },
+                  {
+                    title: "Avatar",
+                    dataIndex: "avatar",
+                    key: "avatar",
+                    width: 1,
+                  },
+                  {
+                    title: "Name",
+                    dataIndex: "name",
+                    key: "name",
+                    width: 160,
+                  },
+                  {
+                    title: "",
+                    dataIndex: "action",
+                    key: "action",
+                  },
+                ];
+
+                return (
+                  <Table
+                    dataSource={dataSource}
+                    columns={columns}
+                    pagination={{ pageSize: 5 }}
+                    className="w-[350px]"
+                  />
+                );
+              }}
+              trigger="click"
+            >
+              <Tooltip placement="top" title="Click to view member">
+                {record.member?.slice(0, 5).map((member, index) => {
+                  return <Avatar src={member.avatar} alt="..." key={index} />;
+                })}
+                {record.member?.length > 5 ? <Avatar>...</Avatar> : ""}
+              </Tooltip>
+            </Popover>
+
+            <Tooltip placement="top" title={"Add member"}>
+              <Popover
+                placement="rightTop"
+                title={"Add member"}
+                trigger="click"
+                content={() => {
+                  return (
+                    <AutoComplete
+                      options={userSearch.map((user, index) => {
+                        return {
+                          label: user.name,
+                          value: user.userId.toString(),
+                        };
+                      })}
+                      style={{ width: "100%" }}
+                      onSelect={(value, option) => {
+                        setValue(option.label);
+                        dispatch(
+                          assignUserProjectAction({
+                            projectId: record.id,
+                            userId: Number(value),
+                          })
+                        );
+                      }}
+                      onSearch={(value) => {
+                        dispatch(getAllUserAction(value));
+                      }}
+                      onChange={(text) => {
+                        setValue(text);
+                      }}
+                      // placeholder="input here"
+                      value={value}
+                    />
+                  );
+                }}
+              >
+                <UserAddOutlined className="flex justify-center items-center w-[32px]" />
+              </Popover>
+            </Tooltip>
+          </div>
+        );
+      },
     },
     {
       title: "Action",
@@ -68,17 +200,7 @@ export default function ProjectManagementTable(props) {
       projectName: project.projectName,
       categoryName: project.categoryName,
       creator: project.creator.name,
-      member: project.members.map((member, index) => {
-        return (
-          <img
-            className="inline rounded-full"
-            src={member.avatar}
-            alt="..."
-            width={27}
-            key={index}
-          />
-        );
-      }),
+      member: project.members,
       action: (
         <div className="flex">
           <button
@@ -98,17 +220,21 @@ export default function ProjectManagementTable(props) {
           >
             <EditOutlined className="text-lg" />
           </button>
-          <button
-            className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1"
-            onClick={() => {
+          <Popconfirm
+            title="Are you sure to delete this project?"
+            onConfirm={() => {
               const { id } = project;
               //dispatch action deleteProject
               const action = deleteProjectAction(id);
               dispatch(action);
             }}
+            okText="Yes"
+            cancelText="No"
           >
-            <DeleteOutlined className="text-lg" />
-          </button>
+            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
+              <DeleteOutlined className="text-lg" />
+            </button>
+          </Popconfirm>
         </div>
       ),
     };

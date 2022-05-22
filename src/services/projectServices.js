@@ -30,4 +30,12 @@ export default class ProjectServices {
   createProjectAuthorize(data) {
     return http.post(`api/Project/createProjectAuthorize`, data);
   }
+
+  assignUserProject(data) {
+    return http.post("api/Project/assignUserProject", data);
+  }
+
+  removeUserFromProject(data) {
+    return http.post("api/Project/removeUserFromProject", data);
+  }
 }

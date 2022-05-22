@@ -49,7 +49,7 @@ function CreateProject(props) {
               name="projectName"
               onChange={handleChange}
             />
-            <p className="text-red-500 text-xs italic">error</p>
+            <p className="text-red-500 text-xs italic">{errors.projectName}</p>
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
@@ -137,7 +137,7 @@ function CreateProject(props) {
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
             />
-            <p className="text-red-500 text-xs italic">error</p>
+            <p className="text-red-500 text-xs italic">{errors.description}</p>
           </div>
         </div>
         <div className="button">
@@ -164,15 +164,16 @@ const CreateProjectFormik = withFormik({
     };
   },
 
-  handleSubmit: async (values, { props, setSubmitting }) => {
+  handleSubmit: (values, { props, setSubmitting, resetForm }) => {
     console.log(values);
     const action = createProjectAction(values);
     props.dispatch(action);
+    // console.log(resetForm);
   },
 
   validationSchema: Yup.object().shape({
-    // projectName: Yup.string().required("Project name is required!"),
-    // description: Yup.string().required("Description is required!"),
+    projectName: Yup.string().required("Project name is required!"),
+    description: Yup.string().required("Description is required!"),
   }),
 })(CreateProject);
 

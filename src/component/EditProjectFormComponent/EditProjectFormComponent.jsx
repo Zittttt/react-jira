@@ -40,7 +40,7 @@ function EditProjectFormComponent(props) {
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
             id="id"
             type="text"
-            value={id}
+            defaultValue={id}
             onChange={handleChange}
             disabled
           />
@@ -58,7 +58,7 @@ function EditProjectFormComponent(props) {
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="projectName"
             type="text"
-            value={projectName}
+            defaultValue={projectName}
             onChange={handleChange}
             name="projectName"
           />
@@ -75,7 +75,7 @@ function EditProjectFormComponent(props) {
             <select
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="categoryId"
-              value={categoryId}
+              defaultValue={categoryId}
               onChange={handleChange}
               name="categoryId"
             >
@@ -112,7 +112,7 @@ function EditProjectFormComponent(props) {
             className="appearance-none block w-full h-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="description"
             type="text"
-            value={description}
+            defaultValue={description}
             onChange={handleChange}
             name="description"
           />
@@ -131,7 +131,7 @@ const EditProjectFormWithFormik = withFormik({
     return {
       id: projectEdit?.id,
       projectName: projectEdit.projectName,
-      categoryId: projectEdit.projectCategory.id,
+      categoryId: projectEdit.projectCategory?.id,
       description: projectEdit.description,
     };
   },

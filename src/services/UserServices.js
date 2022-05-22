@@ -13,4 +13,8 @@ export default class UserServices {
   checkLogin = () => {
     return http.post("api/Users/TestToken");
   };
+
+  getAllUser = (keyword) => {
+    return http.get(`api/Users/getUser?keyword=${keyword}`);
+  };
 }

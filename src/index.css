@@ -55,29 +55,8 @@ body {
 }
 
 /* CSS button next, prev page table */
-#root
-  > div
-  > section
-  > section
-  > div
-  > div
-  > div
-  > div
-  > ul
-  > li.ant-pagination-prev
-  > button,
-#root
-  > div
-  > section
-  > section
-  > div
-  > div
-  > div
-  > div
-  > ul
-  > li.ant-pagination-next
-  > button {
-  display: flex;
+.ant-pagination-item-link {
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
