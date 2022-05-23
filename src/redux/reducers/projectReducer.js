@@ -1,10 +1,10 @@
-import { GET_PROJECT_EDIT } from "../../util/constant/configSystem";
+import { GET_PROJECT_DETAIL } from "../../util/constant/configSystem";
 import { GET_CATEGORY, GET_PROJECT } from "../types/projectType";
 
 const stateDefault = {
   projectArr: [],
   categoryArr: [],
-  projectEdit: {},
+  projectDetail: {},
 };
 
 export const projectReducer = (state = stateDefault, action) => {
@@ -17,8 +17,8 @@ export const projectReducer = (state = stateDefault, action) => {
       state.categoryArr = action.value;
       return { ...state };
     }
-    case GET_PROJECT_EDIT: {
-      return { ...state, projectEdit: action.data };
+    case GET_PROJECT_DETAIL: {
+      return { ...state, projectDetail: action.data };
     }
     default:
       return state;

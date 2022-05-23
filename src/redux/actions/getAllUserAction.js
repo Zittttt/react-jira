@@ -2,6 +2,7 @@ import { userServices } from "../../services/baseService";
 import { GET_ALL_USER } from "../../util/constant/configSystem";
 export const getAllUserAction = (keyword) => {
   return async (dispatch) => {
+    console.log(keyword);
     try {
       let { data } = await userServices.getAllUser(keyword);
       console.log(data.content);

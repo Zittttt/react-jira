@@ -1,5 +1,5 @@
 import { AutoComplete, Avatar, Popover, Table, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectAction } from "../../redux/actions/getProjectAction";
 import {
@@ -23,6 +23,7 @@ import { Popconfirm, Button } from "antd";
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import { assignUserProjectAction } from "../../redux/actions/assignUserProjectAction";
 import { removeUserFromProject } from "../../redux/actions/removeUserFromProjectAction";
+import { NavLink } from "react-router-dom";
 
 export default function ProjectManagementTable(props) {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ export default function ProjectManagementTable(props) {
   const { userSearch } = useSelector((state) => state.userReducer);
 
   const [value, setValue] = useState("");
+
+  const searchRef = useRef(null);
 
   const categoryArr = useSelector(
     (rootReducer) => rootReducer.projectReducer.categoryArr
@@ -46,7 +49,18 @@ export default function ProjectManagementTable(props) {
     {
       title: "Project Name",
       dataIndex: "projectName",
-      defaultSortOrder: "descend",
+      key: "projectName",
+      // sorter: (item2, item1) => {
+      //   let projectName1 = item1.projectName?.trim().toLowerCase();
+      //   let projectName2 = item2.projectName?.trim().toLowerCase();
+      //   if (projectName2 < projectName1) {
+      //     return -1;
+      //   }
+      //   return 1;
+      // },
+      // sorter: (a, b) => {
+      //   return a.projectName.localeCompare(b.projectName);
+      // },
       width: 400,
     },
     {
@@ -73,7 +87,6 @@ export default function ProjectManagementTable(props) {
               title={"Member"}
               content={() => {
                 const dataSource = record.member.map((member, index) => {
-                  console.log(member);
                   return {
                     key: index,
                     id: member.userId,
@@ -89,7 +102,6 @@ export default function ProjectManagementTable(props) {
                             userId: member.userId,
                           });
                           dispatch(action);
-                          // removeUserFromProject({ projectId: member.userid })
                         }}
                       >
                         <DeleteOutlined className="text-lg" />
@@ -135,7 +147,11 @@ export default function ProjectManagementTable(props) {
               }}
               trigger="click"
             >
-              <Tooltip placement="top" title="Click to view member">
+              <Tooltip
+                placement="top"
+                title="Click to view member"
+                className="cursor-pointer"
+              >
                 {record.member?.slice(0, 5).map((member, index) => {
                   return <Avatar src={member.avatar} alt="..." key={index} />;
                 })}
@@ -168,18 +184,22 @@ export default function ProjectManagementTable(props) {
                         );
                       }}
                       onSearch={(value) => {
-                        dispatch(getAllUserAction(value));
+                        if (searchRef.current) {
+                          clearTimeout(searchRef.current);
+                        }
+                        searchRef.current = setTimeout(() => {
+                          dispatch(getAllUserAction(value));
+                        }, 300);
                       }}
                       onChange={(text) => {
                         setValue(text);
                       }}
-                      // placeholder="input here"
                       value={value}
                     />
                   );
                 }}
               >
-                <UserAddOutlined className="flex justify-center items-center w-[32px]" />
+                <UserAddOutlined className="flex justify-center items-center w-[32px] h-[32px]" />
               </Popover>
             </Tooltip>
           </div>
@@ -197,7 +217,11 @@ export default function ProjectManagementTable(props) {
     return {
       key: index,
       id: project.id,
-      projectName: project.projectName,
+      projectName: (
+        <NavLink to={`/projectdetail/${project.id}`} className="font-semibold">
+          {project.projectName}
+        </NavLink>
+      ),
       categoryName: project.categoryName,
       creator: project.creator.name,
       member: project.members,

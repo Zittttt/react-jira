@@ -150,7 +150,7 @@ const EditProjectFormWithFormik = withFormik({
 })(EditProjectFormComponent);
 
 const mapStateToProps = (state) => ({
-  projectEdit: state.projectReducer.projectEdit,
+  projectEdit: state.projectReducer.projectDetail,
 });
 
 export default connect(mapStateToProps)(EditProjectFormWithFormik);
