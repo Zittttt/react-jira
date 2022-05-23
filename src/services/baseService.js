@@ -1,7 +1,7 @@
 import ProjectServices from "./projectServices";
 import UserServices from "./UserServices";
-import ValidationService from "./validationService";
+import TaskServices from "./TaskServices";
 
 export const userServices = new UserServices();
-export const validationService = new ValidationService();
 export const projectService = new ProjectServices();
+export const taskServices = new TaskServices();

@@ -28,3 +28,5 @@ export const DISPLAY_LOADING = "DISPLAY_LOADING";
 export const HIDE_LOADING = "HIDE_LOADING";
 
 export const GET_ALL_USER = "GET_ALL_USER";
+
+export const GET_TASK_STATUS = "GET_TASK_STATUS";

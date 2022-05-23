@@ -1,10 +1,12 @@
 import { Avatar } from "antd";
 import React from "react";
 
-export default function StatusTaskCardComponent() {
+export default function StatusTaskCardComponent(props) {
+  const { status, projectDetail } = props;
+  console.log(projectDetail.lstTask);
   return (
     <div className="p-2 pb-0 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700 w-1/4">
-      <h3 className="my-2 text-gray-900 text-xs dark:text-white">BACKLOG</h3>
+      <h3 className="my-2 text-gray-900 text-xs dark:text-white ml-3">{status}</h3>
       <ul className="my-3 space-y-2">
         <li>
           <a
