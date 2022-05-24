@@ -1,14 +1,23 @@
-import { GET_TASK_STATUS } from "../../util/constant/configSystem";
+import {
+  GET_PRIORITY,
+  GET_TASK_STATUS,
+  GET_TASK_TYPE,
+} from "../../util/constant/configSystem";
 
 const initialState = {
   taskStatus: [],
+  taskType: [],
+  priority: [],
 };
 
 export const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_TASK_STATUS:
       return { ...state, taskStatus: action.value };
-
+    case GET_TASK_TYPE:
+      return { ...state, taskType: action.value };
+    case GET_PRIORITY:
+      return { ...state, priority: action.value };
     default:
       return state;
   }

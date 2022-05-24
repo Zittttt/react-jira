@@ -4,33 +4,28 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
+import { OPEN_CREATE_TASK_FORM, OPEN_PROJECT_EDIT_FORM } from "../../util/constant/configSystem";
 import StatusTaskCardComponent from "./StatusTaskCardComponent/StatusTaskCardComponent";
+import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
+import CreateTaskFormComponent from "../../component/CreateTaskFormComponent/CreateTaskFormComponent";
 
 export default function ProjectDetail(props) {
   const { projectId } = props.match.params;
-  console.log(projectId);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProjectDetailAction(projectId));
-    dispatch(getTaskStatusAction());
   }, []);
-
-  const { taskStatus } = useSelector((state) => state.taskReducer);
-
-  console.log(taskStatus);
 
   const projectDetail = useSelector(
     (state) => state.projectReducer.projectDetail
   );
 
-  console.log(projectDetail);
-
   return (
     <div>
       <header>
-        <h1 className="text-4xl">Project detail id:{projectId}</h1>
+        <h1 className="text-4xl">Project: {projectDetail.projectName}</h1>
       </header>
 
       <div className="taskInfo flex justify-between mb-10">
@@ -59,16 +54,25 @@ export default function ProjectDetail(props) {
             })}
           </div>
         </div>
-        <button className="bg-[#1f2937] text-white flex justify-center items-center w-8 h-8">
+        <button
+          className="bg-[#1f2937] text-white flex justify-center items-center w-8 h-8"
+          onClick={() => {
+            const actionOpenForm = {
+              type: OPEN_CREATE_TASK_FORM,
+              Component: <CreateTaskFormComponent />,
+            };
+            dispatch(actionOpenForm);
+          }}
+        >
           <PlusOutlined />
         </button>
       </div>
 
       <div className="statusTask flex justify-between gap-1 w-full">
-        {taskStatus.map((taskStatus, index) => {
+        {projectDetail.lstTask?.map((lstTask, index) => {
           return (
             <StatusTaskCardComponent
-              status={taskStatus.statusName}
+              task={lstTask}
               projectDetail={projectDetail}
               key={index}
             />

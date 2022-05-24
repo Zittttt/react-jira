@@ -19,19 +19,10 @@ const { Option } = Select;
 export default function Modal() {
   // const [visible, setVisible] = useState(false);
 
-  const { visible, formContent, callBackSubmit } = useSelector(
+  const { visible, formContent, callBackSubmit, title } = useSelector(
     (state) => state.drawerReducer
   );
   const dispatch = useDispatch();
-
-  console.log(visible);
-
-  const showDrawer = () => {
-    dispatch({
-      type: OPEN_DRAWER,
-    });
-    // setVisible(true);
-  };
 
   const onClose = () => {
     // setVisible(false);
@@ -42,7 +33,7 @@ export default function Modal() {
   return (
     <>
       <Drawer
-        title="Edit Project"
+        title={title}
         width={720}
         onClose={onClose}
         visible={visible}

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_SUBMIT_EDIT_PROJECT_FUNCTION } from "../../util/constant/configSystem";
+import { SET_SUBMIT_FUNCTION } from "../../util/constant/configSystem";
 import { connect } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -16,7 +16,7 @@ function EditProjectFormComponent(props) {
   useEffect(() => {
     dispatch(action);
     dispatch({
-      type: SET_SUBMIT_EDIT_PROJECT_FUNCTION,
+      type: SET_SUBMIT_FUNCTION,
       function: handleSubmit,
     });
   }, []);
