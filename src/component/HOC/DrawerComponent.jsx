@@ -37,7 +37,7 @@ export default function Modal() {
         width={720}
         onClose={onClose}
         visible={visible}
-        bodyStyle={{ paddingBottom: 80 }}
+        // bodyStyle={{ paddingBottom: 80 }}
         footer={
           <Space>
             <Button onClick={onClose}>Cancel</Button>

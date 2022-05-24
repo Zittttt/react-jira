@@ -12,6 +12,11 @@ import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
 import { getPriorityAction } from "../../redux/actions/getPriorityAction";
 
+import { Input, InputNumber, Select, Slider } from "antd";
+import { getAllUserAction } from "../../redux/actions/getAllUserAction";
+
+const { Option } = Select;
+
 function CreateTaskFormComponent(props) {
   const dispatch = useDispatch();
 
@@ -29,9 +34,18 @@ function CreateTaskFormComponent(props) {
     (state) => state.taskReducer
   );
 
+  const { userSearch } = useSelector((state) => state.userReducer);
+
   console.log(taskType);
 
-  const { values, errors, handleChange, handleSubmit, setValues } = props;
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    setValues,
+    setFieldValue,
+  } = props;
 
   let {
     listUserAsign,
@@ -54,27 +68,28 @@ function CreateTaskFormComponent(props) {
   };
 
   return (
-    <form className="w-full h-full" onSubmit={handleSubmit}>
-      <div className="flex flex-wrap -mx-3 mb-2">
-        <div className="w-full md:w-1/2 px-3">
+    <form className="w-full grid grid-rows-2" onSubmit={handleSubmit}>
+      <div className="grid grid-cols-2 gap-1 -mx-3 mb-2">
+        <div className="w-full px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-last-name"
           >
             TASK NAME
           </label>
-          <input
-            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          <Input
             id="taskName"
             type="text"
             name="taskName"
             onChange={handleChange}
           />
-          <p className="text-red-500 text-xs italic">{errors.taskName}</p>
+          {errors.taskName ? (
+            <p className="text-red-500 text-xs italic">{errors.taskName}</p>
+          ) : (
+            ""
+          )}
         </div>
-      </div>
-      <div className="flex flex-wrap -mx-3 mb-2">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div className="w-full px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-state"
@@ -82,35 +97,28 @@ function CreateTaskFormComponent(props) {
             TASK STATUS
           </label>
           <div className="relative">
-            <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <Select
               id="statusId"
               name="statusId"
-              onChange={handleChange}
+              onChange={(option) => setFieldValue("statusId", option)}
               value={values.statusId}
+              style={{
+                width: "100%",
+              }}
             >
               {taskStatus.map((status, index) => {
                 return (
-                  <option value={status.statusId} key={index}>
+                  <Option value={status.statusId} key={index}>
                     {status.statusName}
-                  </option>
+                  </Option>
                 );
               })}
-            </select>
-
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg
-                className="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
+            </Select>
           </div>
         </div>
-
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      </div>
+      <div className="grid grid-cols-2 gap-1 -mx-3 mb-2">
+        <div className="w-full px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-state"
@@ -118,52 +126,26 @@ function CreateTaskFormComponent(props) {
             Task type
           </label>
           <div className="relative">
-            <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <Select
               id="typeId"
               name="typeId"
-              onChange={handleChange}
               value={values.typeId}
+              onChange={(option) => setFieldValue("typeId", option)}
+              style={{
+                width: "100%",
+              }}
             >
               {taskType?.map((type, index) => {
                 return (
-                  <option value={type.id} key={index}>
+                  <Option value={type.id} key={index}>
                     {type.taskType}
-                  </option>
+                  </Option>
                 );
               })}
-            </select>
-
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg
-                className="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
+            </Select>
           </div>
         </div>
-      </div>
-      <div className="flex flex-wrap -mx-3 mb-2">
-        <div className="w-full md:w-1/2 px-3">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="grid-last-name"
-          >
-            Assigness
-          </label>
-          <input
-            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="assigness"
-            type="text"
-            name="assigness"
-            onChange={handleChange}
-          />
-          <p className="text-red-500 text-xs italic">{errors.projectName}</p>
-        </div>
-        <div className="w-full md:w-1/2 px-3">
+        <div className="w-full px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-last-name"
@@ -171,12 +153,14 @@ function CreateTaskFormComponent(props) {
             Priority
           </label>
           <div className="relative">
-            <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <Select
               id="priorityId"
               name="priorityId"
-              onChange={handleChange}
+              onChange={(option) => setFieldValue("typeId", option)}
               value={values.priorityId}
+              style={{
+                width: "100%",
+              }}
             >
               {priority.map((priority, index) => {
                 return (
@@ -185,22 +169,70 @@ function CreateTaskFormComponent(props) {
                   </option>
                 );
               })}
-            </select>
-
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg
-                className="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
+            </Select>
+          </div>
+        </div>
+      </div>
+      <div className="-mx-3 mb-2">
+        <div className="w-full px-3">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="grid-last-name"
+          >
+            Assigness
+          </label>
+          <Select
+            mode="tags"
+            style={{
+              width: "100%",
+            }}
+            placeholder="Member"
+            onChange={(option) => setFieldValue("typeId", option)}
+          ></Select>
+        </div>
+      </div>
+      <div className="flex flex-wrap -mx-3 mb-2">
+        <div className="w-full px-3">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="grid-last-name"
+          >
+            Time Tracking
+          </label>
+          <Slider defaultValue={30} tooltipPlacement="right" />
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Time spent (hours)
+              </label>
+              <InputNumber
+                className="w-full"
+                name="timeTrackingSpent"
+                min={1}
+                max={10}
+                defaultValue={3}
+                onChange={(option) => setFieldValue("timeTracking", option)}
+              />
+            </div>
+            <div>
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Time remaining (hours)
+              </label>
+              <InputNumber
+                className="w-full"
+                name="timeTrackingRemaining"
+                min={1}
+                max={10}
+                defaultValue={3}
+                onChange={(option) => setFieldValue("timeTracking", option)}
+              />
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 h-1/2">
-        <div className="w-full px-3 h-full">
+
+      <div className="h-full -mx-3">
+        <div className="w-full px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-last-name"
@@ -213,7 +245,7 @@ function CreateTaskFormComponent(props) {
             name="description"
             id="description"
             init={{
-              height: 500,
+              // height: 300,
               menubar: false,
               plugins: [
                 "a11ychecker",
