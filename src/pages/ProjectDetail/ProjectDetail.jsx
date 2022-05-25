@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
-import { OPEN_CREATE_TASK_FORM, OPEN_PROJECT_EDIT_FORM } from "../../util/constant/configSystem";
+import { OPEN_FORM } from "../../util/constant/configSystem";
 import StatusTaskCardComponent from "./StatusTaskCardComponent/StatusTaskCardComponent";
 import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
 import CreateTaskFormComponent from "../../component/CreateTaskFormComponent/CreateTaskFormComponent";
@@ -58,8 +58,9 @@ export default function ProjectDetail(props) {
           className="bg-[#1f2937] text-white flex justify-center items-center w-8 h-8"
           onClick={() => {
             const actionOpenForm = {
-              type: OPEN_CREATE_TASK_FORM,
+              type: OPEN_FORM,
               Component: <CreateTaskFormComponent />,
+              title: `Create task (Project: ${projectDetail.projectName})`,
             };
             dispatch(actionOpenForm);
           }}

@@ -20,7 +20,7 @@ export const assignUserProjectAction = (value) => {
       dispatch(getProjectAction());
     } catch (error) {
       console.log(error);
-      let description = error.response.data.message;
+      let description = error.response.data.content;
       dispatch({
         type: SHOW_NOTIFICATION,
         value: { description, type: NOTIFICATION_ICON.ERROR },

@@ -1,8 +1,7 @@
 import {
   CLOSE_DRAWER,
-  OPEN_CREATE_TASK_FORM,
   OPEN_DRAWER,
-  OPEN_PROJECT_EDIT_FORM,
+  OPEN_FORM,
   SET_SUBMIT_FUNCTION,
 } from "../../util/constant/configSystem";
 
@@ -21,24 +20,16 @@ export const drawerReducer = (state = initialState, action) => {
       return { ...state, visible: true };
     case CLOSE_DRAWER:
       return { ...state, visible: false };
-    case OPEN_PROJECT_EDIT_FORM:
+    case OPEN_FORM:
       return {
         ...state,
         visible: true,
         formContent: action.Component,
-        title: "Project edit",
+        title: action.title,
       };
     case SET_SUBMIT_FUNCTION: {
       state.callBackSubmit = action.function;
       return { ...state };
-    }
-    case OPEN_CREATE_TASK_FORM: {
-      return {
-        ...state,
-        visible: true,
-        formContent: action.Component,
-        title: "Create task",
-      };
     }
     default:
       return state;

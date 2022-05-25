@@ -1,24 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SUBMIT_FUNCTION } from "../../util/constant/configSystem";
 import { connect } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
-import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
-import { projectService } from "../../services/baseService";
-import { updateProjectAction } from "../../redux/actions/updateProjectAction";
+
 import { Editor } from "@tinymce/tinymce-react";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
 import { getPriorityAction } from "../../redux/actions/getPriorityAction";
+import { BugOutlined, CheckOutlined } from "@ant-design/icons";
 
-import { Input, InputNumber, Select, Slider } from "antd";
+import { Avatar, Input, InputNumber, Select, Slider } from "antd";
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
+import { createTaskAction } from "../../redux/actions/createTaskAction";
 
 const { Option } = Select;
 
 function CreateTaskFormComponent(props) {
   const dispatch = useDispatch();
+
+  const [timeTracking, setTimeTracking] = useState({
+    timeTrackingSpent: 0,
+    timeTrackingRemaining: 0,
+  });
 
   useEffect(() => {
     dispatch(getTaskStatusAction());
@@ -28,15 +33,14 @@ function CreateTaskFormComponent(props) {
       type: SET_SUBMIT_FUNCTION,
       function: handleSubmit,
     });
+    dispatch(getAllUserAction());
   }, []);
 
   const { taskStatus, taskType, priority } = useSelector(
     (state) => state.taskReducer
   );
 
-  const { userSearch } = useSelector((state) => state.userReducer);
-
-  console.log(taskType);
+  const { projectDetail } = useSelector((state) => state.projectReducer);
 
   const {
     values,
@@ -67,8 +71,25 @@ function CreateTaskFormComponent(props) {
     setValues({ ...values, description: content });
   };
 
+  const userOptions = projectDetail.members?.map((user, index) => {
+    return { label: user.name, value: user.userId };
+  });
+
+  const children = [
+    projectDetail.members?.map((user, index) => {
+      return (
+        <Option value={user.userId} key={index}>
+          <Avatar src={user.avatar} className="mr-3" size={18} />
+          {user.name}
+        </Option>
+      );
+    }),
+  ];
+
+  console.log(userOptions);
+
   return (
-    <form className="w-full grid grid-rows-2" onSubmit={handleSubmit}>
+    <form className="w-full" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-1 -mx-3 mb-2">
         <div className="w-full px-3">
           <label
@@ -138,7 +159,14 @@ function CreateTaskFormComponent(props) {
               {taskType?.map((type, index) => {
                 return (
                   <Option value={type.id} key={index}>
-                    {type.taskType}
+                    <p className="flex items-center m-0">
+                      {type.taskType === "bug" ? (
+                        <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
+                      ) : (
+                        <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />
+                      )}
+                      {type.taskType}
+                    </p>
                   </Option>
                 );
               })}
@@ -156,24 +184,45 @@ function CreateTaskFormComponent(props) {
             <Select
               id="priorityId"
               name="priorityId"
-              onChange={(option) => setFieldValue("typeId", option)}
+              onChange={(option) => setFieldValue("priorityId", option)}
               value={values.priorityId}
               style={{
                 width: "100%",
               }}
+              className={` ${
+                values.priorityId === 1
+                  ? "text-red-500"
+                  : values.priorityId === 2
+                  ? "text-orange-400"
+                  : values.priorityId === 3
+                  ? "text-cyan-500"
+                  : "text-blue-500"
+              }`}
             >
               {priority.map((priority, index) => {
                 return (
-                  <option key={index} value={priority.priorityId}>
+                  <Option
+                    key={index}
+                    value={priority.priorityId}
+                    className={
+                      priority.priority === "High"
+                        ? "text-red-500"
+                        : priority.priority === "Medium"
+                        ? "text-orange-500"
+                        : priority.priority === "Low"
+                        ? "text-cyan-500"
+                        : "text-blue-500"
+                    }
+                  >
                     {priority.priority}
-                  </option>
+                  </Option>
                 );
               })}
             </Select>
           </div>
         </div>
       </div>
-      <div className="-mx-3 mb-2">
+      <div className="-mx-3 mb-2 grid grid-cols-2">
         <div className="w-full px-3">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -182,13 +231,47 @@ function CreateTaskFormComponent(props) {
             Assigness
           </label>
           <Select
-            mode="tags"
+            mode="multiple"
+            allowClear
             style={{
               width: "100%",
             }}
             placeholder="Member"
-            onChange={(option) => setFieldValue("typeId", option)}
-          ></Select>
+            onChange={(option) => setFieldValue("listUserAsign", option)}
+            optionFilterProp="label"
+            name="listUserAsign"
+            options={userOptions}
+          >
+            {children}
+          </Select>
+          {errors.listUserAsign ? (
+            <p className="text-red-500 text-xs italic">
+              {errors.listUserAsign}
+            </p>
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="w-full px-3">
+          <label
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            htmlFor="grid-last-name"
+          >
+            Original Estimate
+          </label>
+          <Input
+            id="originalEstimate"
+            name="originalEstimate"
+            onChange={handleChange}
+            type="number"
+          />
+          {errors.originalEstimate ? (
+            <p className="text-red-500 text-xs italic">
+              {errors.originalEstimate}
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-2">
@@ -199,8 +282,27 @@ function CreateTaskFormComponent(props) {
           >
             Time Tracking
           </label>
-          <Slider defaultValue={30} tooltipPlacement="right" />
-          <div className="grid grid-cols-2 gap-2">
+          <Slider
+            // defaultValue={30}
+            value={timeTracking.timeTrackingSpent}
+            max={
+              Number(timeTracking.timeTrackingSpent) +
+              Number(timeTracking.timeTrackingRemaining)
+            }
+            tooltipPlacement="right"
+            onChange={(e) => {
+              setTimeTracking({ ...timeTracking, timeTrackingSpent: e });
+            }}
+          />
+          <div className="grid grid-cols-2 mb-2">
+            <span className="text-green-500 font-bold">
+              {timeTracking.timeTrackingSpent}h logged
+            </span>
+            <span className="text-right text-red-500 font-bold">
+              {timeTracking.timeTrackingRemaining}h remaining
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-1">
             <div>
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Time spent (hours)
@@ -208,10 +310,17 @@ function CreateTaskFormComponent(props) {
               <InputNumber
                 className="w-full"
                 name="timeTrackingSpent"
-                min={1}
-                max={10}
-                defaultValue={3}
-                onChange={(option) => setFieldValue("timeTracking", option)}
+                min={0}
+                defaultValue={0}
+                type="number"
+                onChange={(option) => {
+                  setFieldValue("timeTrackingSpent", option);
+                  console.log(option);
+                  setTimeTracking({
+                    ...timeTracking,
+                    timeTrackingSpent: option,
+                  });
+                }}
               />
             </div>
             <div>
@@ -221,16 +330,21 @@ function CreateTaskFormComponent(props) {
               <InputNumber
                 className="w-full"
                 name="timeTrackingRemaining"
-                min={1}
-                max={10}
-                defaultValue={3}
-                onChange={(option) => setFieldValue("timeTracking", option)}
+                min={0}
+                defaultValue={0}
+                type="number"
+                onChange={(option) => {
+                  setFieldValue("timeTrackingRemaining", option);
+                  setTimeTracking({
+                    ...timeTracking,
+                    timeTrackingRemaining: option,
+                  });
+                }}
               />
             </div>
           </div>
         </div>
       </div>
-
       <div className="h-full -mx-3">
         <div className="w-full px-3">
           <label
@@ -245,7 +359,7 @@ function CreateTaskFormComponent(props) {
             name="description"
             id="description"
             init={{
-              // height: 300,
+              height: 350,
               menubar: false,
               plugins: [
                 "a11ychecker",
@@ -293,26 +407,32 @@ const EditProjectFormWithFormik = withFormik({
 
   mapPropsToValues: (props) => {
     return {
-      listUserAsign: [0],
+      listUserAsign: "",
       taskName: "",
-      description: "string",
+      description: "",
       statusId: props.taskStatus[0]?.statusId,
-      originalEstimate: 0,
+      originalEstimate: "",
       timeTrackingSpent: 0,
       timeTrackingRemaining: 0,
-      projectId: props.projectDetail.id,
+      projectId: props.projectDetail?.id,
       typeId: props.taskType[0]?.id,
       priorityId: props.priority[0]?.priorityId,
     };
   },
 
-  handleSubmit: async (values, { props, setSubmitting }) => {
+  handleSubmit: async (values, { props, resetForm, setSubmitting }) => {
     console.log(values);
+    props.dispatch(createTaskAction(values));
+    resetForm();
   },
 
   validationSchema: Yup.object().shape({
     taskName: Yup.string().required("Task name is required!"),
     description: Yup.string().required("Description is required!"),
+    originalEstimate: Yup.number()
+      .required("Original Estimate is required!")
+      .min(1, "Estimate must be greater than or equal to 1"),
+    listUserAsign: Yup.array().required("Assigness is required!"),
   }),
 })(CreateTaskFormComponent);
 

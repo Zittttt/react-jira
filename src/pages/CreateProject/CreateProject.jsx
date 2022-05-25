@@ -168,7 +168,7 @@ const CreateProjectFormik = withFormik({
     console.log(values);
     const action = createProjectAction(values);
     props.dispatch(action);
-    // console.log(resetForm);
+    resetForm();
   },
 
   validationSchema: Yup.object().shape({

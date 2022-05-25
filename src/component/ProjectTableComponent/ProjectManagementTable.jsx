@@ -1,17 +1,13 @@
 import { AutoComplete, Avatar, Popover, Table, Tooltip } from "antd";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectAction } from "../../redux/actions/getProjectAction";
 import {
   CloseOutlined,
   DeleteOutlined,
   EditOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import {
-  OPEN_DRAWER,
-  OPEN_PROJECT_EDIT_FORM,
-} from "../../util/constant/configSystem";
+import { OPEN_FORM } from "../../util/constant/configSystem";
 import EditProjectFormComponent from "../EditProjectFormComponent/EditProjectFormComponent";
 import { projectService } from "../../services/baseService";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
@@ -235,8 +231,9 @@ export default function ProjectManagementTable(props) {
               const action = getProjectDetailAction(id);
               dispatch(action);
               const actionOpenForm = {
-                type: OPEN_PROJECT_EDIT_FORM,
+                type: OPEN_FORM,
                 Component: <EditProjectFormWithFormik />,
+                title: `Edit Project (${project.projectName})`,
               };
               //dispatch actionOpenForm với nội dung component là EditProjectFormWithFormik
               dispatch(actionOpenForm);

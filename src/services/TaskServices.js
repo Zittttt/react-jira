@@ -12,4 +12,8 @@ export default class taskServices {
   getPriority() {
     return http.get("api/Priority/getAll");
   }
+
+  createTask(data) {
+    return http.post("api/Project/createTask", data);
+  }
 }

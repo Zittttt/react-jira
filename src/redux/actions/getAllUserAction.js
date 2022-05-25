@@ -4,11 +4,11 @@ export const getAllUserAction = (keyword) => {
   return async (dispatch) => {
     console.log(keyword);
     try {
-      let { data } = await userServices.getAllUser(keyword);
-      console.log(data.content);
+      let result = await userServices.getAllUser(keyword ? keyword : "");
+      console.log(result);
       dispatch({
         type: GET_ALL_USER,
-        value: data.content,
+        value: result.data.content,
       });
     } catch (error) {
       console.log(error);
