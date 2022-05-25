@@ -8,6 +8,7 @@ import notificationReducer from "./reducers/notificationReducer";
 import { drawerReducer } from "./reducers/drawerReducer";
 import { editorContentReducer } from "./reducers/editorContentReducer";
 import { taskReducer } from "./reducers/taskReducer";
+import modalReducer from "./reducers/modalReducer";
 
 const rootReducer = combineReducers({
   //state
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   drawerReducer,
   editorContentReducer,
   taskReducer,
+  modalReducer,
 });
 
 const middleware = [thunk];

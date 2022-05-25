@@ -35,3 +35,6 @@ export const OPEN_CREATE_TASK_FORM = "OPEN_CREATE_TASK_FORM";
 export const GET_TASK_TYPE = "GET_TASK_TYPE";
 
 export const GET_PRIORITY = "GET_PRIORITY";
+
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";

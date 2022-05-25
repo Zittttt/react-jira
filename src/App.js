@@ -11,6 +11,7 @@ import User from "./pages/User/User";
 import LoadingComponent from "./component/LoadingComponent/LoadingComponent";
 import DrawerComponent from "./component/HOC/DrawerComponent";
 import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
+import ModalComponent from "./component/HOC/ModalComponent";
 
 export const history = createBrowserHistory();
 
@@ -19,6 +20,7 @@ function App() {
     <BrowserRouter>
       <DrawerComponent />
       <LoadingComponent />
+      <ModalComponent />
       <Switch>
         <LoginTemplate exact path={"/login"} Component={Login} />
         <LoginTemplate exact path={"/register"} Component={Register} />
