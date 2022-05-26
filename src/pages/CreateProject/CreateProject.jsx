@@ -11,12 +11,14 @@ function CreateProject(props) {
   const action = getProjectCategoryAction();
   const dispatch = useDispatch();
 
+  const { values, errors, handleChange, handleSubmit, setValues, resetForm } =
+    props;
+
   useEffect(() => {
     dispatch(action);
   }, []);
 
   const { categoryArr } = useSelector((state) => state.projectReducer);
-  const { values, errors, handleChange, handleSubmit, setValues } = props;
 
   const editorRef = useRef(null);
   const log = () => {
@@ -48,6 +50,7 @@ function CreateProject(props) {
               type="text"
               name="projectName"
               onChange={handleChange}
+              value={values.projectName}
             />
             <p className="text-red-500 text-xs italic">{errors.projectName}</p>
           </div>
@@ -64,7 +67,7 @@ function CreateProject(props) {
                 id="categoryId"
                 name="categoryId"
                 onChange={handleChange}
-                value={values.categoryId}
+                value={categoryArr[0].id}
               >
                 {categoryArr?.map((category, index) => {
                   return (
@@ -100,6 +103,7 @@ function CreateProject(props) {
               onEditorChange={editorHandleChange}
               name="description"
               id="description"
+              value={values.description}
               init={{
                 height: 500,
                 menubar: false,
@@ -164,17 +168,22 @@ const CreateProjectFormik = withFormik({
     };
   },
 
-  handleSubmit: (values, { props, setSubmitting, resetForm }) => {
-    console.log(values);
+  handleSubmit: (
+    values,
+    { props, setSubmitting, resetForm, setValues, setFieldValue }
+  ) => {
     const action = createProjectAction(values);
     props.dispatch(action);
+    // for (const value in values) {
+    //   setFieldValue(value, "");
+    // }
     resetForm();
   },
 
-  validationSchema: Yup.object().shape({
-    projectName: Yup.string().required("Project name is required!"),
-    description: Yup.string().required("Description is required!"),
-  }),
+  // validationSchema: Yup.object().shape({
+  //   projectName: Yup.string().required("Project name is required!"),
+  //   description: Yup.string().required("Description is required!"),
+  // }),
 })(CreateProject);
 
 const mapStateToProps = (state) => ({

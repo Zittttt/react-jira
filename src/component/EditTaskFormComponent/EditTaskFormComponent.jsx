@@ -87,11 +87,10 @@ function EditTaskFormComponent(props) {
             <Select
               bordered={false}
               value={typeId}
-              className="text-[13px]"
+              className="text-[13px] w-[120px]"
               optionFilterProp="label"
               onChange={(option) => setFieldValue("typeId", option)}
               name="typeId"
-              className="w-[120px]"
             >
               {taskType.map((type, index) => {
                 return (
