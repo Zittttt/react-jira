@@ -1,5 +1,6 @@
 import {
   GET_PRIORITY,
+  GET_TASK_DETAIL,
   GET_TASK_STATUS,
   GET_TASK_TYPE,
 } from "../../util/constant/configSystem";
@@ -8,6 +9,7 @@ const initialState = {
   taskStatus: [],
   taskType: [],
   priority: [],
+  taskDetail: {},
 };
 
 export const taskReducer = (state = initialState, action) => {
@@ -18,6 +20,8 @@ export const taskReducer = (state = initialState, action) => {
       return { ...state, taskType: action.value };
     case GET_PRIORITY:
       return { ...state, priority: action.value };
+    case GET_TASK_DETAIL:
+      return { ...state, taskDetail: action.value };
     default:
       return state;
   }

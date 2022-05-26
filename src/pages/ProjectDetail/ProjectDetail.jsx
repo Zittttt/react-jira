@@ -16,6 +16,7 @@ export default function ProjectDetail(props) {
 
   useEffect(() => {
     dispatch(getProjectDetailAction(projectId));
+    dispatch(getTaskStatusAction());
   }, []);
 
   const projectDetail = useSelector(

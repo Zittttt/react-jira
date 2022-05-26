@@ -16,4 +16,12 @@ export default class taskServices {
   createTask(data) {
     return http.post("api/Project/createTask", data);
   }
+
+  getTaskDetail(id) {
+    return http.get(`api/Project/getTaskDetail?taskId=${id}`);
+  }
+
+  updateTask(data) {
+    return http.post("api/Project/updateTask", data);
+  }
 }

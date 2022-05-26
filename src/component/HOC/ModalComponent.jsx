@@ -1,5 +1,5 @@
 import { Button, Modal } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MODAL } from "../../util/constant/configSystem";
 
@@ -10,6 +10,8 @@ const ModalComponent = () => {
   const { isModalVisible, modalContent } = useSelector(
     (state) => state.modalReducer
   );
+
+  const [state, setState] = useState();
 
   const handleOk = () => {
     dispatch({ type: CLOSE_MODAL });

@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
         modalContent: action.modalContent,
       };
     case CLOSE_MODAL:
-      return { ...state, isModalVisible: false };
+      return { ...state, isModalVisible: false, modalContent: "" };
     default:
       return state;
   }

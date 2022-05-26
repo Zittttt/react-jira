@@ -3,65 +3,158 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Avatar, Button, InputNumber, Select, Slider } from "antd";
 import Input from "antd/lib/input/Input";
 import TextArea from "antd/lib/input/TextArea";
-import React, { useRef } from "react";
+import { withFormik } from "formik";
+import React, { useEffect, useRef, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import { getPriorityAction } from "../../redux/actions/getPriorityAction";
+import { getTaskDetailAction } from "../../redux/actions/getTaskDetailAction";
+import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
+import { updateTaskAction } from "../../redux/actions/updateTaskAction";
 
 const { Option } = Select;
 
-export default function EditTaskFormComponent() {
+function EditTaskFormComponent(props) {
   const editorRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const { isModalVisible } = useSelector((state) => state.modalReducer);
+
+  useEffect(() => {
+    dispatch(getPriorityAction());
+    dispatch(getTaskTypeAction());
+    //resetForm khi bật/tắt modal
+    resetForm();
+  }, [isModalVisible]);
+
+  // const [state, setState] = useState();
 
   const editorHandleChange = (content, editor) => {
-    console.log(content);
-    // setValues({ ...values, description: content });
+    setFieldValue("description", content);
   };
 
+  const { taskStatus, taskType, priority } = useSelector(
+    (state) => state.taskReducer
+  );
+
+  console.log(taskStatus);
+
+  const {
+    values,
+    setValues,
+    handleChange,
+    setFieldValue,
+    handleSubmit,
+    taskId,
+    resetForm,
+  } = props;
+
+  const {
+    listUserAsign,
+    taskName,
+    description,
+    statusId,
+    originalEstimate,
+    timeTrackingSpent,
+    timeTrackingRemaining,
+    projectId,
+    typeId,
+    priorityId,
+  } = values;
+
+  const { projectDetail } = useSelector((state) => state.projectReducer);
+
+  const userOptions = projectDetail.members?.map((user, index) => {
+    return { value: user.userId, label: user.name };
+  });
+
+  const children = projectDetail.members?.map((user, index) => {
+    return (
+      <Option value={user.userId} key={index}>
+        <Avatar src={user.avatar} className="mr-3" size={18} />
+        {user.name}
+      </Option>
+    );
+  });
+
+  console.log(taskType);
+
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5">
         <div className="w-full px-3 col-span-2">
           <div className="col-span-2">
             <Select
-              defaultValue={"bug"}
+              bordered={false}
+              value={typeId}
               className="text-[13px]"
               optionFilterProp="label"
-              bordered={false}
+              onChange={(option) => setFieldValue("typeId", option)}
+              name="typeId"
+              className="w-[120px]"
             >
-              <Option value="bug" label="bug">
+              {taskType.map((type, index) => {
+                return (
+                  <Option value={type.id} label="bug">
+                    <div className="flex items-center">
+                      {type.id == 1 ? (
+                        <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
+                      ) : (
+                        <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />
+                      )}
+
+                      <span>{type.taskType}</span>
+                    </div>
+                  </Option>
+                );
+              })}
+              {/* <Option value={1} label="bug">
                 <div className="flex items-center">
                   <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
                   <span>bug</span>
                 </div>
               </Option>
-              <Option value="new task" label="new task">
+              <Option value={2} label="new task">
                 <div className="flex items-center">
                   <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />
                   <span>new task</span>
                 </div>
-              </Option>
+              </Option> */}
             </Select>
           </div>
         </div>
       </div>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5">
         <div className="w-full px-3 col-span-2">
-          <Input
+          <label
             // bordered={false}
-            className="text-[24px] font-medium rounded-md border-transparent hover:border-blue-400 transition-all duration-300"
-            value="This is an issue of type: Task."
-          />
+            className="text-[24px] font-medium rounded-md border-transparent hover:border-blue-400 transition-all duration-300 pl-3"
+            id="taskName"
+            type="text"
+            name="taskName"
+          >
+            {taskName}
+          </label>
         </div>
         <div className="w-full px-3">
           <label className="text-[12.5px] font-medium block">STATUS</label>
           <Select
             style={{ width: "50%" }}
-            defaultValue="BACKLOG"
+            value={statusId}
             className="text-[13px]"
-            optionFilterProp="label"
+            name="statusId"
+            onChange={(option) => {
+              setFieldValue("statusId", option);
+              console.log(option);
+            }}
           >
-            <Option value="BACKLOG">BACKLOG</Option>
-            <Option value="BACKLOG">BACKLOG</Option>
-            <Option value="BACKLOG">BACKLOG</Option>
-            <Option value="BACKLOG">BACKLOG</Option>
+            {taskStatus.map((status, index) => {
+              return (
+                <Option value={status.statusId} key={index}>
+                  {status.statusName}
+                </Option>
+              );
+            })}
           </Select>
         </div>
       </div>
@@ -71,6 +164,7 @@ export default function EditTaskFormComponent() {
           <Editor
             onInit={(evt, editor) => (editorRef.current = editor)}
             onEditorChange={editorHandleChange}
+            value={description}
             name="description"
             id="description"
             init={{
@@ -115,15 +209,22 @@ export default function EditTaskFormComponent() {
           <div className="mb-5">
             <label className="text-[12.5px] font-medium block">ASSIGNESS</label>
             <Select
-              style={{ width: "50%" }}
-              defaultValue="BACKLOG"
+              mode="multiple"
+              allowClear
+              style={{
+                width: "100%",
+              }}
+              placeholder="Add member"
               className="text-[13px]"
               optionFilterProp="label"
+              onChange={(option) => {
+                setFieldValue("listUserAsign", option);
+              }}
+              value={listUserAsign}
+              options={userOptions}
+              name="listUserAsign"
             >
-              <Option value="BACKLOG">BACKLOG</Option>
-              <Option value="BACKLOG">BACKLOG</Option>
-              <Option value="BACKLOG">BACKLOG</Option>
-              <Option value="BACKLOG">BACKLOG</Option>
+              {children}
             </Select>
           </div>
 
@@ -131,21 +232,32 @@ export default function EditTaskFormComponent() {
             <label className="text-[12.5px] font-medium block">PRIORITY</label>
             <Select
               style={{ width: "50%" }}
-              defaultValue="HIGH"
+              value={priorityId}
               className="text-[13px]"
-              optionFilterProp="label"
+              onChange={(option) => {
+                setFieldValue("priorityId", option);
+              }}
+              name="priorityId"
             >
-              <Option value="HIGH">HIGH</Option>
-              <Option value="MEDIUM">MEDIUM</Option>
-              <Option value="LOW">LOW</Option>
-              <Option value="LOWEST">LOWEST</Option>
+              {priority.map((priority, index) => {
+                return (
+                  <Option value={priority.priorityId} key={index}>
+                    {priority.priority}
+                  </Option>
+                );
+              })}
             </Select>
           </div>
           <div className="mb-5">
             <label className="text-[12.5px] font-medium block">
               ORIGINAL ESTIMATE (HOURS)
             </label>
-            <InputNumber style={{ width: "100%" }} />
+            <InputNumber
+              style={{ width: "100%" }}
+              name="originalEstimate"
+              value={originalEstimate}
+              onChange={(option) => setFieldValue("originalEstimate", option)}
+            />
           </div>
 
           <div className="mb-5">
@@ -153,14 +265,16 @@ export default function EditTaskFormComponent() {
               TIME TRACKING
             </label>
             <Slider
-              //   value={timeTracking.timeTrackingSpent}
-              max={20}
+              value={timeTrackingSpent}
+              max={timeTrackingSpent + timeTrackingRemaining}
               tooltipPlacement="right"
             />
             <div className="grid grid-cols-2 mb-2">
-              <span className="text-green-500 font-bold">h logged</span>
+              <span className="text-green-500 font-bold">
+                {timeTrackingSpent}h logged
+              </span>
               <span className="text-right text-red-500 font-bold">
-                h remaining
+                {timeTrackingRemaining}h remaining
               </span>
             </div>
             <div className="grid grid-cols-2 gap-1">
@@ -172,8 +286,11 @@ export default function EditTaskFormComponent() {
                   className="w-full"
                   name="timeTrackingSpent"
                   min={0}
-                  defaultValue={0}
+                  value={timeTrackingSpent}
                   type="number"
+                  onChange={(option) => {
+                    setFieldValue("timeTrackingSpent", option);
+                  }}
                 />
               </div>
               <div>
@@ -184,8 +301,11 @@ export default function EditTaskFormComponent() {
                   className="w-full"
                   name="timeTrackingRemaining"
                   min={0}
-                  defaultValue={0}
+                  value={timeTrackingRemaining}
                   type="number"
+                  onChange={(option) => {
+                    setFieldValue("timeTrackingRemaining", option);
+                  }}
                 />
               </div>
             </div>
@@ -227,30 +347,50 @@ export default function EditTaskFormComponent() {
           </li>
         </div>
       </div>
-
-      {/* <div>
-          <p>Description</p>
-          <button>Save</button>
-          <button>Cancel</button>
-        </div>
-        <div className="comment">
-          <h3>Comment</h3>
-          <input type="text" placeholder="Add a comment" />
-          <li>
-            <ul>
-              <div className="top">
-                <span>Lord Gaben</span>
-                <span>38 minutes ago</span>
-              </div>
-              <div>
-                An old silent pond... A frog jumps into the pond, splash!
-                Silence again.
-              </div>
-              <span>Edit</span>
-              <span>Delete</span>
-            </ul>
-          </li>
-        </div> */}
-    </div>
+      <button type="submit">submit</button>
+    </form>
   );
 }
+
+const EditTaskFormWithFormik = withFormik({
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    const { taskDetail } = props;
+    const listUserId = taskDetail.assigness?.map((user, index) => {
+      return user.id;
+    });
+    return {
+      listUserAsign: listUserId,
+      taskName: taskDetail.taskName,
+      description: taskDetail.description,
+      statusId: taskDetail.statusId,
+      originalEstimate: taskDetail.originalEstimate,
+      timeTrackingSpent: taskDetail.timeTrackingSpent,
+      timeTrackingRemaining: taskDetail.timeTrackingRemaining,
+      projectId: taskDetail.projectId,
+      typeId: taskDetail?.typeId,
+      priorityId: taskDetail.priorityTask?.priorityId,
+      taskId: taskDetail.taskId,
+    };
+  },
+
+  handleSubmit: async (values, { props, resetForm, setSubmitting }) => {
+    console.log("value", values);
+    props.dispatch(updateTaskAction(values));
+  },
+
+  // validationSchema: Yup.object().shape({
+  //   taskName: Yup.string().required("Task name is required!"),
+  //   description: Yup.string().required("Description is required!"),
+  //   originalEstimate: Yup.number()
+  //     .required("Original Estimate is required!")
+  //     .min(1, "Estimate must be greater than or equal to 1"),
+  //   listUserAsign: Yup.array().required("Assigness is required!"),
+  // }),
+})(EditTaskFormComponent);
+
+const mapStateToProps = (state) => ({
+  taskDetail: state.taskReducer.taskDetail,
+});
+
+export default connect(mapStateToProps)(EditTaskFormWithFormik);

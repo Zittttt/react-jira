@@ -237,7 +237,10 @@ function CreateTaskFormComponent(props) {
               width: "100%",
             }}
             placeholder="Member"
-            onChange={(option) => setFieldValue("listUserAsign", option)}
+            onChange={(option) => {
+              setFieldValue("listUserAsign", option);
+              console.log(option);
+            }}
             optionFilterProp="label"
             name="listUserAsign"
             options={userOptions}

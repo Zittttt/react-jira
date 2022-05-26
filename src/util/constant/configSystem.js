@@ -38,3 +38,5 @@ export const GET_PRIORITY = "GET_PRIORITY";
 
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+
+export const GET_TASK_DETAIL = "GET_TASK_DETAIL";
