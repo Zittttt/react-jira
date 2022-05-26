@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SUBMIT_FUNCTION } from "../../util/constant/configSystem";
 import { connect } from "react-redux";
@@ -7,14 +7,22 @@ import * as Yup from "yup";
 import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
 import { projectService } from "../../services/baseService";
 import { updateProjectAction } from "../../redux/actions/updateProjectAction";
+import { Editor } from "@tinymce/tinymce-react";
 
 function EditProjectFormComponent(props) {
   const dispatch = useDispatch();
 
-  const action = getProjectCategoryAction();
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    resetForm,
+    setFieldValue,
+  } = props;
 
   useEffect(() => {
-    dispatch(action);
+    dispatch(getProjectCategoryAction());
     dispatch({
       type: SET_SUBMIT_FUNCTION,
       function: handleSubmit,
@@ -22,9 +30,13 @@ function EditProjectFormComponent(props) {
   }, []);
 
   const { categoryArr } = useSelector((state) => state.projectReducer);
-  const { values, errors, handleChange, handleSubmit } = props;
 
   let { id, projectName, categoryId, description } = values;
+
+  const editorRef = useRef(null);
+  const editorHandleChange = (content, editor) => {
+    setFieldValue("description", content);
+  };
 
   return (
     <form className="w-full h-full" onSubmit={handleSubmit}>
@@ -108,13 +120,48 @@ function EditProjectFormComponent(props) {
           >
             DESCRIPTION
           </label>
-          <textarea
-            className="appearance-none block w-full h-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="description"
-            type="text"
-            defaultValue={description}
-            onChange={handleChange}
+          <Editor
+            onInit={(evt, editor) => (editorRef.current = editor)}
+            onEditorChange={editorHandleChange}
+            value={description}
             name="description"
+            id="description"
+            init={{
+              height: 350,
+              menubar: false,
+              plugins: [
+                "a11ychecker",
+                "advlist",
+                "advcode",
+                "advtable",
+                "autolink",
+                "checklist",
+                "export",
+                "lists",
+                "link",
+                "image",
+                "charmap",
+                "preview",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "powerpaste",
+                "fullscreen",
+                "formatpainter",
+                "insertdatetime",
+                "media",
+                "table",
+                "help",
+                "wordcount",
+                "onEditorChange",
+              ],
+              toolbar:
+                "undo redo | casechange blocks | bold italic backcolor | " +
+                "alignleft aligncenter alignright alignjustify | " +
+                "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
+              content_style:
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            }}
           />
           <p className="text-red-500 text-xs italic">{errors.description}</p>
         </div>
@@ -136,11 +183,12 @@ const EditProjectFormWithFormik = withFormik({
     };
   },
 
-  handleSubmit: async (values, { props, setSubmitting }) => {
+  handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     console.log(values);
 
     const action = updateProjectAction(values);
     props.dispatch(action);
+    resetForm();
   },
 
   validationSchema: Yup.object().shape({

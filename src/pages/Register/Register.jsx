@@ -8,10 +8,13 @@ import {
   NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
 } from "../../util/constant/configSystem";
+import { registerAction } from "../../redux/actions/registerAction";
 
 function Register(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
+
+  const { email, passWord, name, phoneNumber, confirmPassword } = values;
 
   return (
     <form
@@ -25,14 +28,15 @@ function Register(props) {
         placeholder="Name"
         name="name"
         onChange={handleChange}
+        value={name}
       />
       <p className="m-0 text-red-600">{errors.name}</p>
       <input
-        type="text"
         className={props.inputStyle}
         placeholder="Phone Number"
         name="phoneNumber"
         onChange={handleChange}
+        value={phoneNumber}
       />
       <p className="m-0 text-red-600">{errors.phoneNumber}</p>
 
@@ -42,6 +46,7 @@ function Register(props) {
         placeholder="Email"
         name="email"
         onChange={handleChange}
+        value={email}
       />
       <p className="m-0 text-red-600">{errors.email}</p>
 
@@ -49,11 +54,11 @@ function Register(props) {
         type="password"
         className={props.inputStyle}
         placeholder="Password"
-        name="password"
+        name="passWord"
         onChange={handleChange}
-        data-type="name"
+        value={passWord}
       />
-      <p className="m-0 text-red-600">{errors.password}</p>
+      <p className="m-0 text-red-600">{errors.passWord}</p>
 
       <input
         type="password"
@@ -61,6 +66,7 @@ function Register(props) {
         placeholder="Confirm Password"
         name="confirmPassword"
         onChange={handleChange}
+        value={confirmPassword}
       />
       <p className="m-0 text-red-600">{errors.confirmPassword}</p>
 
@@ -87,35 +93,16 @@ const RegisterWithFormik = withFormik({
     confirmPassword: "",
   }),
 
-  handleSubmit: async (values, { props, setSubmitting }) => {
-    try {
-      let result = await userServices.register(values);
-      console.log(result);
-      props.dispatch({
-        type: SHOW_NOTIFICATION,
-        value: {
-          description: "Register successfully",
-          type: NOTIFICATION_ICON.SUCCESS,
-        },
-      });
-    } catch (error) {
-      const { message } = error.response.data;
-      console.log(message);
-      props.dispatch({
-        type: SHOW_NOTIFICATION,
-        value: {
-          description: "Email is already used",
-          type: NOTIFICATION_ICON.ERROR,
-        },
-      });
-    }
+  handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
+    await props.dispatch(registerAction(values));
+    resetForm();
   },
 
   validationSchema: Yup.object().shape({
     email: Yup.string()
       .required("Email is required!")
       .email("Email is invalid!"),
-    password: Yup.string()
+    passWord: Yup.string()
       .required("Password is required!")
       .min(6, "Password must have min 6 characters!")
       .max(16, "Password must have max 18 characters!"),
@@ -123,7 +110,7 @@ const RegisterWithFormik = withFormik({
       .required("Name is required!")
       .matches(/^[A-Za-z0-9 ]*$/, "Please enter valid name"),
     confirmPassword: Yup.string().oneOf(
-      [Yup.ref("password"), null],
+      [Yup.ref("passWord"), null],
       "Passwords must match!"
     ),
     phoneNumber: Yup.string()
@@ -136,4 +123,8 @@ const RegisterWithFormik = withFormik({
   }),
 })(Register);
 
-export default connect()(RegisterWithFormik);
+const mapStateToProps = (state) => ({
+  regisResult: state.userReducer.regisResult,
+});
+
+export default connect(mapStateToProps)(RegisterWithFormik);

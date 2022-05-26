@@ -67,7 +67,7 @@ function CreateProject(props) {
                 id="categoryId"
                 name="categoryId"
                 onChange={handleChange}
-                value={categoryArr[0].id}
+                value={categoryArr[0]?.id}
               >
                 {categoryArr?.map((category, index) => {
                   return (

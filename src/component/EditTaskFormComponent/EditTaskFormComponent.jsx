@@ -94,7 +94,7 @@ function EditTaskFormComponent(props) {
             >
               {taskType.map((type, index) => {
                 return (
-                  <Option value={type.id} label="bug">
+                  <Option value={type.id} label="bug" key={index}>
                     <div className="flex items-center">
                       {type.id == 1 ? (
                         <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
@@ -355,7 +355,7 @@ const EditTaskFormWithFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: (props) => {
     const { taskDetail } = props;
-    const listUserId = taskDetail.assigness?.map((user, index) => {
+    const listUserId = taskDetail.assigness?.map((user) => {
       return user.id;
     });
     return {
