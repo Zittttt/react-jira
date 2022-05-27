@@ -24,4 +24,16 @@ export default class taskServices {
   updateTask(data) {
     return http.post("api/Project/updateTask", data);
   }
+
+  insertComment(data) {
+    return http.post("api/Comment/insertComment", data);
+  }
+
+  getAllComment(id) {
+    return http.get(`api/Comment/getAll?taskId=${id}`);
+  }
+
+  deleteComment(id) {
+    return http.delete(`api/Comment/deleteComment?idComment=${id}`);
+  }
 }

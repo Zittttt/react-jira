@@ -1,8 +1,13 @@
-import { CLOSE_MODAL, OPEN_MODAL } from "../../util/constant/configSystem";
+import {
+  CLOSE_MODAL,
+  OPEN_MODAL,
+  SET_SUBMIT_FUNCTION,
+} from "../../util/constant/configSystem";
 
 const initialState = {
   isModalVisible: false,
   modalContent: "",
+  callBackSubmit: () => {},
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +20,9 @@ export default (state = initialState, action) => {
       };
     case CLOSE_MODAL:
       return { ...state, isModalVisible: false, modalContent: "" };
+
+    case SET_SUBMIT_FUNCTION:
+      return { ...state, callBackSubmit: action.function };
     default:
       return state;
   }

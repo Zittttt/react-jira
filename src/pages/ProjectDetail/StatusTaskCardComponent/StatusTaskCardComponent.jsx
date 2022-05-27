@@ -25,8 +25,8 @@ export default function StatusTaskCardComponent(props) {
             <li key={index}>
               <div
                 className="flex flex-col justify-between p-3 text-sm text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
-                onClick={(e) => {
-                  dispatch(getTaskDetailAction(task.taskId));
+                onClick={async (e) => {
+                  await dispatch(getTaskDetailAction(task.taskId));
                   dispatch({
                     type: OPEN_MODAL,
                     modalContent: <EditTaskFormComponent />,

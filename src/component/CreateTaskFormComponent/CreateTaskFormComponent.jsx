@@ -435,7 +435,7 @@ const EditProjectFormWithFormik = withFormik({
     originalEstimate: Yup.number()
       .required("Original Estimate is required!")
       .min(1, "Estimate must be greater than or equal to 1"),
-    listUserAsign: Yup.array().required("Assigness is required!"),
+    // listUserAsign: Yup.array().required("Assigness is required!"),
   }),
 })(CreateTaskFormComponent);
 

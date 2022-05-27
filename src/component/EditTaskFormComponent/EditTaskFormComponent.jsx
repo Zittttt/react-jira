@@ -1,16 +1,19 @@
 import { BugOutlined, CheckOutlined } from "@ant-design/icons";
 import { Editor } from "@tinymce/tinymce-react";
 import { Avatar, Button, InputNumber, Select, Slider } from "antd";
+import ErrorList from "antd/lib/form/ErrorList";
 import Input from "antd/lib/input/Input";
 import TextArea from "antd/lib/input/TextArea";
 import { withFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
 import { getPriorityAction } from "../../redux/actions/getPriorityAction";
-import { getTaskDetailAction } from "../../redux/actions/getTaskDetailAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
 import { updateTaskAction } from "../../redux/actions/updateTaskAction";
+import { SET_SUBMIT_FUNCTION } from "../../util/constant/configSystem";
+import CommentComponent from "../CommentComponent/CommentComponent";
 
 const { Option } = Select;
 
@@ -19,13 +22,17 @@ function EditTaskFormComponent(props) {
   const dispatch = useDispatch();
 
   const { isModalVisible } = useSelector((state) => state.modalReducer);
+  const { taskDetail } = useSelector((state) => state.taskReducer);
 
   useEffect(() => {
     dispatch(getPriorityAction());
     dispatch(getTaskTypeAction());
+    dispatch(getAllCommentAction(taskDetail.taskId));
+
+    dispatch({ type: SET_SUBMIT_FUNCTION, function: handleSubmit });
     //resetForm khi bật/tắt modal
     resetForm();
-  }, [isModalVisible]);
+  }, []);
 
   // const [state, setState] = useState();
 
@@ -33,11 +40,11 @@ function EditTaskFormComponent(props) {
     setFieldValue("description", content);
   };
 
+  const { lstComment } = useSelector((state) => state.commentReducer);
+
   const { taskStatus, taskType, priority } = useSelector(
     (state) => state.taskReducer
   );
-
-  console.log(taskStatus);
 
   const {
     values,
@@ -45,8 +52,8 @@ function EditTaskFormComponent(props) {
     handleChange,
     setFieldValue,
     handleSubmit,
-    taskId,
     resetForm,
+    errors,
   } = props;
 
   const {
@@ -60,6 +67,8 @@ function EditTaskFormComponent(props) {
     projectId,
     typeId,
     priorityId,
+    taskId,
+    contentComment,
   } = values;
 
   const { projectDetail } = useSelector((state) => state.projectReducer);
@@ -76,8 +85,6 @@ function EditTaskFormComponent(props) {
       </Option>
     );
   });
-
-  console.log(taskType);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -107,18 +114,6 @@ function EditTaskFormComponent(props) {
                   </Option>
                 );
               })}
-              {/* <Option value={1} label="bug">
-                <div className="flex items-center">
-                  <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
-                  <span>bug</span>
-                </div>
-              </Option>
-              <Option value={2} label="new task">
-                <div className="flex items-center">
-                  <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />
-                  <span>new task</span>
-                </div>
-              </Option> */}
             </Select>
           </div>
         </div>
@@ -144,7 +139,6 @@ function EditTaskFormComponent(props) {
             name="statusId"
             onChange={(option) => {
               setFieldValue("statusId", option);
-              console.log(option);
             }}
           >
             {taskStatus.map((status, index) => {
@@ -203,6 +197,11 @@ function EditTaskFormComponent(props) {
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
           />
+          {errors.description ? (
+            <p className="text-red-500 text-xs italic">{errors.description}</p>
+          ) : (
+            ""
+          )}
         </div>
         <div className="w-full px-3">
           <div className="mb-5">
@@ -225,6 +224,13 @@ function EditTaskFormComponent(props) {
             >
               {children}
             </Select>
+            {errors.listUserAsign ? (
+              <p className="text-red-500 text-xs italic">
+                {errors.listUserAsign}
+              </p>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="mb-5">
@@ -256,7 +262,15 @@ function EditTaskFormComponent(props) {
               name="originalEstimate"
               value={originalEstimate}
               onChange={(option) => setFieldValue("originalEstimate", option)}
+              type="number"
             />
+            {errors.originalEstimate ? (
+              <p className="text-red-500 text-xs italic">
+                {errors.originalEstimate}
+              </p>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="mb-5">
@@ -314,39 +328,9 @@ function EditTaskFormComponent(props) {
       <div className="left-side grid grid-cols-3 -mx-3 mb-5 pl-3">
         <div className="w-full px-3 col-span-2">
           <label className="text-[15px] font-medium">Comments</label>
-          <div className="flex justify-between">
-            <div className="mr-2 mt-2">
-              <Avatar />
-            </div>
-            <TextArea placeholder="Add a comment..." className="w-full" />
-            <Button>Send</Button>
-          </div>
-          <li>
-            <ul className="mt-5">
-              <div className="info flex">
-                <div className="mr-2">
-                  <Avatar />
-                </div>
-                <div>
-                  <span className="font-medium text-[15px] pr-[12px]">
-                    Lord Gaben
-                  </span>
-                  <span className="text-[14.5px]">an hour ago</span>
-                </div>
-              </div>
-              <div className="comment-content pl-[40px] ">
-                <p className="text-[15px]">
-                  An old silent pond... A frog jumps into the pond, splash!
-                  Silence again.
-                </p>
-                <button className="text-[14.5px] mr-2">Edit</button>
-                <button className="text-[14.5px]">Delete</button>
-              </div>
-            </ul>
-          </li>
+          <CommentComponent taskId={taskId} />
         </div>
       </div>
-      <button type="submit">submit</button>
     </form>
   );
 }
@@ -378,14 +362,12 @@ const EditTaskFormWithFormik = withFormik({
     props.dispatch(updateTaskAction(values));
   },
 
-  // validationSchema: Yup.object().shape({
-  //   taskName: Yup.string().required("Task name is required!"),
-  //   description: Yup.string().required("Description is required!"),
-  //   originalEstimate: Yup.number()
-  //     .required("Original Estimate is required!")
-  //     .min(1, "Estimate must be greater than or equal to 1"),
-  //   listUserAsign: Yup.array().required("Assigness is required!"),
-  // }),
+  validationSchema: Yup.object().shape({
+    description: Yup.string().required("Description is required!"),
+    originalEstimate: Yup.number()
+      .required("Original Estimate is required!")
+      .min(1, "Estimate must be greater than or equal to 1"),
+  }),
 })(EditTaskFormComponent);
 
 const mapStateToProps = (state) => ({

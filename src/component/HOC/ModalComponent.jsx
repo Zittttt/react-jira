@@ -11,10 +11,13 @@ const ModalComponent = () => {
     (state) => state.modalReducer
   );
 
+  const { callBackSubmit } = useSelector((state) => state.modalReducer);
+
   const [state, setState] = useState();
 
   const handleOk = () => {
     dispatch({ type: CLOSE_MODAL });
+    callBackSubmit();
   };
 
   const handleCancel = () => {
@@ -28,7 +31,11 @@ const ModalComponent = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         width={"60vw"}
-        bodyStyle={{ padding: "20px", marginRight: "10px" }}
+        bodyStyle={{
+          padding: "20px",
+          marginRight: "10px",
+          overflowY: "scroll",
+        }}
         centered
         transitionName=""
       >
