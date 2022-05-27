@@ -16,7 +16,6 @@ const ModalComponent = () => {
   const [state, setState] = useState();
 
   const handleOk = () => {
-    dispatch({ type: CLOSE_MODAL });
     callBackSubmit();
   };
 
@@ -34,7 +33,6 @@ const ModalComponent = () => {
         bodyStyle={{
           padding: "20px",
           marginRight: "10px",
-          overflowY: "scroll",
         }}
         centered
         transitionName=""

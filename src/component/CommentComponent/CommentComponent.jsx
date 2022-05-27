@@ -1,18 +1,15 @@
-import { Avatar, Button } from "antd";
+import { Avatar, Button, Popconfirm } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useFormik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCommentAction } from "../../redux/actions/deleteCommentAction";
 import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
 import { inserCommentAction } from "../../redux/actions/insertCommentAction";
-import { GET_ALL_COMMENT } from "../../util/constant/configSystem";
 
 export default function CommentComponent(props) {
   const { userLogin } = useSelector((state) => state.userReducer);
   const { taskId } = props;
-
-  console.log(taskId);
 
   const dispatch = useDispatch();
 
@@ -23,8 +20,6 @@ export default function CommentComponent(props) {
   }, [taskId, state]);
 
   const { lstComment } = useSelector((state) => state.commentReducer);
-
-  console.log(lstComment);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -65,26 +60,34 @@ export default function CommentComponent(props) {
                   <Avatar src={comment.user.avatar} />
                 </div>
                 <div>
-                  <span className="font-medium text-[15px] pr-[12px]">
+                  <span className="font-semibold text-[15px] pr-[12px]">
                     {comment.user.name}
                   </span>
-                  <span className="text-[14.5px]">an hour ago</span>
                 </div>
               </div>
               <div className="comment-content pl-[40px] ">
-                <p className="text-[15px]">{comment.contentComment}</p>
-                <button className="text-[14.5px] mr-2" type="button">
+                <p className="text-[15px] ">{comment.contentComment}</p>
+                <button
+                  className="text-[14.5px] mr-2 text-[#5e6c84] font-medium hover:underline"
+                  type="button"
+                >
                   Edit
                 </button>
-                <button
-                  className="text-[14.5px]"
-                  type="button"
-                  onClick={() => {
-                    dispatch(deleteCommentAction(comment.id));
+                <Popconfirm
+                  title="Are you sure to delete this comment?"
+                  onConfirm={() => {
+                    dispatch(deleteCommentAction(comment.id, taskId));
                   }}
+                  okText="Yes"
+                  cancelText="No"
                 >
-                  Delete
-                </button>
+                  <button
+                    className="text-[14.5px] text-[#5e6c84] font-medium hover:underline"
+                    type="button"
+                  >
+                    Delete
+                  </button>
+                </Popconfirm>
               </div>
             </ul>
           );

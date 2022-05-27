@@ -36,4 +36,8 @@ export default class taskServices {
   deleteComment(id) {
     return http.delete(`api/Comment/deleteComment?idComment=${id}`);
   }
+
+  removeTask(id) {
+    return http.delete(`api/Project/removeTask?taskId=${id}`);
+  }
 }

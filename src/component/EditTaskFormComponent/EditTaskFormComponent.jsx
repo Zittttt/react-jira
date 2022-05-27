@@ -1,18 +1,18 @@
-import { BugOutlined, CheckOutlined } from "@ant-design/icons";
+import { BugOutlined, CheckOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Editor } from "@tinymce/tinymce-react";
-import { Avatar, Button, InputNumber, Select, Slider } from "antd";
-import ErrorList from "antd/lib/form/ErrorList";
+import { Avatar, InputNumber, Popconfirm, Select, Slider } from "antd";
 import Input from "antd/lib/input/Input";
-import TextArea from "antd/lib/input/TextArea";
 import { withFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
 import { getPriorityAction } from "../../redux/actions/getPriorityAction";
+import { getTaskDetailAction } from "../../redux/actions/getTaskDetailAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
+import { removeTaskAction } from "../../redux/actions/removeTaskAction";
 import { updateTaskAction } from "../../redux/actions/updateTaskAction";
-import { SET_SUBMIT_FUNCTION } from "../../util/constant/configSystem";
+import { SET_SUBMIT_MODAL_FUNCTION } from "../../util/constant/configSystem";
 import CommentComponent from "../CommentComponent/CommentComponent";
 
 const { Option } = Select;
@@ -21,30 +21,21 @@ function EditTaskFormComponent(props) {
   const editorRef = useRef(null);
   const dispatch = useDispatch();
 
-  const { isModalVisible } = useSelector((state) => state.modalReducer);
   const { taskDetail } = useSelector((state) => state.taskReducer);
+  const { isModalVisible } = useSelector((state) => state.modalReducer);
+  const [visibleEditor, setVisibleEditor] = useState(false);
 
   useEffect(() => {
     dispatch(getPriorityAction());
     dispatch(getTaskTypeAction());
     dispatch(getAllCommentAction(taskDetail.taskId));
-
-    dispatch({ type: SET_SUBMIT_FUNCTION, function: handleSubmit });
-    //resetForm khi bật/tắt modal
-    resetForm();
+    dispatch({ type: SET_SUBMIT_MODAL_FUNCTION, function: handleSubmit });
   }, []);
 
-  // const [state, setState] = useState();
-
-  const editorHandleChange = (content, editor) => {
-    setFieldValue("description", content);
-  };
-
-  const { lstComment } = useSelector((state) => state.commentReducer);
-
-  const { taskStatus, taskType, priority } = useSelector(
-    (state) => state.taskReducer
-  );
+  useEffect(() => {
+    //resetForm khi bật/tắt modal
+    resetForm();
+  }, [isModalVisible]);
 
   const {
     values,
@@ -54,6 +45,8 @@ function EditTaskFormComponent(props) {
     handleSubmit,
     resetForm,
     errors,
+    setErrors,
+    setSubmitting,
   } = props;
 
   const {
@@ -70,6 +63,86 @@ function EditTaskFormComponent(props) {
     taskId,
     contentComment,
   } = values;
+
+  const renderDescription = () => {
+    const htmlString = description;
+    return (
+      <div className="mt-2 w-full h-full">
+        {visibleEditor ? (
+          <div>
+            <Editor
+              onInit={(evt, editor) => (editorRef.current = editor)}
+              onEditorChange={editorHandleChange}
+              value={description}
+              name="description"
+              id="description"
+              init={{
+                height: 350,
+                menubar: false,
+                plugins: [
+                  "a11ychecker",
+                  "advlist",
+                  "advcode",
+                  "advtable",
+                  "autolink",
+                  "checklist",
+                  "export",
+                  "lists",
+                  "link",
+                  "image",
+                  "charmap",
+                  "preview",
+                  "anchor",
+                  "searchreplace",
+                  "visualblocks",
+                  "powerpaste",
+                  "fullscreen",
+                  "formatpainter",
+                  "insertdatetime",
+                  "media",
+                  "table",
+                  "help",
+                  "wordcount",
+                  "onEditorChange",
+                ],
+                toolbar:
+                  "undo redo | casechange blocks | bold italic backcolor | " +
+                  "alignleft aligncenter alignright alignjustify | " +
+                  "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
+                content_style:
+                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+              }}
+            />
+            <button
+              className="mt-4 px-3 py-1 rounded-[3px] bg-[#0052cc] text-white font-medium text-[14.5px]"
+              onClick={() => {
+                setVisibleEditor(!visibleEditor);
+              }}
+            >
+              Save
+            </button>
+          </div>
+        ) : (
+          <div
+            dangerouslySetInnerHTML={{ __html: htmlString }}
+            onClick={() => {
+              setVisibleEditor(!visibleEditor);
+            }}
+            className="w-full h-full text-[unset]"
+            value={description}
+          />
+        )}
+      </div>
+    );
+  };
+
+  const editorHandleChange = (content, editor) => {
+    setFieldValue("description", content);
+  };
+
+  const { taskStatus, taskType, priority } = useSelector(
+    (state) => state.taskReducer
+  );
 
   const { projectDetail } = useSelector((state) => state.projectReducer);
 
@@ -117,6 +190,23 @@ function EditTaskFormComponent(props) {
             </Select>
           </div>
         </div>
+        <div className="w-full px-3 text-right pr-10 relative">
+          <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 absolute top-0 right-10">
+            <DeleteOutlined className="text-lg" />
+          </button>
+          <Popconfirm
+            title="Are you sure to delete this task?"
+            onConfirm={() => {
+              dispatch(removeTaskAction(taskId, projectId));
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 absolute top-0 right-10">
+              <DeleteOutlined className="text-lg" />
+            </button>
+          </Popconfirm>
+        </div>
       </div>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5">
         <div className="w-full px-3 col-span-2">
@@ -133,7 +223,7 @@ function EditTaskFormComponent(props) {
         <div className="w-full px-3">
           <label className="text-[12.5px] font-medium block">STATUS</label>
           <Select
-            style={{ width: "50%" }}
+            style={{ width: "100%" }}
             value={statusId}
             className="text-[13px]"
             name="statusId"
@@ -153,50 +243,8 @@ function EditTaskFormComponent(props) {
       </div>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5 pl-3">
         <div className="w-full px-3 col-span-2">
-          <label className="text-[15px] font-medium">Description</label>
-          <Editor
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            onEditorChange={editorHandleChange}
-            value={description}
-            name="description"
-            id="description"
-            init={{
-              height: 350,
-              menubar: false,
-              plugins: [
-                "a11ychecker",
-                "advlist",
-                "advcode",
-                "advtable",
-                "autolink",
-                "checklist",
-                "export",
-                "lists",
-                "link",
-                "image",
-                "charmap",
-                "preview",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
-                "powerpaste",
-                "fullscreen",
-                "formatpainter",
-                "insertdatetime",
-                "media",
-                "table",
-                "help",
-                "wordcount",
-                "onEditorChange",
-              ],
-              toolbar:
-                "undo redo | casechange blocks | bold italic backcolor | " +
-                "alignleft aligncenter alignright alignjustify | " +
-                "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            }}
-          />
+          <label className="text-[15px] font-medium mb-10">Description</label>
+          {renderDescription()}
           {errors.description ? (
             <p className="text-red-500 text-xs italic">{errors.description}</p>
           ) : (
@@ -236,7 +284,7 @@ function EditTaskFormComponent(props) {
           <div className="mb-5">
             <label className="text-[12.5px] font-medium block">PRIORITY</label>
             <Select
-              style={{ width: "50%" }}
+              style={{ width: "100%" }}
               value={priorityId}
               className="text-[13px]"
               onChange={(option) => {
@@ -258,18 +306,19 @@ function EditTaskFormComponent(props) {
               ORIGINAL ESTIMATE (HOURS)
             </label>
             <InputNumber
-              style={{ width: "100%" }}
+              className="w-full"
               name="originalEstimate"
               value={originalEstimate}
-              onChange={(option) => setFieldValue("originalEstimate", option)}
+              onChange={(e) => {
+                setFieldValue("originalEstimate", e);
+              }}
               type="number"
+              min={0}
             />
-            {errors.originalEstimate ? (
+            {errors.originalEstimate && (
               <p className="text-red-500 text-xs italic">
                 {errors.originalEstimate}
               </p>
-            ) : (
-              ""
             )}
           </div>
 
@@ -366,7 +415,8 @@ const EditTaskFormWithFormik = withFormik({
     description: Yup.string().required("Description is required!"),
     originalEstimate: Yup.number()
       .required("Original Estimate is required!")
-      .min(1, "Estimate must be greater than or equal to 1"),
+      .min(0, "Estimate must be greater than or equal to 0")
+      .nullable(),
   }),
 })(EditTaskFormComponent);
 

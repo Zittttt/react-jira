@@ -1,16 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_SUBMIT_FUNCTION } from "../../util/constant/configSystem";
+import { SET_SUBMIT_DRAWER_FUNCTION } from "../../util/constant/configSystem";
 import { connect } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
-import { projectService } from "../../services/baseService";
 import { updateProjectAction } from "../../redux/actions/updateProjectAction";
 import { Editor } from "@tinymce/tinymce-react";
+import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 
 function EditProjectFormComponent(props) {
   const dispatch = useDispatch();
+
+  const { visible } = useSelector((state) => state.drawerReducer);
 
   const {
     values,
@@ -24,10 +26,11 @@ function EditProjectFormComponent(props) {
   useEffect(() => {
     dispatch(getProjectCategoryAction());
     dispatch({
-      type: SET_SUBMIT_FUNCTION,
+      type: SET_SUBMIT_DRAWER_FUNCTION,
       function: handleSubmit,
     });
-  }, []);
+    resetForm();
+  }, [visible]);
 
   const { categoryArr } = useSelector((state) => state.projectReducer);
 
@@ -52,7 +55,7 @@ function EditProjectFormComponent(props) {
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
             id="id"
             type="text"
-            defaultValue={id}
+            value={id}
             onChange={handleChange}
             disabled
           />
@@ -70,7 +73,7 @@ function EditProjectFormComponent(props) {
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="projectName"
             type="text"
-            defaultValue={projectName}
+            value={projectName}
             onChange={handleChange}
             name="projectName"
           />
@@ -87,7 +90,7 @@ function EditProjectFormComponent(props) {
             <select
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="categoryId"
-              defaultValue={categoryId}
+              value={categoryId}
               onChange={handleChange}
               name="categoryId"
             >

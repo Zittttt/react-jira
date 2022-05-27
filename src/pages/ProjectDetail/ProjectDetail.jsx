@@ -1,12 +1,11 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, Row } from "antd";
+import { Avatar } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
 import { OPEN_FORM } from "../../util/constant/configSystem";
 import StatusTaskCardComponent from "./StatusTaskCardComponent/StatusTaskCardComponent";
-import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
 import CreateTaskFormComponent from "../../component/CreateTaskFormComponent/CreateTaskFormComponent";
 
 export default function ProjectDetail(props) {

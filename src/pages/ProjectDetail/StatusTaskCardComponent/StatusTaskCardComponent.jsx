@@ -8,7 +8,6 @@ import { OPEN_MODAL } from "../../../util/constant/configSystem";
 export default function StatusTaskCardComponent(props) {
   const dispatch = useDispatch();
   const { task } = props;
-  console.log(task);
 
   const taskSorted = task.lstTaskDeTail?.sort((a, b) =>
     a.priorityTask.priorityId > b.priorityTask.priorityId ? 1 : -1

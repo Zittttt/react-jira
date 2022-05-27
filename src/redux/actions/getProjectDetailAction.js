@@ -1,9 +1,14 @@
 import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
 import { projectService } from "../../services/baseService";
-import { GET_PROJECT_DETAIL } from "../../util/constant/configSystem";
+import {
+  DISPLAY_LOADING,
+  GET_PROJECT_DETAIL,
+  HIDE_LOADING,
+} from "../../util/constant/configSystem";
 
 export const getProjectDetailAction = (id) => {
   return async (dispatch) => {
+    dispatch({ type: DISPLAY_LOADING });
     try {
       let { data } = await projectService.getProjectDetail(id);
       console.log(data.content);
@@ -12,6 +17,9 @@ export const getProjectDetailAction = (id) => {
         data: data.content,
       };
       dispatch(action);
+      setTimeout(() => {
+        dispatch({ type: HIDE_LOADING });
+      }, 500);
     } catch (error) {
       console.log(error);
     }

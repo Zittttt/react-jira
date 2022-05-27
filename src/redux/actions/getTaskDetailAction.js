@@ -1,8 +1,13 @@
 import { taskServices } from "../../services/baseService";
-import { GET_TASK_DETAIL } from "../../util/constant/configSystem";
+import {
+  DISPLAY_LOADING,
+  GET_TASK_DETAIL,
+  HIDE_LOADING,
+} from "../../util/constant/configSystem";
 
 export const getTaskDetailAction = (id) => {
   return async (dispatch) => {
+    dispatch({ type: DISPLAY_LOADING });
     try {
       let { data } = await taskServices.getTaskDetail(id);
       console.log(data.content);
@@ -10,8 +15,14 @@ export const getTaskDetailAction = (id) => {
         type: GET_TASK_DETAIL,
         value: data.content,
       });
+      setTimeout(() => {
+        dispatch({ type: HIDE_LOADING });
+      }, 100);
     } catch (error) {
       console.log(error);
+      setTimeout(() => {
+        dispatch({ type: HIDE_LOADING });
+      }, 100);
     }
   };
 };

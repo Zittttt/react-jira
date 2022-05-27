@@ -1,7 +1,7 @@
 import {
   CLOSE_MODAL,
   OPEN_MODAL,
-  SET_SUBMIT_FUNCTION,
+  SET_SUBMIT_MODAL_FUNCTION,
 } from "../../util/constant/configSystem";
 
 const initialState = {
@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
     case CLOSE_MODAL:
       return { ...state, isModalVisible: false, modalContent: "" };
 
-    case SET_SUBMIT_FUNCTION:
+    case SET_SUBMIT_MODAL_FUNCTION:
       return { ...state, callBackSubmit: action.function };
     default:
       return state;

@@ -2,7 +2,7 @@ import {
   CLOSE_DRAWER,
   OPEN_DRAWER,
   OPEN_FORM,
-  SET_SUBMIT_FUNCTION,
+  SET_SUBMIT_DRAWER_FUNCTION,
 } from "../../util/constant/configSystem";
 
 const initialState = {
@@ -27,7 +27,7 @@ export const drawerReducer = (state = initialState, action) => {
         formContent: action.Component,
         title: action.title,
       };
-    case SET_SUBMIT_FUNCTION: {
+    case SET_SUBMIT_DRAWER_FUNCTION: {
       state.callBackSubmit = action.function;
       return { ...state };
     }
