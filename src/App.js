@@ -12,6 +12,8 @@ import LoadingComponent from "./component/LoadingComponent/LoadingComponent";
 import DrawerComponent from "./component/HOC/DrawerComponent";
 import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
 import ModalComponent from "./component/HOC/ModalComponent";
+import DemoDragDrop from "./pages/DemoDragDrop/DemoDragDrop";
+import BeautifylDnD from "./pages/BeautifulDnD/BeautifylDnD.jsx";
 
 export const history = createBrowserHistory();
 
@@ -32,6 +34,8 @@ function App() {
           path={"/projectdetail/:projectId"}
           Component={ProjectDetail}
         />
+        {/* <Route exact path={"/dnd"} component={DemoDragDrop} /> */}
+        <Route exact path={"/dnd"} component={BeautifylDnD} />
       </Switch>
     </BrowserRouter>
   );

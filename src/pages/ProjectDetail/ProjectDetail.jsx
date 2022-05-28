@@ -1,5 +1,5 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { Avatar, Popover, Table, Tooltip } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
@@ -7,6 +7,10 @@ import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
 import { OPEN_FORM } from "../../util/constant/configSystem";
 import StatusTaskCardComponent from "./StatusTaskCardComponent/StatusTaskCardComponent";
 import CreateTaskFormComponent from "../../component/CreateTaskFormComponent/CreateTaskFormComponent";
+import { removeUserFromProject } from "../../redux/actions/removeUserFromProjectAction";
+import MemberListComponent from "../../component/MemberListComponent/MemberListComponent";
+import { DragDropContext } from "react-beautiful-dnd";
+import { updateStatusAction } from "../../redux/actions/updateStatusAction";
 
 export default function ProjectDetail(props) {
   const { projectId } = props.match.params;
@@ -22,6 +26,30 @@ export default function ProjectDetail(props) {
     (state) => state.projectReducer.projectDetail
   );
 
+  const handleDragEnd = (result) => {
+    // console.log("result", result);
+
+    const { source, destination, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    //Nếu drag-drop ở 1 taskStatus thì return
+    if (source.droppableId === destination.droppableId) {
+      return;
+    }
+
+    let data = {
+      taskId: draggableId,
+      statusId: destination.droppableId,
+    };
+
+    dispatch(updateStatusAction(data, projectId));
+  };
+
+  console.log(projectDetail);
+
   return (
     <div>
       <header>
@@ -30,12 +58,7 @@ export default function ProjectDetail(props) {
 
       <div className="taskInfo flex justify-between mb-10">
         <div className="flex">
-          <form
-            className="search-task"
-            // onSubmit={(e) => {
-            //   searchProject(e);
-            // }}
-          >
+          <form className="search-task">
             <input
               type="text"
               placeholder="Project"
@@ -49,9 +72,7 @@ export default function ProjectDetail(props) {
             </button>
           </form>
           <div className="member-avatar ml-5">
-            {projectDetail.members?.map((member, index) => {
-              return <Avatar src={member.avatar} key={index} />;
-            })}
+            <MemberListComponent projectDetail={projectDetail} />
           </div>
         </div>
         <button
@@ -70,15 +91,17 @@ export default function ProjectDetail(props) {
       </div>
 
       <div className="statusTask flex justify-between gap-1 w-full">
-        {projectDetail.lstTask?.map((lstTask, index) => {
-          return (
-            <StatusTaskCardComponent
-              task={lstTask}
-              projectDetail={projectDetail}
-              key={index}
-            />
-          );
-        })}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          {projectDetail.lstTask?.map((lstTask, index) => {
+            return (
+              <StatusTaskCardComponent
+                task={lstTask}
+                projectDetail={projectDetail}
+                key={index}
+              />
+            );
+          })}
+        </DragDropContext>
       </div>
     </div>
   );

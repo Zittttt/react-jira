@@ -35,6 +35,7 @@ function EditTaskFormComponent(props) {
   useEffect(() => {
     //resetForm khi bật/tắt modal
     resetForm();
+    setVisibleEditor(false);
   }, [isModalVisible]);
 
   const {
@@ -116,7 +117,7 @@ function EditTaskFormComponent(props) {
             <button
               className="mt-4 px-3 py-1 rounded-[3px] bg-[#0052cc] text-white font-medium text-[14.5px]"
               onClick={() => {
-                setVisibleEditor(!visibleEditor);
+                setVisibleEditor(false);
               }}
             >
               Save
@@ -126,7 +127,7 @@ function EditTaskFormComponent(props) {
           <div
             dangerouslySetInnerHTML={{ __html: htmlString }}
             onClick={() => {
-              setVisibleEditor(!visibleEditor);
+              setVisibleEditor(true);
             }}
             className="w-full h-full text-[unset]"
             value={description}
@@ -176,7 +177,7 @@ function EditTaskFormComponent(props) {
                 return (
                   <Option value={type.id} label="bug" key={index}>
                     <div className="flex items-center">
-                      {type.id == 1 ? (
+                      {type.id === 1 ? (
                         <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
                       ) : (
                         <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />

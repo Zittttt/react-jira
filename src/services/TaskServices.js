@@ -40,4 +40,8 @@ export default class taskServices {
   removeTask(id) {
     return http.delete(`api/Project/removeTask?taskId=${id}`);
   }
+
+  updateStatus(data) {
+    return http.put("api/Project/updateStatus", data);
+  }
 }
