@@ -2,6 +2,7 @@ import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 import { AutoComplete, Avatar, Popover, Table, Tooltip } from "antd";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { assignUserProjectAction } from "../../redux/actions/assignUserProjectAction";
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
@@ -14,7 +15,7 @@ export default function MemberListComponent(props) {
   const searchRef = useRef(null);
   const [value, setValue] = useState("");
 
-  console.log(projectDetail);
+  const history = useHistory();
 
   return (
     <div className="flex">
@@ -31,12 +32,17 @@ export default function MemberListComponent(props) {
               action: (
                 <button
                   className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1"
-                  onClick={() => {
+                  onClick={async () => {
                     const action = removeUserFromProject({
                       projectId: projectDetail.id,
                       userId: member.userId,
                     });
-                    dispatch(action);
+                    await dispatch(action);
+                    if (
+                      history.location.pathname.indexOf("/projectdetail") > -1
+                    ) {
+                      dispatch(getProjectDetailAction(projectDetail.id));
+                    }
                   }}
                 >
                   <DeleteOutlined className="text-lg" />

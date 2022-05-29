@@ -103,7 +103,7 @@ export default function HomeTemplate(props) {
             defaultSelectedKeys={[""]}
             mode="inline"
             items={profile}
-            className="absolute bottom-0 w-full account"
+            className="account"
             onClick={(e) => {
               if (e.key === "logOut") {
                 localStorage.removeItem(TOKEN);
@@ -125,7 +125,7 @@ export default function HomeTemplate(props) {
             <img src={logo} width={"50px"} />
           </button> */}
         </Sider>
-        <Layout className="site-layout m-10">
+        <Layout className="site-layout p-10 bg-white">
           {/* <HeaderHome /> */}
           <Route
             exact

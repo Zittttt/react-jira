@@ -34,7 +34,7 @@ function CreateProject(props) {
 
   return (
     <div className="h-full">
-      <h3 className="text-4xl">Create Project</h3>
+      <h3 className="text-2xl text-[#1f2937]">Create Project</h3>
       <form className="w-full" onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full md:w-1/2 px-3">

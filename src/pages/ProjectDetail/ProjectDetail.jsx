@@ -52,31 +52,15 @@ export default function ProjectDetail(props) {
 
   return (
     <div>
-      <header>
-        <h1 className="text-4xl">Project: {projectDetail.projectName}</h1>
-      </header>
-
+      <h1 className="text-2xl text-[#1f2937]">{projectDetail.projectName}</h1>
       <div className="taskInfo flex justify-between mb-10">
         <div className="flex">
-          <form className="search-task">
-            <input
-              type="text"
-              placeholder="Project"
-              className="h-8 w-100 p-2 border-2 border-[#0049b0] hover:border-[#002380] rounded-md"
-            />
-            <button
-              className="ml-5 bg-[#002380] rounded-md h-8 px-2 text-white hover:bg-[#5574e3] hover:text-black transition-all duration-200"
-              type="submit"
-            >
-              Search Task
-            </button>
-          </form>
-          <div className="member-avatar ml-5">
+          <div className="member-avatar">
             <MemberListComponent projectDetail={projectDetail} />
           </div>
         </div>
         <button
-          className="bg-[#1f2937] text-white flex justify-center items-center w-8 h-8"
+          className="bg-[#1f2937] text-white text-xl flex justify-center items-center w-8 h-8"
           onClick={() => {
             const actionOpenForm = {
               type: OPEN_FORM,
@@ -90,7 +74,7 @@ export default function ProjectDetail(props) {
         </button>
       </div>
 
-      <div className="statusTask flex justify-between gap-1 w-full">
+      <div className="statusTask flex justify-between gap-3 w-full">
         <DragDropContext onDragEnd={handleDragEnd}>
           {projectDetail.lstTask?.map((lstTask, index) => {
             return (
