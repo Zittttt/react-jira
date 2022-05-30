@@ -1,4 +1,4 @@
-import { withFormik } from "formik";
+import { useFormik, withFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
@@ -6,13 +6,13 @@ import * as Yup from "yup";
 import { Editor } from "@tinymce/tinymce-react";
 import { connect } from "react-redux";
 import { createProjectAction } from "../../redux/actions/createProjectAction";
+import { Input, Select } from "antd";
 
-function CreateProject(props) {
+const { Option } = Select;
+
+export default function CreateProject(props) {
   const action = getProjectCategoryAction();
   const dispatch = useDispatch();
-
-  const { values, errors, handleChange, handleSubmit, setValues, resetForm } =
-    props;
 
   useEffect(() => {
     dispatch(action);
@@ -21,6 +21,7 @@ function CreateProject(props) {
   const { categoryArr } = useSelector((state) => state.projectReducer);
 
   const editorRef = useRef(null);
+
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
@@ -32,6 +33,36 @@ function CreateProject(props) {
     setValues({ ...values, description: content });
   };
 
+  const formik = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      projectName: "",
+      description: "",
+      categoryId: categoryArr[0]?.id,
+    },
+
+    onSubmit: (values, { resetForm }) => {
+      const action = createProjectAction(values);
+      dispatch(action);
+      resetForm();
+    },
+
+    validationSchema: Yup.object().shape({
+      projectName: Yup.string().required("Project name is required!"),
+    }),
+  });
+
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    setValues,
+    setFieldValue,
+    resetForm,
+  } = formik;
+
   return (
     <div className="h-full">
       <h3 className="text-2xl text-[#1f2937]">Create Project</h3>
@@ -42,10 +73,9 @@ function CreateProject(props) {
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               htmlFor="grid-last-name"
             >
-              PROJECT NAME
+              PROJECT NAME <span className="text-red-500">*</span>
             </label>
-            <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <Input
               id="projectName"
               type="text"
               name="projectName"
@@ -62,21 +92,39 @@ function CreateProject(props) {
               CATEGORY
             </label>
             <div className="relative">
-              <select
-                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              <Select
+                className={`w-full text-[${
+                  values.categoryId == 1
+                    ? "#389e0d"
+                    : values.categoryId == 2
+                    ? "#d4380d"
+                    : "#1d39c4"
+                }]`}
                 id="categoryId"
                 name="categoryId"
-                onChange={handleChange}
-                value={categoryArr[0]?.id}
+                onChange={(e) => setFieldValue("categoryId", e)}
+                value={values.categoryId}
               >
                 {categoryArr?.map((category, index) => {
                   return (
-                    <option value={category.id} key={index}>
+                    <Option
+                      value={category.id}
+                      key={index}
+                      className={`text-[${
+                        category.id == 1
+                          ? "#389e0d"
+                          : category.id == 2
+                          ? "#d4380d"
+                          : "#1d39c4"
+                      }]
+                      
+                    `}
+                    >
                       {category.projectCategoryName}
-                    </option>
+                    </Option>
                   );
                 })}
-              </select>
+              </Select>
 
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg
@@ -141,10 +189,9 @@ function CreateProject(props) {
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
             />
-            <p className="text-red-500 text-xs italic">{errors.description}</p>
           </div>
         </div>
-        <div className="button">
+        <div className="my-5">
           <button
             className="rounded-md px-5 py-2 bg-[#002380] text-white"
             type="submit"
@@ -156,38 +203,3 @@ function CreateProject(props) {
     </div>
   );
 }
-
-const CreateProjectFormik = withFormik({
-  enableReinitialize: true,
-
-  mapPropsToValues: (props) => {
-    return {
-      projectName: "",
-      description: "",
-      categoryId: props.categoryArr[0]?.id,
-    };
-  },
-
-  handleSubmit: (
-    values,
-    { props, setSubmitting, resetForm, setValues, setFieldValue }
-  ) => {
-    const action = createProjectAction(values);
-    props.dispatch(action);
-    // for (const value in values) {
-    //   setFieldValue(value, "");
-    // }
-    resetForm();
-  },
-
-  // validationSchema: Yup.object().shape({
-  //   projectName: Yup.string().required("Project name is required!"),
-  //   description: Yup.string().required("Description is required!"),
-  // }),
-})(CreateProject);
-
-const mapStateToProps = (state) => ({
-  categoryArr: state.projectReducer.categoryArr,
-});
-
-export default connect(mapStateToProps)(CreateProjectFormik);
