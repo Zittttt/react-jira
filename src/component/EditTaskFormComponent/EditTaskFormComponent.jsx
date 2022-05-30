@@ -14,6 +14,7 @@ import { removeTaskAction } from "../../redux/actions/removeTaskAction";
 import { updateTaskAction } from "../../redux/actions/updateTaskAction";
 import { SET_SUBMIT_MODAL_FUNCTION } from "../../util/constant/configSystem";
 import CommentComponent from "../CommentComponent/CommentComponent";
+import parse from "html-react-parser";
 
 const { Option } = Select;
 
@@ -67,6 +68,7 @@ function EditTaskFormComponent(props) {
 
   const renderDescription = () => {
     const htmlString = description;
+    const parse = require("html-react-parser");
     return (
       <div className="mt-2 w-full h-full">
         {visibleEditor ? (
@@ -124,14 +126,23 @@ function EditTaskFormComponent(props) {
             </button>
           </div>
         ) : (
+          // <div
+          //   dangerouslySetInnerHTML={{ __html: htmlString }}
+          //   onClick={() => {
+          //     setVisibleEditor(true);
+          //   }}
+          //   className="w-full h-full"
+          //   value={description}
+          // />
           <div
-            dangerouslySetInnerHTML={{ __html: htmlString }}
             onClick={() => {
               setVisibleEditor(true);
             }}
-            className="w-full h-full text-[unset]"
+            className="w-full h-full"
             value={description}
-          />
+          >
+            {parse(htmlString)}
+          </div>
         )}
       </div>
     );
@@ -287,7 +298,15 @@ function EditTaskFormComponent(props) {
             <Select
               style={{ width: "100%" }}
               value={priorityId}
-              className="text-[13px]"
+              className={` ${
+                priorityId == 1
+                  ? "text-red-500"
+                  : priorityId == 2
+                  ? "text-orange-400"
+                  : priorityId == 3
+                  ? "text-cyan-500"
+                  : "text-blue-500"
+              }`}
               onChange={(option) => {
                 setFieldValue("priorityId", option);
               }}
@@ -295,7 +314,19 @@ function EditTaskFormComponent(props) {
             >
               {priority.map((priority, index) => {
                 return (
-                  <Option value={priority.priorityId} key={index}>
+                  <Option
+                    value={priority.priorityId}
+                    key={index}
+                    className={
+                      priority.priorityId == 1
+                        ? "text-red-500"
+                        : priority.priorityId == 2
+                        ? "text-orange-500"
+                        : priority.priorityId == 3
+                        ? "text-cyan-500"
+                        : "text-blue-500"
+                    }
+                  >
                     {priority.priority}
                   </Option>
                 );

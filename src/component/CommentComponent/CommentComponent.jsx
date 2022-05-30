@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCommentAction } from "../../redux/actions/deleteCommentAction";
 import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
-import { inserCommentAction } from "../../redux/actions/insertCommentAction";
+import { insertCommentAction } from "../../redux/actions/insertCommentAction";
 
 export default function CommentComponent(props) {
   const { userLogin } = useSelector((state) => state.userReducer);
@@ -13,11 +13,9 @@ export default function CommentComponent(props) {
 
   const dispatch = useDispatch();
 
-  const [state, setState] = useState();
-
   useEffect(() => {
     dispatch(getAllCommentAction(taskId));
-  }, [taskId, state]);
+  }, [taskId]);
 
   const { lstComment } = useSelector((state) => state.commentReducer);
 
@@ -28,9 +26,8 @@ export default function CommentComponent(props) {
       taskId,
     },
     onSubmit: (values, { resetForm }) => {
-      dispatch(inserCommentAction(values));
-      //   resetForm();
-      setState();
+      dispatch(insertCommentAction(values));
+      resetForm();
     },
   });
 

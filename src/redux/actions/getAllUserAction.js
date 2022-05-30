@@ -1,15 +1,37 @@
 import { userServices } from "../../services/baseService";
-import { GET_ALL_USER } from "../../util/constant/configSystem";
-export const getAllUserAction = (keyword) => {
+import {
+  DISPLAY_LOADING,
+  GET_ALL_USER,
+  GET_USER_DETAIL,
+  HIDE_LOADING,
+} from "../../util/constant/configSystem";
+export const getAllUserAction = (keyword, quantity) => {
   return async (dispatch) => {
-    console.log(keyword);
+    dispatch({ type: DISPLAY_LOADING });
     try {
       let result = await userServices.getAllUser(keyword ? keyword : "");
       console.log(result);
-      dispatch({
-        type: GET_ALL_USER,
-        value: result.data.content,
-      });
+      switch (quantity) {
+        case "one":
+          {
+            dispatch({
+              type: GET_USER_DETAIL,
+              value: result.data.content[0],
+            });
+          }
+          break;
+        default:
+          {
+            dispatch({
+              type: GET_ALL_USER,
+              value: result.data.content,
+            });
+          }
+          break;
+      }
+      setTimeout(() => {
+        dispatch({ type: HIDE_LOADING });
+      }, 100);
     } catch (error) {
       console.log(error);
     }

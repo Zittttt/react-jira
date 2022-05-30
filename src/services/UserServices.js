@@ -17,4 +17,12 @@ export default class UserServices {
   getAllUser = (keyword) => {
     return http.get(`api/Users/getUser?keyword=${keyword}`);
   };
+
+  editUser = (data) => {
+    return http.put("api/Users/editUser", data);
+  };
+
+  deleteUser = (id) => {
+    return http.delete(`api/Users/deleteUser?id=${id}`);
+  };
 }

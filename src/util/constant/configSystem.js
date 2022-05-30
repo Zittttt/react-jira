@@ -43,3 +43,5 @@ export const CLOSE_MODAL = "CLOSE_MODAL";
 export const GET_TASK_DETAIL = "GET_TASK_DETAIL";
 
 export const GET_ALL_COMMENT = "GET_ALL_COMMENT";
+
+export const GET_USER_DETAIL = "GET_USER_DETAIL";

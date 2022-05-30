@@ -1,4 +1,24 @@
 @tailwind base;
+
+h1 {
+  @apply text-2xl;
+}
+h2 {
+  @apply text-xl;
+}
+h3 {
+  @apply text-lg;
+}
+h5 {
+  @apply text-[0.83em];
+}
+h6 {
+  @apply text-[0.67em];
+}
+a {
+  @apply text-blue-600 underline;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -45,21 +65,6 @@ body {
 /* .account .; */
 .account > li > ul li:hover {
   background-color: #1890ff !important;
-}
-
-/* page */
-#root > div > section > section > div > div.table-project > div > div > ul {
-  position: fixed;
-  bottom: 10px;
-  right: 30px;
-}
-
-/* CSS button next, prev page table */
-.ant-pagination-item-link {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .ant-table-tbody > tr {

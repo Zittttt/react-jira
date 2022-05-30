@@ -198,11 +198,11 @@ function CreateTaskFormComponent(props) {
                 width: "100%",
               }}
               className={` ${
-                values.priorityId === 1
+                values.priorityId == 1
                   ? "text-red-500"
-                  : values.priorityId === 2
+                  : values.priorityId == 2
                   ? "text-orange-400"
-                  : values.priorityId === 3
+                  : values.priorityId == 3
                   ? "text-cyan-500"
                   : "text-blue-500"
               }`}
@@ -213,11 +213,11 @@ function CreateTaskFormComponent(props) {
                     key={index}
                     value={priority.priorityId}
                     className={
-                      priority.priority === "High"
+                      priority.priorityId == 1
                         ? "text-red-500"
-                        : priority.priority === "Medium"
+                        : priority.priorityId == 2
                         ? "text-orange-500"
-                        : priority.priority === "Low"
+                        : priority.priorityId == 3
                         ? "text-cyan-500"
                         : "text-blue-500"
                     }

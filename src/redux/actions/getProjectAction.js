@@ -23,7 +23,7 @@ export const getProjectAction = (keyword) => {
         dispatch({
           type: HIDE_LOADING,
         });
-      }, 500);
+      }, 100);
     } catch (error) {
       console.log(error);
     }

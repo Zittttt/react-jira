@@ -1,5 +1,9 @@
 import { useHistory } from "react-router-dom";
-import { GET_ALL_USER, USER_LOGIN } from "../../util/constant/configSystem";
+import {
+  GET_ALL_USER,
+  GET_USER_DETAIL,
+  USER_LOGIN,
+} from "../../util/constant/configSystem";
 import { LOGIN, REGISTER } from "../types/userType";
 
 let user = {};
@@ -12,6 +16,7 @@ const stateDefault = {
   userLogin: user,
   userSearch: [],
   regisResult: false,
+  userDetail: {},
 };
 
 export const userReducer = (state = stateDefault, action) => {
@@ -25,6 +30,8 @@ export const userReducer = (state = stateDefault, action) => {
     case REGISTER: {
       return { ...state, regisResult: action.value };
     }
+    case GET_USER_DETAIL:
+      return { ...state, userDetail: action.value };
     default:
       return state;
   }

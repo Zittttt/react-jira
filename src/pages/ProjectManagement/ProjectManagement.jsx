@@ -48,17 +48,6 @@ export default function ProjectManagement(props) {
       title: "Project Name",
       dataIndex: "projectName",
       key: "projectName",
-      // sorter: (item2, item1) => {
-      //   let projectName1 = item1.projectName?.trim().toLowerCase();
-      //   let projectName2 = item2.projectName?.trim().toLowerCase();
-      //   if (projectName2 < projectName1) {
-      //     return -1;
-      //   }
-      //   return 1;
-      // },
-      // sorter: (a, b) => {
-      //   return a.projectName.localeCompare(b.projectName);
-      // },
       width: "40%",
     },
     {
@@ -97,8 +86,6 @@ export default function ProjectManagement(props) {
           </span>
         );
       },
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
       onFilter: (value, record) => record.categoryName.indexOf(value) === 0,
     },
     {
@@ -110,7 +97,7 @@ export default function ProjectManagement(props) {
       title: "Member",
       key: "members",
       dataIndex: "members",
-      width: "15%",
+      width: "25%",
       render: (text, record, index) => {
         return <MemberListComponent projectDetail={record} />;
       },
@@ -121,6 +108,41 @@ export default function ProjectManagement(props) {
       dataIndex: "action",
       width: "10%",
       align: "center",
+      render: (data, record, index) => (
+        <div className="flex justify-center text-white">
+          <button
+            className="mr-1 bg-[#1890ff] w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
+            onClick={() => {
+              //dispatch action getProjectDetailAction => gửi lên redux
+              const action = getProjectDetailAction(record.id);
+              dispatch(action);
+              const actionOpenForm = {
+                type: OPEN_FORM,
+                Component: <EditProjectFormWithFormik />,
+                title: `Edit Project (${record.id})`,
+              };
+              //dispatch actionOpenForm với nội dung component là EditProjectFormWithFormik
+              dispatch(actionOpenForm);
+            }}
+          >
+            <EditOutlined className="text-lg" />
+          </button>
+          <Popconfirm
+            title="Are you sure to delete this project?"
+            onConfirm={() => {
+              //dispatch action deleteProject
+              const action = deleteProjectAction(record.id);
+              dispatch(action);
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
+              <DeleteOutlined className="text-lg" />
+            </button>
+          </Popconfirm>
+        </div>
+      ),
     },
   ];
 
@@ -139,43 +161,6 @@ export default function ProjectManagement(props) {
       categoryName: project.categoryName,
       creator: project.creator.name,
       members: project.members,
-      action: (
-        <div className="flex justify-center text-white">
-          <button
-            className="mr-1 bg-[#1890ff] w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
-            onClick={() => {
-              const { id } = project;
-              //dispatch action getProjectDetailAction => gửi lên redux
-              const action = getProjectDetailAction(id);
-              dispatch(action);
-              const actionOpenForm = {
-                type: OPEN_FORM,
-                Component: <EditProjectFormWithFormik />,
-                title: `Edit Project (${project.projectName})`,
-              };
-              //dispatch actionOpenForm với nội dung component là EditProjectFormWithFormik
-              dispatch(actionOpenForm);
-            }}
-          >
-            <EditOutlined className="text-lg" />
-          </button>
-          <Popconfirm
-            title="Are you sure to delete this project?"
-            onConfirm={() => {
-              const { id } = project;
-              //dispatch action deleteProject
-              const action = deleteProjectAction(id);
-              dispatch(action);
-            }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
-              <DeleteOutlined className="text-lg" />
-            </button>
-          </Popconfirm>
-        </div>
-      ),
     };
   });
 
@@ -201,12 +186,11 @@ export default function ProjectManagement(props) {
           Search Project
         </button>
       </form>
-      {/* <ProjectManagementTable projectArr={projectArr} /> */}
       <Table
         columns={columns}
         dataSource={data}
         size={"middle"}
-        className="table-project"
+        className="table-project w-full"
       />
     </div>
   );

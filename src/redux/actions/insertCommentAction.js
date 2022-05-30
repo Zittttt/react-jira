@@ -1,7 +1,7 @@
 import { taskServices } from "../../services/baseService";
 import { getAllCommentAction } from "./getAllCommentAction";
 
-export const inserCommentAction = (data) => {
+export const insertCommentAction = (data) => {
   return async (dispatch) => {
     try {
       console.log(data);

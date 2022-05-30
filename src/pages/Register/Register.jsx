@@ -111,7 +111,7 @@ const RegisterWithFormik = withFormik({
       .matches(/^[A-Za-z0-9 ]*$/, "Please enter valid name"),
     confirmPassword: Yup.string().oneOf(
       [Yup.ref("passWord"), null],
-      "Passwords must match!"
+      "Password must match!"
     ),
     phoneNumber: Yup.string()
       .matches(

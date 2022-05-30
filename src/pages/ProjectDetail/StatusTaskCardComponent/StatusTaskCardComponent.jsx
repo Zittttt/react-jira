@@ -21,7 +21,7 @@ export default function StatusTaskCardComponent(props) {
       {(provided) => {
         return (
           <div
-            className="p-2 pb-0 bg-[#f4f5f7] rounded-sm drop-shadow-md w-1/4"
+            className="p-2 pb-0 bg-[#f4f5f7] rounded-sm shadow-md w-1/4"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
@@ -40,7 +40,7 @@ export default function StatusTaskCardComponent(props) {
                       {(provided) => {
                         return (
                           <div
-                            className="flex flex-col justify-between p-3 text-[15px] bg-white rounded-sm hover:bg-[#ebecf0] group shadow-b-md drop-shadow-md text-[#0747a6]"
+                            className="flex flex-col justify-between p-3 text-[15px] bg-white rounded-sm hover:bg-[#ebecf0] group shadow-b-md shadow-md text-[#0747a6]"
                             onClick={async (e) => {
                               await dispatch(getTaskDetailAction(task.taskId));
                               dispatch({
