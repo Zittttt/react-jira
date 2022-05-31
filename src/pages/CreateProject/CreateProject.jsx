@@ -82,7 +82,13 @@ export default function CreateProject(props) {
               onChange={handleChange}
               value={values.projectName}
             />
-            <p className="text-red-500 text-xs italic">{errors.projectName}</p>
+            {errors.projectName ? (
+              <p className="text-red-500 text-xs italic">
+                {errors.projectName}
+              </p>
+            ) : (
+              ""
+            )}
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
@@ -93,13 +99,14 @@ export default function CreateProject(props) {
             </label>
             <div className="relative">
               <Select
-                className={`w-full text-[${
+                className={`w-full ${
                   values.categoryId == 1
-                    ? "#389e0d"
+                    ? "text-[#389e0d]"
                     : values.categoryId == 2
-                    ? "#d4380d"
-                    : "#1d39c4"
-                }]`}
+                    ? "text-[#d4380d]"
+                    : "text-[#1d39c4]"
+                }
+                `}
                 id="categoryId"
                 name="categoryId"
                 onChange={(e) => setFieldValue("categoryId", e)}
@@ -110,14 +117,13 @@ export default function CreateProject(props) {
                     <Option
                       value={category.id}
                       key={index}
-                      className={`text-[${
+                      className={`w-full ${
                         category.id == 1
-                          ? "#389e0d"
+                          ? "text-[#389e0d]"
                           : category.id == 2
-                          ? "#d4380d"
-                          : "#1d39c4"
-                      }]
-                      
+                          ? "text-[#d4380d]"
+                          : "text-[#1d39c4]"
+                      }
                     `}
                     >
                       {category.projectCategoryName}

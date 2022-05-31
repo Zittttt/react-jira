@@ -113,7 +113,6 @@ export default function UserManagerment(props) {
     <div>
       <h3 className="text-2xl text-[#1f2937]">User Management</h3>
       <form
-        className="mb-10"
         onSubmit={(e) => {
           searchUser(e);
         }}
@@ -136,6 +135,7 @@ export default function UserManagerment(props) {
         dataSource={data}
         size={"middle"}
         className="w-full"
+        pagination={{ position: ["topRight"] }}
       />
     </div>
   );

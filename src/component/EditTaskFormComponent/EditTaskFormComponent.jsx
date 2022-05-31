@@ -2,7 +2,7 @@ import { BugOutlined, CheckOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Editor } from "@tinymce/tinymce-react";
 import { Avatar, InputNumber, Popconfirm, Select, Slider } from "antd";
 import Input from "antd/lib/input/Input";
-import { withFormik } from "formik";
+import { useFormik, withFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -18,7 +18,7 @@ import parse from "html-react-parser";
 
 const { Option } = Select;
 
-function EditTaskFormComponent(props) {
+export default function EditTaskFormComponent(props) {
   const editorRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -39,6 +39,39 @@ function EditTaskFormComponent(props) {
     setVisibleEditor(false);
   }, [isModalVisible]);
 
+  const listUserId = taskDetail.assigness?.map((user) => {
+    return user.id;
+  });
+
+  const formik = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      listUserAsign: listUserId,
+      taskName: taskDetail.taskName,
+      description: taskDetail.description,
+      statusId: taskDetail.statusId,
+      originalEstimate: taskDetail.originalEstimate,
+      timeTrackingSpent: taskDetail.timeTrackingSpent,
+      timeTrackingRemaining: taskDetail.timeTrackingRemaining,
+      projectId: taskDetail.projectId,
+      typeId: taskDetail?.typeId,
+      priorityId: taskDetail.priorityTask?.priorityId,
+      taskId: taskDetail.taskId,
+    },
+    onSubmit: (values) => {
+      console.log("value", values);
+      dispatch(updateTaskAction(values));
+    },
+
+    validationSchema: Yup.object().shape({
+      originalEstimate: Yup.number()
+        .required("Original Estimate is required!")
+        .min(0, "Estimate must be greater than or equal to 0")
+        .nullable(),
+    }),
+  });
+
   const {
     values,
     setValues,
@@ -49,7 +82,7 @@ function EditTaskFormComponent(props) {
     errors,
     setErrors,
     setSubmitting,
-  } = props;
+  } = formik;
 
   const {
     listUserAsign,
@@ -257,11 +290,6 @@ function EditTaskFormComponent(props) {
         <div className="w-full px-3 col-span-2">
           <label className="text-[15px] font-medium mb-10">Description</label>
           {renderDescription()}
-          {errors.description ? (
-            <p className="text-red-500 text-xs italic">{errors.description}</p>
-          ) : (
-            ""
-          )}
         </div>
         <div className="w-full px-3">
           <div className="mb-5">
@@ -335,7 +363,7 @@ function EditTaskFormComponent(props) {
           </div>
           <div className="mb-5">
             <label className="text-[12.5px] font-medium block">
-              ORIGINAL ESTIMATE (HOURS)
+              ORIGINAL ESTIMATE (HOURS) <span className="text-red-500">*</span>
             </label>
             <InputNumber
               className="w-full"
@@ -415,45 +443,3 @@ function EditTaskFormComponent(props) {
     </form>
   );
 }
-
-const EditTaskFormWithFormik = withFormik({
-  enableReinitialize: true,
-  mapPropsToValues: (props) => {
-    const { taskDetail } = props;
-    const listUserId = taskDetail.assigness?.map((user) => {
-      return user.id;
-    });
-    return {
-      listUserAsign: listUserId,
-      taskName: taskDetail.taskName,
-      description: taskDetail.description,
-      statusId: taskDetail.statusId,
-      originalEstimate: taskDetail.originalEstimate,
-      timeTrackingSpent: taskDetail.timeTrackingSpent,
-      timeTrackingRemaining: taskDetail.timeTrackingRemaining,
-      projectId: taskDetail.projectId,
-      typeId: taskDetail?.typeId,
-      priorityId: taskDetail.priorityTask?.priorityId,
-      taskId: taskDetail.taskId,
-    };
-  },
-
-  handleSubmit: async (values, { props, resetForm, setSubmitting }) => {
-    console.log("value", values);
-    props.dispatch(updateTaskAction(values));
-  },
-
-  validationSchema: Yup.object().shape({
-    description: Yup.string().required("Description is required!"),
-    originalEstimate: Yup.number()
-      .required("Original Estimate is required!")
-      .min(0, "Estimate must be greater than or equal to 0")
-      .nullable(),
-  }),
-})(EditTaskFormComponent);
-
-const mapStateToProps = (state) => ({
-  taskDetail: state.taskReducer.taskDetail,
-});
-
-export default connect(mapStateToProps)(EditTaskFormWithFormik);

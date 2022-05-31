@@ -168,7 +168,6 @@ export default function ProjectManagement(props) {
     <div>
       <h3 className="text-2xl text-[#1f2937]">Project management</h3>
       <form
-        className="search-project mb-10"
         onSubmit={(e) => {
           searchProject(e);
         }}
@@ -191,6 +190,7 @@ export default function ProjectManagement(props) {
         dataSource={data}
         size={"middle"}
         className="table-project w-full"
+        pagination={{ position: ["topRight"] }}
       />
     </div>
   );

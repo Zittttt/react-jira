@@ -102,7 +102,11 @@ export default function EditProjectFormComponent(props) {
             onChange={handleChange}
             name="projectName"
           />
-          <p className="text-red-500 text-xs italic">{errors.projectName}</p>
+          {errors.projectName ? (
+            <p className="text-red-500 text-xs italic">{errors.projectName}</p>
+          ) : (
+            ""
+          )}
         </div>
         <div className="w-1/2 px-3 mb-6">
           <label

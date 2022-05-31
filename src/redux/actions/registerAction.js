@@ -3,9 +3,8 @@ import {
   NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
 } from "../../util/constant/configSystem";
-import { REGISTER } from "../types/userType";
 
-export const registerAction = (data) => {
+export const registerAction = (data, resetForm) => {
   return async (dispatch) => {
     try {
       let result = await userServices.register(data);
@@ -17,6 +16,7 @@ export const registerAction = (data) => {
           type: NOTIFICATION_ICON.SUCCESS,
         },
       });
+      resetForm();
     } catch (error) {
       const { message } = error.response.data;
       console.log(message);

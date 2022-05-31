@@ -1,20 +1,40 @@
 import React, { useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { loginAction } from "../../redux/actions/loginAction";
-import { withFormik } from "formik";
+import { useFormik, withFormik } from "formik";
 import { connect, useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { testTokenAction } from "../../redux/actions/testTokenAction";
 
-function Login(props) {
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
-
+export default function Login(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
     dispatch(testTokenAction(history, true));
   }, []);
+
+  const formik = useFormik({
+    initialValues: { email: "", password: "" },
+
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .required("Email is required!")
+        .email("Email is invalid!"),
+      password: Yup.string()
+        .required("Password is required!")
+        .min(6, "Password must have min 6 characters!")
+        .max(16, "Password must have max 18 characters!"),
+    }),
+
+    onSubmit: (values) => {
+      const action = loginAction(values, props);
+      dispatch(action);
+    },
+  });
+
+  const { values, errors, handleChange, handleSubmit } = formik;
+
+  const { email, password } = values;
 
   return (
     <form
@@ -29,6 +49,7 @@ function Login(props) {
         onChange={handleChange}
         id="email"
         name="email"
+        value={email}
       />
       {errors.email ? <p className="text-red-500">{errors.email}</p> : ""}
       <input
@@ -38,6 +59,7 @@ function Login(props) {
         onChange={handleChange}
         id="password"
         name="password"
+        value={password}
       />
       {errors.password ? (
         <p className="text-red-500 p-0 m-0">{errors.password}</p>
@@ -72,24 +94,3 @@ function Login(props) {
     </form>
   );
 }
-
-const LoginWithFormik = withFormik({
-  mapPropsToValues: () => ({ email: "", password: "" }),
-
-  handleSubmit: (values, { props, setSubmitting }) => {
-    const action = loginAction(values, props);
-    props.dispatch(action);
-  },
-
-  validationSchema: Yup.object().shape({
-    email: Yup.string()
-      .required("Email is required!")
-      .email("Email is invalid!"),
-    password: Yup.string()
-      .required("Password is required!")
-      .min(6, "Password must have min 6 characters!")
-      .max(16, "Password must have max 18 characters!"),
-  }),
-})(Login);
-
-export default connect()(LoginWithFormik);

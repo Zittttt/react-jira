@@ -7,7 +7,7 @@ import {
 } from "../../util/constant/configSystem";
 export const getAllUserAction = (keyword, quantity) => {
   return async (dispatch) => {
-    dispatch({ type: DISPLAY_LOADING });
+    // dispatch({ type: DISPLAY_LOADING });
     try {
       let result = await userServices.getAllUser(keyword ? keyword : "");
       console.log(result);
@@ -29,9 +29,9 @@ export const getAllUserAction = (keyword, quantity) => {
           }
           break;
       }
-      setTimeout(() => {
-        dispatch({ type: HIDE_LOADING });
-      }, 100);
+      // setTimeout(() => {
+      //   dispatch({ type: HIDE_LOADING });
+      // }, 100);
     } catch (error) {
       console.log(error);
     }

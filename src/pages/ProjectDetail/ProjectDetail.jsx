@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Avatar, Popover, Table, Tooltip } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
@@ -14,17 +14,15 @@ import { updateStatusAction } from "../../redux/actions/updateStatusAction";
 
 export default function ProjectDetail(props) {
   const { projectId } = props.match.params;
-
   const dispatch = useDispatch();
+  const projectDetail = useSelector(
+    (state) => state.projectReducer.projectDetail
+  );
 
   useEffect(() => {
     dispatch(getProjectDetailAction(projectId));
     dispatch(getTaskStatusAction());
   }, []);
-
-  const projectDetail = useSelector(
-    (state) => state.projectReducer.projectDetail
-  );
 
   const handleDragEnd = (result) => {
     // console.log("result", result);
@@ -45,7 +43,8 @@ export default function ProjectDetail(props) {
       statusId: destination.droppableId,
     };
 
-    dispatch(updateStatusAction(data, projectId));
+    // dispatch(updateStatusAction(data, projectId));
+    dispatch({ type: "REMOVE_PROJECT_DETAIL" });
   };
 
   console.log(projectDetail);

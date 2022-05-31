@@ -20,6 +20,9 @@ export const projectReducer = (state = stateDefault, action) => {
     case GET_PROJECT_DETAIL: {
       return { ...state, projectDetail: action.data };
     }
+    case "REMOVE_PROJECT_DETAIL": {
+      return { ...state, projectDetail: null };
+    }
     default:
       return state;
   }

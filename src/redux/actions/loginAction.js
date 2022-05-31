@@ -17,7 +17,6 @@ export const loginAction = (userLogin, props) => {
       dispatch({ type: DISPLAY_LOADING });
       let { data, status } = await userServices.login(userLogin);
       console.log(data);
-      console.log(status);
       //login thành công, đưa dữ liệu lên localStorage và redux
       localStorage.setItem(USER_LOGIN, JSON.stringify(data.content));
       localStorage.setItem(TOKEN, data.content.accessToken);

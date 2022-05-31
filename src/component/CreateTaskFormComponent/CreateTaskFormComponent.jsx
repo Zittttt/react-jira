@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SUBMIT_DRAWER_FUNCTION } from "../../util/constant/configSystem";
 import { connect } from "react-redux";
-import { withFormik } from "formik";
+import { useFormik, withFormik } from "formik";
 import * as Yup from "yup";
 
 import { Editor } from "@tinymce/tinymce-react";
@@ -17,16 +17,13 @@ import { createTaskAction } from "../../redux/actions/createTaskAction";
 
 const { Option } = Select;
 
-function CreateTaskFormComponent(props) {
+export default function CreateTaskFormComponent(props) {
   const dispatch = useDispatch();
-
-  const { visible } = useSelector((state) => state.drawerReducer);
-
-  //ngăn render
+  const { projectDetail } = useSelector((state) => state.projectReducer);
   const { taskStatus, taskType, priority } = useSelector(
     (state) => state.taskReducer
   );
-  const { projectDetail } = useSelector((state) => state.projectReducer);
+  const { visible } = useSelector((state) => state.drawerReducer);
 
   const [timeTracking, setTimeTracking] = useState({
     timeTrackingSpent: 0,
@@ -41,12 +38,40 @@ function CreateTaskFormComponent(props) {
       type: SET_SUBMIT_DRAWER_FUNCTION,
       function: handleSubmit,
     });
-    dispatch(getAllUserAction());
   }, []);
 
   useEffect(() => {
     resetForm();
   }, [visible]);
+
+  const formik = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      listUserAsign: [],
+      taskName: "",
+      description: "",
+      statusId: taskStatus[0]?.statusId,
+      originalEstimate: 0,
+      timeTrackingSpent: 0,
+      timeTrackingRemaining: 0,
+      projectId: projectDetail?.id,
+      typeId: taskType[0]?.id,
+      priorityId: priority[0]?.priorityId,
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      dispatch(createTaskAction(values));
+      resetForm();
+    },
+    validationSchema: Yup.object().shape({
+      taskName: Yup.string().required("Task name is required!"),
+      originalEstimate: Yup.number()
+        .required("Original Estimate is required!")
+        .min(0, "Estimate must be greater than or equal to 0")
+        .nullable(),
+    }),
+  });
 
   const {
     values,
@@ -56,7 +81,7 @@ function CreateTaskFormComponent(props) {
     setValues,
     setFieldValue,
     resetForm,
-  } = props;
+  } = formik;
 
   let {
     listUserAsign,
@@ -74,26 +99,12 @@ function CreateTaskFormComponent(props) {
   const editorRef = useRef(null);
 
   const editorHandleChange = (content, editor) => {
-    console.log(content);
     setValues({ ...values, description: content });
   };
 
   const userOptions = projectDetail.members?.map((user, index) => {
     return { label: user.name, value: user.userId };
   });
-
-  const children = [
-    projectDetail.members?.map((user, index) => {
-      return (
-        <Option value={user.userId} key={index}>
-          <Avatar src={user.avatar} className="mr-3" size={18} />
-          {user.name}
-        </Option>
-      );
-    }),
-  ];
-
-  console.log(userOptions);
 
   return (
     <form className="w-full" onSubmit={handleSubmit}>
@@ -103,7 +114,7 @@ function CreateTaskFormComponent(props) {
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-last-name"
           >
-            TASK NAME
+            TASK NAME <span className="text-red-500">*</span>
           </label>
           <Input
             id="taskName"
@@ -158,7 +169,7 @@ function CreateTaskFormComponent(props) {
             <Select
               id="typeId"
               name="typeId"
-              value={values.typeId}
+              value={typeId}
               onChange={(option) => setFieldValue("typeId", option)}
               style={{
                 width: "100%",
@@ -254,7 +265,14 @@ function CreateTaskFormComponent(props) {
             options={userOptions}
             value={listUserAsign}
           >
-            {children}
+            {projectDetail.members?.map((user, index) => {
+              return (
+                <Option value={user.userId} key={index}>
+                  <Avatar src={user.avatar} className="mr-3" size={18} />
+                  {user.name}
+                </Option>
+              );
+            })}
           </Select>
           {errors.listUserAsign ? (
             <p className="text-red-500 text-xs italic">
@@ -269,7 +287,7 @@ function CreateTaskFormComponent(props) {
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="grid-last-name"
           >
-            Original Estimate
+            Original Estimate <span className="text-red-500">*</span>
           </label>
           <InputNumber
             className="w-full"
@@ -415,52 +433,8 @@ function CreateTaskFormComponent(props) {
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
           />
-          <p className="text-red-500 text-xs italic">{errors.description}</p>
         </div>
       </div>
     </form>
   );
 }
-
-const EditProjectFormWithFormik = withFormik({
-  enableReinitialize: true,
-
-  mapPropsToValues: (props) => {
-    return {
-      listUserAsign: [],
-      taskName: "",
-      description: "",
-      statusId: props.taskStatus[0]?.statusId,
-      originalEstimate: 0,
-      timeTrackingSpent: 0,
-      timeTrackingRemaining: 0,
-      projectId: props.projectDetail?.id,
-      typeId: props.taskType[0]?.id,
-      priorityId: props.priority[0]?.priorityId,
-    };
-  },
-
-  handleSubmit: async (values, { props, resetForm, setSubmitting }) => {
-    console.log(values);
-    props.dispatch(createTaskAction(values));
-    resetForm();
-  },
-
-  validationSchema: Yup.object().shape({
-    taskName: Yup.string().required("Task name is required!"),
-    description: Yup.string().required("Description is required!"),
-    originalEstimate: Yup.number()
-      .required("Original Estimate is required!")
-      .min(0, "Estimate must be greater than or equal to 0")
-      .nullable(),
-  }),
-})(CreateTaskFormComponent);
-
-const mapStateToProps = (state) => {
-  const { taskStatus, taskType, priority } = state.taskReducer;
-  const { projectDetail } = state.projectReducer;
-
-  return { taskStatus, taskType, priority, projectDetail };
-};
-
-export default connect(mapStateToProps)(EditProjectFormWithFormik);

@@ -80,3 +80,10 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
+
+/* page prve and  next */
+.ant-pagination-item-link > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
