@@ -1,30 +1,34 @@
 import { Avatar } from "antd";
 import Item from "antd/lib/list/Item";
-import React from "react";
+import React, { memo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import EditTaskFormComponent from "../../../component/EditTaskFormComponent/EditTaskFormComponent";
 import { getTaskDetailAction } from "../../../redux/actions/getTaskDetailAction";
 import { OPEN_MODAL } from "../../../util/constant/configSystem";
 
-export default function StatusTaskCardComponent(props) {
+function StatusTaskCardComponent(props) {
   const dispatch = useDispatch();
   const { task } = props;
+
+  console.log("render");
 
   const taskSorted = task.lstTaskDeTail?.sort((a, b) =>
     a.priorityTask.priorityId > b.priorityTask.priorityId ? 1 : -1
   );
 
   return (
-    <div className="p-2 pb-3 bg-[#f4f5f7] rounded-sm shadow-md w-1/4">
-      <h3 className="my-2 text-[#5e6c84] text-[12.5px] ml-3">
-        {task.statusName}
-      </h3>
+    <div className="p-2 bg-[#f4f5f7] rounded-sm shadow-md w-1/4 min-h-[135px]">
+      <h3 className=" text-[#5e6c84] text-[12.5px] ml-3">{task.statusName}</h3>
       <Droppable droppableId={task.statusId.toString()}>
         {(provided) => {
           return (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ul className="m-0 space-y-2">
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="h-full"
+            >
+              <ul className="mb-1 space-y-2">
                 {taskSorted?.map((task, index) => {
                   return (
                     <li key={index}>
@@ -94,3 +98,5 @@ export default function StatusTaskCardComponent(props) {
     </div>
   );
 }
+
+export default memo(StatusTaskCardComponent);

@@ -1,6 +1,6 @@
 import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 import { AutoComplete, Avatar, Popover, Table, Tooltip } from "antd";
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { assignUserProjectAction } from "../../redux/actions/assignUserProjectAction";
@@ -8,7 +8,7 @@ import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { removeUserFromProject } from "../../redux/actions/removeUserFromProjectAction";
 
-export default function MemberListComponent(props) {
+function MemberListComponent(props) {
   const { projectDetail } = props;
   const { userSearch } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
@@ -16,6 +16,8 @@ export default function MemberListComponent(props) {
   const [value, setValue] = useState("");
 
   const history = useHistory();
+
+  console.log("render");
 
   return (
     <div className="flex">
@@ -147,3 +149,5 @@ export default function MemberListComponent(props) {
     </div>
   );
 }
+
+export default memo(MemberListComponent);

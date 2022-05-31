@@ -16,6 +16,8 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 export default function ProjectManagement(props) {
   const action = getProjectAction();
 
+  console.log("ProjectManagement");
+
   let projectArr = useSelector(
     (rootReducer) => rootReducer.projectReducer.projectArr
   );

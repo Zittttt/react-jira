@@ -121,12 +121,8 @@ export default function HomeTemplate(props) {
               }
             }}
           />
-          {/* <button className="w-full absolute bottom-0 flex justify-center py-10">
-            <img src={logo} width={"50px"} />
-          </button> */}
         </Sider>
         <Layout className="site-layout p-10 bg-white">
-          {/* <HeaderHome /> */}
           <Route
             exact
             path={path}
@@ -138,28 +134,8 @@ export default function HomeTemplate(props) {
               );
             }}
           ></Route>
-          {/* <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Ant Design ©2018 Created by Ant UED
-        </Footer> */}
         </Layout>
       </Layout>
     </div>
-
-    // <Route
-    //   exact
-    //   path={path}
-    //   render={(propsRoute) => {
-    //     return (
-    //       <Fragment>
-    //         <HeaderHome></HeaderHome>
-    //         <Component exact path={path} {...propsRoute} />;
-    //       </Fragment>
-    //     );
-    //   }}
-    // ></Route>
   );
 }

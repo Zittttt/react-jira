@@ -1,29 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SUBMIT_DRAWER_FUNCTION } from "../../util/constant/configSystem";
-import { connect } from "react-redux";
-import { useFormik, withFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-
 import { Editor } from "@tinymce/tinymce-react";
-import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
-import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
-import { getPriorityAction } from "../../redux/actions/getPriorityAction";
 import { BugOutlined, CheckOutlined } from "@ant-design/icons";
-
 import { Avatar, Input, InputNumber, Select, Slider } from "antd";
-import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import { createTaskAction } from "../../redux/actions/createTaskAction";
 
 const { Option } = Select;
 
-export default function CreateTaskFormComponent(props) {
+function CreateTaskFormComponent(props) {
+  console.log("CreateTask render");
+
   const dispatch = useDispatch();
   const { projectDetail } = useSelector((state) => state.projectReducer);
   const { taskStatus, taskType, priority } = useSelector(
     (state) => state.taskReducer
   );
-  const { visible } = useSelector((state) => state.drawerReducer);
+
+  // const { visible } = useSelector((state) => state.drawerReducer);
 
   const [timeTracking, setTimeTracking] = useState({
     timeTrackingSpent: 0,
@@ -31,22 +27,18 @@ export default function CreateTaskFormComponent(props) {
   });
 
   useEffect(() => {
-    dispatch(getTaskStatusAction());
-    dispatch(getTaskTypeAction());
-    dispatch(getPriorityAction());
     dispatch({
       type: SET_SUBMIT_DRAWER_FUNCTION,
       function: handleSubmit,
     });
+    dispatch({ type: "SET_RESET_FORM_FUNCTION", function: resetForm });
   }, []);
 
-  useEffect(() => {
-    resetForm();
-  }, [visible]);
+  // useEffect(() => {
+  //   resetForm();
+  // }, [visible]);
 
   const formik = useFormik({
-    enableReinitialize: true,
-
     initialValues: {
       listUserAsign: [],
       taskName: "",
@@ -59,11 +51,13 @@ export default function CreateTaskFormComponent(props) {
       typeId: taskType[0]?.id,
       priorityId: priority[0]?.priorityId,
     },
-    onSubmit: (values) => {
+
+    onSubmit: (values, { resetForm }) => {
       console.log(values);
       dispatch(createTaskAction(values));
       resetForm();
     },
+
     validationSchema: Yup.object().shape({
       taskName: Yup.string().required("Task name is required!"),
       originalEstimate: Yup.number()
@@ -116,13 +110,7 @@ export default function CreateTaskFormComponent(props) {
           >
             TASK NAME <span className="text-red-500">*</span>
           </label>
-          <Input
-            id="taskName"
-            type="text"
-            name="taskName"
-            onChange={handleChange}
-            value={taskName}
-          />
+          <Input name="taskName" onChange={handleChange} value={taskName} />
           {errors.taskName ? (
             <p className="text-red-500 text-xs italic">{errors.taskName}</p>
           ) : (
@@ -141,7 +129,7 @@ export default function CreateTaskFormComponent(props) {
               id="statusId"
               name="statusId"
               onChange={(option) => setFieldValue("statusId", option)}
-              value={values.statusId}
+              value={statusId}
               style={{
                 width: "100%",
               }}
@@ -204,16 +192,16 @@ export default function CreateTaskFormComponent(props) {
               id="priorityId"
               name="priorityId"
               onChange={(option) => setFieldValue("priorityId", option)}
-              value={values.priorityId}
+              value={priorityId}
               style={{
                 width: "100%",
               }}
               className={` ${
-                values.priorityId == 1
+                priorityId == 1
                   ? "text-red-500"
-                  : values.priorityId == 2
+                  : priorityId == 2
                   ? "text-orange-400"
-                  : values.priorityId == 3
+                  : priorityId == 3
                   ? "text-cyan-500"
                   : "text-blue-500"
               }`}
@@ -318,16 +306,15 @@ export default function CreateTaskFormComponent(props) {
             Time Tracking
           </label>
           <Slider
-            // defaultValue={30}
             value={timeTracking.timeTrackingSpent}
             max={
               Number(timeTracking.timeTrackingSpent) +
               Number(timeTracking.timeTrackingRemaining)
             }
             tooltipPlacement="right"
-            onChange={(e) => {
-              setTimeTracking({ ...timeTracking, timeTrackingSpent: e });
-            }}
+            // onChange={(e) => {
+            //   setTimeTracking({ ...timeTracking, timeTrackingSpent: e });
+            // }}
           />
           <div className="grid grid-cols-2 mb-2">
             <span className="text-green-500 font-bold">
@@ -438,3 +425,5 @@ export default function CreateTaskFormComponent(props) {
     </form>
   );
 }
+
+export default memo(CreateTaskFormComponent);

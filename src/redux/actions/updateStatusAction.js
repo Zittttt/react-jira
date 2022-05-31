@@ -6,7 +6,7 @@ export const updateStatusAction = (data, projectId) => {
     try {
       let result = await taskServices.updateStatus(data);
       console.log(result);
-      dispatch(getProjectDetailAction(projectId));
+      // dispatch(getProjectDetailAction(projectId));
     } catch (error) {
       console.log(error);
     }

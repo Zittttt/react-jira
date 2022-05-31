@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Avatar, Popover, Table, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
@@ -11,21 +11,33 @@ import { removeUserFromProject } from "../../redux/actions/removeUserFromProject
 import MemberListComponent from "../../component/MemberListComponent/MemberListComponent";
 import { DragDropContext } from "react-beautiful-dnd";
 import { updateStatusAction } from "../../redux/actions/updateStatusAction";
+import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
+import { getPriorityAction } from "../../redux/actions/getPriorityAction";
 
 export default function ProjectDetail(props) {
-  const { projectId } = props.match.params;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const { projectId } = props.match.params;
+    dispatch(getProjectDetailAction(projectId));
+    dispatch(getTaskStatusAction());
+    dispatch(getTaskTypeAction());
+    dispatch(getPriorityAction());
+  }, []);
+
   const projectDetail = useSelector(
     (state) => state.projectReducer.projectDetail
   );
 
-  useEffect(() => {
-    dispatch(getProjectDetailAction(projectId));
-    dispatch(getTaskStatusAction());
-  }, []);
+  const { resetForm } = useSelector((state) => state.formikReducer);
+
+  const projectDetailMemo = useMemo(() => projectDetail, []);
+
+  console.log("render");
 
   const handleDragEnd = (result) => {
-    // console.log("result", result);
+    console.log("result", result);
+    const { lstTask } = projectDetail;
 
     const { source, destination, draggableId } = result;
 
@@ -38,16 +50,29 @@ export default function ProjectDetail(props) {
       return;
     }
 
+    //tạo ra 1 item copy
+    let itemCopy = {
+      ...lstTask[source.droppableId - 1].lstTaskDeTail[source.index],
+    };
+
+    //sau khi drag end sẽ xoá item ở source
+    let dropSource = lstTask[source.droppableId - 1].lstTaskDeTail.splice(
+      source.index,
+      1
+    );
+
+    //sau khi drag end sẽ thêm item copy vào source
+    let dropDestination = lstTask[destination.droppableId - 1].lstTaskDeTail;
+    dropDestination.push(itemCopy);
+
+    //dispatch action update statusTask với với dữ liệu là id của item đc kéo và statusId là destination
     let data = {
       taskId: draggableId,
       statusId: destination.droppableId,
     };
 
-    // dispatch(updateStatusAction(data, projectId));
-    dispatch({ type: "REMOVE_PROJECT_DETAIL" });
+    dispatch(updateStatusAction(data, projectDetail.id));
   };
-
-  console.log(projectDetail);
 
   return (
     <div>
@@ -67,6 +92,7 @@ export default function ProjectDetail(props) {
               title: `Create task (Project: ${projectDetail.projectName})`,
             };
             dispatch(actionOpenForm);
+            resetForm();
           }}
         >
           <PlusOutlined />
@@ -79,7 +105,7 @@ export default function ProjectDetail(props) {
             return (
               <StatusTaskCardComponent
                 task={lstTask}
-                projectDetail={projectDetail}
+                projectDetail={projectDetailMemo}
                 key={index}
               />
             );

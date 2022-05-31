@@ -10,6 +10,7 @@ import { editorContentReducer } from "./reducers/editorContentReducer";
 import { taskReducer } from "./reducers/taskReducer";
 import modalReducer from "./reducers/modalReducer";
 import commentReducer from "./reducers/commentReducer";
+import { formikReducer } from "./reducers/formikReducer";
 
 const rootReducer = combineReducers({
   //state
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   taskReducer,
   modalReducer,
   commentReducer,
+  formikReducer,
 });
 
 const middleware = [thunk];
