@@ -1,23 +1,9 @@
-import React, { useCallback, useState } from "react";
-import {
-  Drawer,
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  DatePicker,
-  Space,
-} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import React, { memo } from "react";
+import { Drawer, Button, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_DRAWER, OPEN_DRAWER } from "../../util/constant/configSystem";
-import CreateTaskFormComponent from "../CreateTaskFormComponent/CreateTaskFormComponent";
+import { CLOSE_DRAWER } from "../../util/constant/configSystem";
 
-const { Option } = Select;
-
-export default function Modal() {
+function Modal(props) {
   // const [visible, setVisible] = useState(false);
 
   const { visible, formContent, title, callBackSubmit } = useSelector(
@@ -26,10 +12,14 @@ export default function Modal() {
 
   const dispatch = useDispatch();
 
+  const { resetForm } = useSelector((state) => state.formikReducer);
+
   const onClose = () => {
     dispatch({
       type: CLOSE_DRAWER,
     });
+    //Clear form sau khi tắt drawer
+    resetForm();
   };
   return (
     <>
@@ -59,3 +49,5 @@ export default function Modal() {
     </>
   );
 }
+
+export default memo(Modal);

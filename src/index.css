@@ -33,7 +33,7 @@ body {
 }
 
 #root
-  > div
+  /* > div
   > section
   > aside
   > div.ant-layout-sider-children
@@ -44,14 +44,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+} */
+
+.account {
+  position: sticky !important;
+  bottom: 0;
 }
 
-#root
-  > div
-  > section
-  > aside
-  > div.ant-layout-sider-children
-  > ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
+ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
+  > li
+  > div {
+  padding: 0 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
   > li
   > div
   > span {

@@ -1,28 +1,28 @@
 import { Avatar, Input } from "antd";
 import { useFormik } from "formik";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import * as Yup from "yup";
-import { SET_SUBMIT_DRAWER_FUNCTION } from "../../util/constant/configSystem";
+import {
+  SET_RESET_FORM_FUNCTION,
+  SET_SUBMIT_DRAWER_FUNCTION,
+} from "../../util/constant/configSystem";
 import { editUserAction } from "../../redux/actions/editUserAction";
 
-export default function EditUserFormComponent(props) {
+function EditUserFormComponent(props) {
   const dispatch = useDispatch();
 
   const { userDetail } = useSelector((state) => state.userReducer);
-  const { visible } = useSelector((state) => state.drawerReducer);
-  console.log("userDetail", userDetail);
+
+  console.log("userDetail");
 
   const { userId, name, email, phoneNumber } = userDetail;
 
   useEffect(() => {
     dispatch({ type: SET_SUBMIT_DRAWER_FUNCTION, function: handleSubmit });
+    dispatch({ type: SET_RESET_FORM_FUNCTION, function: resetForm });
   }, []);
-
-  useEffect(() => {
-    resetForm();
-  }, [visible]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -64,8 +64,6 @@ export default function EditUserFormComponent(props) {
   });
 
   const { values, handleChange, handleSubmit, errors, resetForm } = formik;
-
-  console.log(formik);
 
   return (
     <form className="w-full" onSubmit={handleSubmit}>
@@ -157,3 +155,5 @@ export default function EditUserFormComponent(props) {
     </form>
   );
 }
+
+export default memo(EditUserFormComponent);

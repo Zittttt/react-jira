@@ -12,8 +12,7 @@ const ModalComponent = () => {
   );
 
   const { callBackSubmit } = useSelector((state) => state.modalReducer);
-
-  const [state, setState] = useState();
+  const { resetForm } = useSelector((state) => state.formikReducer);
 
   const handleOk = () => {
     callBackSubmit();
@@ -21,6 +20,7 @@ const ModalComponent = () => {
 
   const handleCancel = () => {
     dispatch({ type: CLOSE_MODAL });
+    resetForm();
   };
 
   return (
@@ -29,7 +29,7 @@ const ModalComponent = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={"60vw"}
+        width={"null"}
         bodyStyle={{
           padding: "20px",
           marginRight: "10px",

@@ -1,21 +1,27 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Popconfirm, Table } from "antd";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { Avatar, Popconfirm, Table, Tooltip } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditUserFormComponent from "../../component/EditUserFormComponent/EditUserFormComponent";
 import { deleteUserAction } from "../../redux/actions/deleteUserAction";
 
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
-import { OPEN_DRAWER, OPEN_FORM } from "../../util/constant/configSystem";
+import {
+  OPEN_DRAWER,
+  OPEN_FORM,
+  OPEN_MODAL,
+} from "../../util/constant/configSystem";
+import CreateUserComponent from "./CreateUserComponent/CreateUserComponent";
 
 export default function UserManagerment(props) {
   const dispatch = useDispatch();
+  const userLst = useSelector((state) => state.userReducer.userSearch);
+
+  console.log("UserManagement");
 
   useEffect(() => {
     dispatch(getAllUserAction());
   }, []);
-
-  const userLst = useSelector((state) => state.userReducer.userSearch);
 
   const data = userLst.map((user, index) => ({
     key: index,
@@ -112,24 +118,46 @@ export default function UserManagerment(props) {
   return (
     <div>
       <h3 className="text-2xl text-[#1f2937]">User Management</h3>
-      <form
-        onSubmit={(e) => {
-          searchUser(e);
-        }}
-      >
-        <input
-          type="text"
-          placeholder="User"
-          className="h-8 w-100 p-2 border-2 border-[#0049b0] hover:border-[#002380] rounded-md"
-          ref={inputSearch}
-        />
-        <button
-          className="ml-5 bg-[#002140] rounded-md h-8 px-2 text-white hover:bg-[#1890ff] transition-all duration-200"
-          type="submit"
+      <div className="flex justify-between">
+        <form
+          onSubmit={(e) => {
+            searchUser(e);
+          }}
         >
-          Search User
-        </button>
-      </form>
+          <input
+            type="text"
+            placeholder="User"
+            className="h-8 w-100 p-2 border-2 border-[#0049b0] hover:border-[#002380] rounded-md"
+            ref={inputSearch}
+          />
+          <button
+            className="ml-5 bg-[#002140] rounded-md h-8 px-2 text-white hover:bg-[#1890ff] transition-all duration-200"
+            type="submit"
+          >
+            Search User
+          </button>
+        </form>
+        <Tooltip
+          placement="left"
+          title="Click to create user"
+          className="cursor-pointer"
+        >
+          <button
+            className="bg-[#002140] hover:bg-[#1890ff] rounded-sm text-white text-xl flex justify-center items-center w-8 h-8"
+            onClick={() => {
+              const actionOpenForm = {
+                type: OPEN_MODAL,
+                modalContent: <CreateUserComponent />,
+                // title: "Create User",
+              };
+              dispatch(actionOpenForm);
+            }}
+          >
+            <PlusOutlined />
+          </button>
+        </Tooltip>
+      </div>
+
       <Table
         columns={columns}
         dataSource={data}

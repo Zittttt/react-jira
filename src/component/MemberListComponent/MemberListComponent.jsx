@@ -17,7 +17,7 @@ function MemberListComponent(props) {
 
   const history = useHistory();
 
-  console.log("render");
+  console.log("memberlist");
 
   return (
     <div className="flex">

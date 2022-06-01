@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_SUBMIT_DRAWER_FUNCTION } from "../../util/constant/configSystem";
+import {
+  SET_RESET_FORM_FUNCTION,
+  SET_SUBMIT_DRAWER_FUNCTION,
+} from "../../util/constant/configSystem";
 import { connect } from "react-redux";
 import { useFormik, withFormik } from "formik";
 import * as Yup from "yup";
@@ -12,12 +15,11 @@ import { Input, Select } from "antd";
 
 const { Option } = Select;
 
-export default function EditProjectFormComponent(props) {
+function EditProjectFormComponent(props) {
   console.log("editProjectForm");
 
   const dispatch = useDispatch();
 
-  const { visible } = useSelector((state) => state.drawerReducer);
   const { categoryArr, projectDetail } = useSelector(
     (state) => state.projectReducer
   );
@@ -28,8 +30,8 @@ export default function EditProjectFormComponent(props) {
       type: SET_SUBMIT_DRAWER_FUNCTION,
       function: handleSubmit,
     });
-    resetForm();
-  }, [visible]);
+    dispatch({ type: SET_RESET_FORM_FUNCTION, function: resetForm });
+  }, []);
 
   const editorRef = useRef(null);
   const editorHandleChange = (content, editor) => {
@@ -210,3 +212,5 @@ export default function EditProjectFormComponent(props) {
     </form>
   );
 }
+
+export default memo(EditProjectFormComponent);

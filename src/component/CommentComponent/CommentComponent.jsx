@@ -1,23 +1,22 @@
 import { Avatar, Button, Popconfirm } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCommentAction } from "../../redux/actions/deleteCommentAction";
 import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
 import { insertCommentAction } from "../../redux/actions/insertCommentAction";
 
-export default function CommentComponent(props) {
-  const { userLogin } = useSelector((state) => state.userReducer);
+function CommentComponent(props) {
   const { taskId } = props;
+  const { userLogin } = useSelector((state) => state.userReducer);
+  const { lstComment } = useSelector((state) => state.commentReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllCommentAction(taskId));
   }, [taskId]);
-
-  const { lstComment } = useSelector((state) => state.commentReducer);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -30,6 +29,7 @@ export default function CommentComponent(props) {
       resetForm();
     },
   });
+  console.log("Comment");
 
   return (
     <div>
@@ -93,3 +93,5 @@ export default function CommentComponent(props) {
     </div>
   );
 }
+
+export default memo(CommentComponent);

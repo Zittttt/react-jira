@@ -114,9 +114,9 @@ export default function ProjectManagement(props) {
         <div className="flex justify-center text-white">
           <button
             className="mr-1 bg-[#1890ff] w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
-            onClick={() => {
+            onClick={async () => {
               //dispatch action getProjectDetailAction => gửi lên redux
-              const action = getProjectDetailAction(record.id);
+              const action = await getProjectDetailAction(record.id);
               dispatch(action);
               const actionOpenForm = {
                 type: OPEN_FORM,

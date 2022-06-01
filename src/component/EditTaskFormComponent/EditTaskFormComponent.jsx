@@ -1,9 +1,14 @@
-import { BugOutlined, CheckOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  BugOutlined,
+  CheckOutlined,
+  DeleteOutlined,
+  WindowsFilled,
+} from "@ant-design/icons";
 import { Editor } from "@tinymce/tinymce-react";
 import { Avatar, InputNumber, Popconfirm, Select, Slider } from "antd";
 import Input from "antd/lib/input/Input";
 import { useFormik, withFormik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
@@ -12,32 +17,32 @@ import { getTaskDetailAction } from "../../redux/actions/getTaskDetailAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
 import { removeTaskAction } from "../../redux/actions/removeTaskAction";
 import { updateTaskAction } from "../../redux/actions/updateTaskAction";
-import { SET_SUBMIT_MODAL_FUNCTION } from "../../util/constant/configSystem";
+import {
+  SET_RESET_FORM_FUNCTION,
+  SET_SUBMIT_MODAL_FUNCTION,
+} from "../../util/constant/configSystem";
 import CommentComponent from "../CommentComponent/CommentComponent";
 import parse from "html-react-parser";
 
 const { Option } = Select;
 
-export default function EditTaskFormComponent(props) {
+function EditTaskFormComponent(props) {
   const editorRef = useRef(null);
   const dispatch = useDispatch();
 
+  console.log("EditTask");
+
   const { taskDetail } = useSelector((state) => state.taskReducer);
-  const { isModalVisible } = useSelector((state) => state.modalReducer);
   const [visibleEditor, setVisibleEditor] = useState(false);
+  const { taskStatus, taskType, priority } = useSelector(
+    (state) => state.taskReducer
+  );
+  const { projectDetail } = useSelector((state) => state.projectReducer);
 
   useEffect(() => {
-    dispatch(getPriorityAction());
-    dispatch(getTaskTypeAction());
-    dispatch(getAllCommentAction(taskDetail.taskId));
     dispatch({ type: SET_SUBMIT_MODAL_FUNCTION, function: handleSubmit });
+    dispatch({ type: SET_RESET_FORM_FUNCTION, function: resetForm });
   }, []);
-
-  useEffect(() => {
-    //resetForm khi bật/tắt modal
-    resetForm();
-    setVisibleEditor(false);
-  }, [isModalVisible]);
 
   const listUserId = taskDetail.assigness?.map((user) => {
     return user.id;
@@ -185,12 +190,6 @@ export default function EditTaskFormComponent(props) {
     setFieldValue("description", content);
   };
 
-  const { taskStatus, taskType, priority } = useSelector(
-    (state) => state.taskReducer
-  );
-
-  const { projectDetail } = useSelector((state) => state.projectReducer);
-
   const userOptions = projectDetail.members?.map((user, index) => {
     return { value: user.userId, label: user.name };
   });
@@ -205,7 +204,10 @@ export default function EditTaskFormComponent(props) {
   });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ width: (window.innerWidth * 3) / 5 }}
+    >
       <div className="left-side grid grid-cols-3 -mx-3 mb-5">
         <div className="w-full px-3 col-span-2">
           <div className="col-span-2">
@@ -443,3 +445,5 @@ export default function EditTaskFormComponent(props) {
     </form>
   );
 }
+
+export default memo(EditTaskFormComponent);

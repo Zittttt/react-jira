@@ -199,7 +199,7 @@ export default function CreateProject(props) {
         </div>
         <div className="my-5">
           <button
-            className="rounded-md px-5 py-2 bg-[#002380] text-white"
+            className="rounded-md px-5 py-2 bg-[#002140] hover:bg-[#1890ff] text-white transition-all duration-200"
             type="submit"
           >
             Create project

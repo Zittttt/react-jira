@@ -62,7 +62,10 @@ export default function HomeTemplate(props) {
     getItem(
       name,
       "User",
-      <img src={avatar} className="w-[35px] rounded-full h-[35px]" />,
+      <img
+        src={avatar}
+        className="w-[35px] rounded-full h-[35px] user-image"
+      />,
       [getItem("Profile", "profile"), getItem("Log out", "logOut")]
     ),
   ];
@@ -83,44 +86,46 @@ export default function HomeTemplate(props) {
           collapsible
           collapsed={collapsed}
           onCollapse={onCollapse}
-          className="pt-2 relative"
+          className="relative"
         >
-          <NavLink to={"/"} className="logo flex justify-center py-10">
-            <img src={logo} width={"50px"} />
-          </NavLink>
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={[""]}
-            mode="inline"
-            items={items}
-            className="pt-2"
-            onClick={(e) => {
-              history.push(e.key);
-            }}
-          />
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={[""]}
-            mode="inline"
-            items={profile}
-            className="account"
-            onClick={(e) => {
-              if (e.key === "logOut") {
-                localStorage.removeItem(TOKEN);
-                history.push("/login");
-                dispatch({
-                  type: SHOW_NOTIFICATION,
-                  value: {
-                    message: "Logged out!",
-                    description: "",
-                    type: NOTIFICATION_ICON.INFO,
-                  },
-                });
-              } else {
+          <div className="sticky top-0 left-0">
+            <NavLink to={"/"} className="logo flex justify-center py-10">
+              <img src={logo} width={"50px"} />
+            </NavLink>
+            <Menu
+              theme="dark"
+              defaultSelectedKeys={[""]}
+              mode="inline"
+              items={items}
+              className="pt-2"
+              onClick={(e) => {
                 history.push(e.key);
-              }
-            }}
-          />
+              }}
+            />
+            <Menu
+              theme="dark"
+              defaultSelectedKeys={[""]}
+              mode="inline"
+              items={profile}
+              className="account"
+              onClick={(e) => {
+                if (e.key === "logOut") {
+                  localStorage.removeItem(TOKEN);
+                  history.push("/login");
+                  dispatch({
+                    type: SHOW_NOTIFICATION,
+                    value: {
+                      message: "Logged out!",
+                      description: "",
+                      type: NOTIFICATION_ICON.INFO,
+                    },
+                  });
+                } else {
+                  history.push(e.key);
+                }
+              }}
+            />
+          </div>
         </Sider>
         <Layout className="site-layout p-10 bg-white">
           <Route

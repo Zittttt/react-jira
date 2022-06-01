@@ -14,6 +14,7 @@ import ModalComponent from "./component/HOC/ModalComponent";
 import DemoDragDrop from "./pages/DemoDragDrop/DemoDragDrop";
 import BeautifylDnD from "./pages/BeautifulDnD/BeautifylDnD.jsx";
 import UserManagerment from "./pages/User Management/UserManagement";
+import Profile from "./pages/Profile/Profile";
 
 export const history = createBrowserHistory();
 
@@ -29,6 +30,7 @@ function App() {
         <HomeTemplate exact path={"/"} Component={ProjectManagement} />
         <HomeTemplate exact path={"/createproject"} Component={CreateProject} />
         <HomeTemplate exact path={"/user"} Component={UserManagerment} />
+        <HomeTemplate exact path={"/profile"} Component={Profile} />
         <HomeTemplate
           exact
           path={"/projectdetail/:projectId"}

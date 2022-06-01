@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Editor } from "@tinymce/tinymce-react";
 import { BugOutlined, CheckOutlined } from "@ant-design/icons";
-import { Avatar, Input, InputNumber, Select, Slider } from "antd";
+import { Avatar, Form, Input, InputNumber, Select, Slider } from "antd";
 import { createTaskAction } from "../../redux/actions/createTaskAction";
 
 const { Option } = Select;
@@ -19,8 +19,6 @@ function CreateTaskFormComponent(props) {
     (state) => state.taskReducer
   );
 
-  // const { visible } = useSelector((state) => state.drawerReducer);
-
   const [timeTracking, setTimeTracking] = useState({
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
@@ -33,10 +31,6 @@ function CreateTaskFormComponent(props) {
     });
     dispatch({ type: "SET_RESET_FORM_FUNCTION", function: resetForm });
   }, []);
-
-  // useEffect(() => {
-  //   resetForm();
-  // }, [visible]);
 
   const formik = useFormik({
     initialValues: {
@@ -85,7 +79,6 @@ function CreateTaskFormComponent(props) {
     originalEstimate,
     timeTrackingSpent,
     timeTrackingRemaining,
-    projectId,
     typeId,
     priorityId,
   } = values;
@@ -101,7 +94,7 @@ function CreateTaskFormComponent(props) {
   });
 
   return (
-    <form className="w-full" onSubmit={handleSubmit}>
+    <Form className="w-full" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-1 -mx-3 mb-2">
         <div className="w-full px-3">
           <label
@@ -422,7 +415,7 @@ function CreateTaskFormComponent(props) {
           />
         </div>
       </div>
-    </form>
+    </Form>
   );
 }
 

@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
   formikReducer,
 });
 
-const middleware = [thunk];
-const customCompose = composeWithDevTools(applyMiddleware(...middleware));
+// const middleware = [thunk];
+// const customCompose = composeWithDevTools(applyMiddleware(...middleware));
 
-export const store = createStore(rootReducer, customCompose);
+export const store = createStore(rootReducer, applyMiddleware(thunk));

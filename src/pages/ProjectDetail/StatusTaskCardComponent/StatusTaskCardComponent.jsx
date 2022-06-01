@@ -11,7 +11,7 @@ function StatusTaskCardComponent(props) {
   const dispatch = useDispatch();
   const { task } = props;
 
-  console.log("render");
+  console.log("StatusTaskCard");
 
   const taskSorted = task.lstTaskDeTail?.sort((a, b) =>
     a.priorityTask.priorityId > b.priorityTask.priorityId ? 1 : -1
