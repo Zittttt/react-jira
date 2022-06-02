@@ -11,7 +11,6 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { updateStatusAction } from "../../redux/actions/updateStatusAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
 import { getPriorityAction } from "../../redux/actions/getPriorityAction";
-import { useFormik } from "formik";
 import { Tooltip } from "antd";
 
 function ProjectDetail(props) {
