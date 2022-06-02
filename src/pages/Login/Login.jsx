@@ -41,7 +41,7 @@ export default function Login(props) {
       className="flex flex-col justify-center items-center w-screen/2 h-screen"
       onSubmit={handleSubmit}
     >
-      <h3 className="text-4xl mb-10">Login</h3>
+      <h3 className="text-4xl mb-10 text-secondary-800">Login</h3>
       <input
         type="text"
         className={props.inputStyle}
@@ -67,10 +67,7 @@ export default function Login(props) {
         ""
       )}
 
-      <button
-        className="loginButton bg-[#345da7] w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:border-cyan-400"
-        type="submit"
-      >
+      <button className={props.buttonStyle} type="submit">
         Login
       </button>
       <p>

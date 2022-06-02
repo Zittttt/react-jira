@@ -12,8 +12,10 @@ export default function LoginTemplate(props) {
   // };
   const { Component, path } = props;
 
-  const inputStyle =
-    "border-2 rounded-md p-2 pl-4 w-2/5 border-gray outline-[#345da7] my-1 border-2 hover:border-[#3B8AC4]";
+  const inputStyle = "input w-2/5 m-0 my-1 h-10";
+
+  const buttonStyle =
+    "bg-secondary-500 w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:bg-primary-500 duration-300 font-semibold";
   return (
     <Route
       exact
@@ -29,6 +31,7 @@ export default function LoginTemplate(props) {
                 exact
                 path={path}
                 inputStyle={inputStyle}
+                buttonStyle={buttonStyle}
                 {...propsRoute}
               />
             </Col>

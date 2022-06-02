@@ -75,10 +75,7 @@ function EditProjectFormComponent(props) {
     <form className="w-full h-full" onSubmit={handleSubmit}>
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="id"
-          >
+          <label className="label" htmlFor="id">
             PROJECT ID
           </label>
           <Input
@@ -93,10 +90,7 @@ function EditProjectFormComponent(props) {
       </div>
       <div className="flex flex-wrap -mx-3 mb-2">
         <div className="w-1/2 px-3">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="grid-last-name"
-          >
+          <label className="label" htmlFor="grid-last-name">
             PROJECT NAME <span className="text-red-500">*</span>
           </label>
           <Input
@@ -113,10 +107,7 @@ function EditProjectFormComponent(props) {
           )}
         </div>
         <div className="w-1/2 px-3 mb-6">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="grid-state"
-          >
+          <label className="label" htmlFor="grid-state">
             CATEGORY
           </label>
           <div className="relative">
@@ -158,10 +149,7 @@ function EditProjectFormComponent(props) {
       </div>
       <div className="flex flex-wrap -mx-3 h-1/2">
         <div className="w-full px-3 h-full">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="grid-last-name"
-          >
+          <label className="label" htmlFor="grid-last-name">
             DESCRIPTION
           </label>
           <Editor

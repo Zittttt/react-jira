@@ -12,6 +12,8 @@ import { NavLink } from "react-router-dom";
 import { OPEN_FORM } from "../../util/constant/configSystem";
 import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
+import DeleteButtonComponent from "../../component/DeleteButtonComponent/DeleteButtonComponent";
 
 export default function ProjectManagement(props) {
   const action = getProjectAction();
@@ -112,7 +114,21 @@ export default function ProjectManagement(props) {
       align: "center",
       render: (data, record, index) => (
         <div className="flex justify-center text-white">
-          <button
+          <EditButtonComponent
+            onClick={async () => {
+              //dispatch action getProjectDetailAction => gửi lên redux
+              const action = await getProjectDetailAction(record.id);
+              dispatch(action);
+              const actionOpenForm = {
+                type: OPEN_FORM,
+                Component: <EditProjectFormWithFormik />,
+                title: `Edit Project (${record.id})`,
+              };
+              //dispatch actionOpenForm với nội dung component là EditProjectFormWithFormik
+              dispatch(actionOpenForm);
+            }}
+          />
+          {/* <button
             className="mr-1 bg-[#1890ff] w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
             onClick={async () => {
               //dispatch action getProjectDetailAction => gửi lên redux
@@ -128,21 +144,15 @@ export default function ProjectManagement(props) {
             }}
           >
             <EditOutlined className="text-lg" />
-          </button>
-          <Popconfirm
+          </button> */}
+          <DeleteButtonComponent
             title="Are you sure to delete this project?"
             onConfirm={() => {
               //dispatch action deleteProject
               const action = deleteProjectAction(record.id);
               dispatch(action);
             }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
-              <DeleteOutlined className="text-lg" />
-            </button>
-          </Popconfirm>
+          />
         </div>
       ),
     },
@@ -155,7 +165,7 @@ export default function ProjectManagement(props) {
       projectName: (
         <NavLink
           to={`/projectdetail/${project.id}`}
-          className="font-medium text-[#0747a6]"
+          className="font-medium text-secondary-600 relative hover:text-primary-500 after:content-[''] after:absolute after:w-full after:h-4 after:-bottom-1 after:left-0  after:border-b-2 after:border-primary-500 after:scale-x-0 hover:after:scale-x-100 after:block after:duration-300"
         >
           {project.projectName}
         </NavLink>
@@ -168,7 +178,7 @@ export default function ProjectManagement(props) {
 
   return (
     <div>
-      <h3 className="text-2xl text-[#1f2937]">Project management</h3>
+      <h3 className="title">Project management</h3>
       <form
         onSubmit={(e) => {
           searchProject(e);
@@ -177,13 +187,10 @@ export default function ProjectManagement(props) {
         <input
           type="text"
           placeholder="Project"
-          className="h-8 w-100 p-2 border-2 border-[#0049b0] hover:border-[#002380] rounded-md"
+          className="input"
           ref={inputSearch}
         />
-        <button
-          className="ml-5 bg-[#002140] rounded-md h-8 px-2 text-white hover:bg-[#1890ff] transition-all duration-200"
-          type="submit"
-        >
+        <button className="btn ml-5" type="submit">
           Search Project
         </button>
       </form>

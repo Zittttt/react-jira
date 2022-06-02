@@ -2,6 +2,8 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Avatar, Popconfirm, Table, Tooltip } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import DeleteButtonComponent from "../../component/DeleteButtonComponent/DeleteButtonComponent";
+import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
 import EditUserFormComponent from "../../component/EditUserFormComponent/EditUserFormComponent";
 import { deleteUserAction } from "../../redux/actions/deleteUserAction";
 
@@ -74,8 +76,7 @@ export default function UserManagerment(props) {
       title: "Action",
       render: (text, record, index) => (
         <div className="flex justify-center text-white">
-          <button
-            className="mr-1 bg-[#1890ff] w-8 h-6 rounded-md flex justify-center items-center pb-1 edit-project"
+          <EditButtonComponent
             onClick={async () => {
               await dispatch(getAllUserAction(record.userId, "one"));
               dispatch({
@@ -84,22 +85,14 @@ export default function UserManagerment(props) {
                 title: `Edit User (${record.userId})`,
               });
             }}
-          >
-            <EditOutlined className="text-lg" />
-          </button>
-          <Popconfirm
+          />
+          <DeleteButtonComponent
             title="Are you sure to delete this user?"
             onConfirm={() => {
               const action = deleteUserAction(record.userId);
               dispatch(action);
             }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1">
-              <DeleteOutlined className="text-lg" />
-            </button>
-          </Popconfirm>
+          />
         </div>
       ),
       align: "center",
@@ -117,7 +110,7 @@ export default function UserManagerment(props) {
 
   return (
     <div>
-      <h3 className="text-2xl text-[#1f2937]">User Management</h3>
+      <h3 className="title">User Management</h3>
       <div className="flex justify-between">
         <form
           onSubmit={(e) => {
@@ -127,13 +120,10 @@ export default function UserManagerment(props) {
           <input
             type="text"
             placeholder="User"
-            className="h-8 w-100 p-2 border-2 border-[#0049b0] hover:border-[#002380] rounded-md"
+            className="input"
             ref={inputSearch}
           />
-          <button
-            className="ml-5 bg-[#002140] rounded-md h-8 px-2 text-white hover:bg-[#1890ff] transition-all duration-200"
-            type="submit"
-          >
+          <button className="ml-5 btn" type="submit">
             Search User
           </button>
         </form>

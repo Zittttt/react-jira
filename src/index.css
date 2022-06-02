@@ -19,10 +19,36 @@ a {
   @apply text-blue-600 underline;
 }
 
+.btn {
+  @apply bg-secondary-800 rounded-md h-8 px-2 text-white hover:bg-primary-500 transition-all duration-300 border-primary-600;
+}
+
+.input {
+  @apply h-8 p-2 border-2 border-secondary-800 hover:border-primary-600 focus:outline-primary-600 rounded-md duration-300;
+}
+
+.label {
+  @apply text-xs text-secondary-800 font-semibold block uppercase pb-2;
+}
+
+.title {
+  @apply text-3xl text-primary-800;
+}
+
+.container {
+  @apply w-4/5 mx-auto mt-8;
+}
+
 @tailwind components;
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
 body {
   font-family: "Roboto", sans-serif !important;
@@ -32,27 +58,15 @@ body {
   position: relative;
 }
 
-#root
-  /* > div
-  > section
-  > aside
-  > div.ant-layout-sider-children
-  > ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
-  > li
-  > div {
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
-.account {
+/* .account {
   position: sticky !important;
   bottom: 0;
-}
+} */
 
-ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
+ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collapsed
   > li
+  + li
+  + li
   > div {
   padding: 0 !important;
   display: flex;
@@ -60,8 +74,10 @@ ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inlin
   align-items: center;
 }
 
-ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.account.ant-menu-inline-collapsed
+ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collapsed
   > li
+  + li
+  + li
   > div
   > span {
   display: none;

@@ -58,15 +58,13 @@ export default function Profile() {
 
   return (
     <div className="w-full">
-      <h3 className="text-2xl text-[#1f2937]">Profile</h3>
+      <h3 className="title">Profile</h3>
       <form className="w-full" onSubmit={handleSubmit}>
         <div className="grid grid-cols-3 mb-5">
           <div className="w-full col-span-2">
             <div className="">
               <div className="mb-5">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  NAME
-                </label>
+                <label className="label">NAME</label>
                 <Input
                   onChange={handleChange}
                   value={values.name}
@@ -80,9 +78,7 @@ export default function Profile() {
               </div>
             </div>
             <div className="mb-5">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Email
-              </label>
+              <label className="label">Email</label>
               <Input
                 onChange={handleChange}
                 value={values.email}
@@ -95,9 +91,7 @@ export default function Profile() {
               )}
             </div>
             <div className="mb-5">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Phone
-              </label>
+              <label className="label">Phone</label>
               <Input
                 onChange={handleChange}
                 value={values.phoneNumber}
@@ -112,9 +106,7 @@ export default function Profile() {
               )}
             </div>
             <div className="mb-5">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Password
-              </label>
+              <label className="label">Password</label>
               <Input
                 type="password"
                 name="passWord"
@@ -128,9 +120,7 @@ export default function Profile() {
               )}
             </div>
             <div>
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Re-password
-              </label>
+              <label className="label">Re-password</label>
               <Input
                 name="passwordConfirm"
                 type="password"

@@ -73,7 +73,7 @@ function ProjectDetail(props) {
 
   return (
     <div>
-      <h1 className="text-2xl text-[#1f2937]">{projectDetail.projectName}</h1>
+      <h1 className="title">{projectDetail.projectName}</h1>
       <div className="taskInfo flex justify-between mb-10">
         <div className="flex">
           <div className="member-avatar">

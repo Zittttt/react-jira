@@ -57,13 +57,11 @@ export default function CreateUserComponent() {
 
   const { email, passWord, name, phoneNumber, passwordConfirm } = values;
 
-  const labelStyle =
-    "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2";
   return (
     <form style={{ width: 500 }}>
-      <h3>Create User</h3>
+      <h3 className="title text-center">Create User</h3>
       <div className="mb-5">
-        <label className={labelStyle}>Name</label>
+        <label className="label">Name</label>
         <Input name="name" onChange={handleChange} value={name} />
         {errors.name ? (
           <p className="text-red-500 text-xs italic">{errors.name}</p>
@@ -72,7 +70,7 @@ export default function CreateUserComponent() {
         )}
       </div>
       <div className="mb-5">
-        <label className={labelStyle}>Email</label>
+        <label className="label">Email</label>
         <Input name="email" onChange={handleChange} value={email} />
         {errors.email ? (
           <p className="text-red-500 text-xs italic">{errors.email}</p>
@@ -81,7 +79,7 @@ export default function CreateUserComponent() {
         )}
       </div>
       <div className="mb-5">
-        <label className={labelStyle}>Phone Number</label>
+        <label className="label">Phone Number</label>
         <Input name="phoneNumber" onChange={handleChange} value={phoneNumber} />
         {errors.phoneNumber ? (
           <p className="text-red-500 text-xs italic">{errors.phoneNumber}</p>
@@ -90,7 +88,7 @@ export default function CreateUserComponent() {
         )}
       </div>
       <div className="mb-5">
-        <label className={labelStyle}>Password</label>
+        <label className="label">Password</label>
         <Input
           name="passWord"
           type="password"
@@ -104,7 +102,7 @@ export default function CreateUserComponent() {
         )}
       </div>
       <div>
-        <label className={labelStyle}>Re-password</label>
+        <label className="label">Re-password</label>
         <Input
           name="passwordConfirm"
           type="password"

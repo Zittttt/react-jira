@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Editor } from "@tinymce/tinymce-react";
 import { BugOutlined, CheckOutlined } from "@ant-design/icons";
-import { Avatar, Form, Input, InputNumber, Select, Slider } from "antd";
+import { Avatar, Input, InputNumber, Select, Slider } from "antd";
 import { createTaskAction } from "../../redux/actions/createTaskAction";
 
 const { Option } = Select;
@@ -19,6 +19,8 @@ function CreateTaskFormComponent(props) {
     (state) => state.taskReducer
   );
 
+  // const { visible } = useSelector((state) => state.drawerReducer);
+
   const [timeTracking, setTimeTracking] = useState({
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
@@ -31,6 +33,10 @@ function CreateTaskFormComponent(props) {
     });
     dispatch({ type: "SET_RESET_FORM_FUNCTION", function: resetForm });
   }, []);
+
+  // useEffect(() => {
+  //   resetForm();
+  // }, [visible]);
 
   const formik = useFormik({
     initialValues: {
@@ -79,6 +85,7 @@ function CreateTaskFormComponent(props) {
     originalEstimate,
     timeTrackingSpent,
     timeTrackingRemaining,
+    projectId,
     typeId,
     priorityId,
   } = values;
@@ -94,11 +101,11 @@ function CreateTaskFormComponent(props) {
   });
 
   return (
-    <Form className="w-full" onSubmit={handleSubmit}>
+    <form className="w-full" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-1 -mx-3 mb-2">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-last-name"
           >
             TASK NAME <span className="text-red-500">*</span>
@@ -112,7 +119,7 @@ function CreateTaskFormComponent(props) {
         </div>
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-state"
           >
             TASK STATUS
@@ -141,7 +148,7 @@ function CreateTaskFormComponent(props) {
       <div className="grid grid-cols-2 gap-1 -mx-3 mb-2">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-state"
           >
             Task type
@@ -175,7 +182,7 @@ function CreateTaskFormComponent(props) {
         </div>
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-last-name"
           >
             Priority
@@ -225,7 +232,7 @@ function CreateTaskFormComponent(props) {
       <div className="-mx-3 mb-2 grid grid-cols-2">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-last-name"
           >
             Assigness
@@ -265,7 +272,7 @@ function CreateTaskFormComponent(props) {
         </div>
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-last-name"
           >
             Original Estimate <span className="text-red-500">*</span>
@@ -293,7 +300,7 @@ function CreateTaskFormComponent(props) {
       <div className="flex flex-wrap -mx-3 mb-2">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-last-name"
           >
             Time Tracking
@@ -319,7 +326,7 @@ function CreateTaskFormComponent(props) {
           </div>
           <div className="grid grid-cols-2 gap-1">
             <div>
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+              <label className="label">
                 Time spent (hours)
               </label>
               <InputNumber
@@ -340,7 +347,7 @@ function CreateTaskFormComponent(props) {
               />
             </div>
             <div>
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+              <label className="label">
                 Time remaining (hours)
               </label>
               <InputNumber
@@ -365,7 +372,7 @@ function CreateTaskFormComponent(props) {
       <div className="h-full -mx-3">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="label"
             htmlFor="grid-last-name"
           >
             DESCRIPTION
@@ -415,7 +422,7 @@ function CreateTaskFormComponent(props) {
           />
         </div>
       </div>
-    </Form>
+    </form>
   );
 }
 

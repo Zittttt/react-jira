@@ -65,14 +65,11 @@ export default function CreateProject(props) {
 
   return (
     <div className="h-full">
-      <h3 className="text-2xl text-[#1f2937]">Create Project</h3>
+      <h3 className="title">Create Project</h3>
       <form className="w-full" onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full md:w-1/2 px-3">
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-last-name"
-            >
+            <label className="label" htmlFor="grid-last-name">
               PROJECT NAME <span className="text-red-500">*</span>
             </label>
             <Input
@@ -91,10 +88,7 @@ export default function CreateProject(props) {
             )}
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-state"
-            >
+            <label className="label" htmlFor="grid-state">
               CATEGORY
             </label>
             <div className="relative">
@@ -146,10 +140,7 @@ export default function CreateProject(props) {
         </div>
         <div className="flex flex-wrap -mx-3">
           <div className="w-full px-3">
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-last-name"
-            >
+            <label className="label" htmlFor="grid-last-name">
               DESCRIPTION
             </label>
             <Editor
@@ -198,10 +189,7 @@ export default function CreateProject(props) {
           </div>
         </div>
         <div className="my-5">
-          <button
-            className="rounded-md px-5 py-2 bg-[#002140] hover:bg-[#1890ff] text-white transition-all duration-200"
-            type="submit"
-          >
+          <button className="btn" type="submit">
             Create project
           </button>
         </div>

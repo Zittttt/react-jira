@@ -23,6 +23,7 @@ import {
 } from "../../util/constant/configSystem";
 import CommentComponent from "../CommentComponent/CommentComponent";
 import parse from "html-react-parser";
+import DeleteButtonComponent from "../DeleteButtonComponent/DeleteButtonComponent";
 
 const { Option } = Select;
 
@@ -108,7 +109,7 @@ function EditTaskFormComponent(props) {
     const htmlString = description;
     const parse = require("html-react-parser");
     return (
-      <div className="mt-2 w-full h-full">
+      <div className="w-full h-full">
         {visibleEditor ? (
           <div>
             <Editor
@@ -237,38 +238,29 @@ function EditTaskFormComponent(props) {
             </Select>
           </div>
         </div>
-        <div className="w-full px-3 text-right pr-10 relative">
-          <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 absolute top-0 right-10">
-            <DeleteOutlined className="text-lg" />
-          </button>
-          <Popconfirm
+        <div className="w-full px-3 text-right pr-10 relative flex flex-row-reverse">
+          <DeleteButtonComponent
             title="Are you sure to delete this task?"
             onConfirm={() => {
               dispatch(removeTaskAction(taskId, projectId));
             }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <button className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1 absolute top-0 right-10">
-              <DeleteOutlined className="text-lg" />
-            </button>
-          </Popconfirm>
+          />
         </div>
       </div>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5">
         <div className="w-full px-3 col-span-2">
-          <label
+          <h3
             // bordered={false}
-            className="text-[24px] font-medium rounded-md border-transparent hover:border-blue-400 transition-all duration-300 pl-3"
+            className="text-2xl font-medium rounded-md pl-3 text-secondary-800"
             id="taskName"
             type="text"
             name="taskName"
           >
             {taskName}
-          </label>
+          </h3>
         </div>
         <div className="w-full px-3">
-          <label className="text-[12.5px] font-medium block">STATUS</label>
+          <label className="label">STATUS</label>
           <Select
             style={{ width: "100%" }}
             value={statusId}
@@ -290,12 +282,12 @@ function EditTaskFormComponent(props) {
       </div>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5 pl-3">
         <div className="w-full px-3 col-span-2">
-          <label className="text-[15px] font-medium mb-10">Description</label>
+          <label className="label">Description</label>
           {renderDescription()}
         </div>
         <div className="w-full px-3">
           <div className="mb-5">
-            <label className="text-[12.5px] font-medium block">ASSIGNESS</label>
+            <label className="label">ASSIGNESS</label>
             <Select
               mode="multiple"
               allowClear
@@ -324,7 +316,7 @@ function EditTaskFormComponent(props) {
           </div>
 
           <div className="mb-5">
-            <label className="text-[12.5px] font-medium block">PRIORITY</label>
+            <label className="label">PRIORITY</label>
             <Select
               style={{ width: "100%" }}
               value={priorityId}
@@ -364,7 +356,7 @@ function EditTaskFormComponent(props) {
             </Select>
           </div>
           <div className="mb-5">
-            <label className="text-[12.5px] font-medium block">
+            <label className="label">
               ORIGINAL ESTIMATE (HOURS) <span className="text-red-500">*</span>
             </label>
             <InputNumber
@@ -385,9 +377,7 @@ function EditTaskFormComponent(props) {
           </div>
 
           <div className="mb-5">
-            <label className="text-[12.5px] font-medium block">
-              TIME TRACKING
-            </label>
+            <label className="label">TIME TRACKING</label>
             <Slider
               value={timeTrackingSpent}
               max={timeTrackingSpent + timeTrackingRemaining}
@@ -403,9 +393,7 @@ function EditTaskFormComponent(props) {
             </div>
             <div className="grid grid-cols-2 gap-1">
               <div>
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Time spent (hours)
-                </label>
+                <label className="label">Time spent (hours)</label>
                 <InputNumber
                   className="w-full"
                   name="timeTrackingSpent"
@@ -418,9 +406,7 @@ function EditTaskFormComponent(props) {
                 />
               </div>
               <div>
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Time remaining (hours)
-                </label>
+                <label className="label">Time remaining (hours)</label>
                 <InputNumber
                   className="w-full"
                   name="timeTrackingRemaining"
@@ -438,7 +424,7 @@ function EditTaskFormComponent(props) {
       </div>
       <div className="left-side grid grid-cols-3 -mx-3 mb-5 pl-3">
         <div className="w-full px-3 col-span-2">
-          <label className="text-[15px] font-medium">Comments</label>
+          <label className={`$"label" mb-2`}>Comments</label>
           <CommentComponent taskId={taskId} />
         </div>
       </div>

@@ -70,13 +70,13 @@ function EditUserFormComponent(props) {
       <div className="grid grid-cols-2 h-full">
         <div className="w-full mt-2">
           <div className="mb-5">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            <label className="label">
               ID
             </label>
             <Input disabled value={userId} name="id" />
           </div>
           <div className="mb-5">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            <label className="label">
               NAME
             </label>
             <Input onChange={handleChange} value={values.name} name="name" />
@@ -92,7 +92,7 @@ function EditUserFormComponent(props) {
         </div>
       </div>
       <div className="mb-5">
-        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+        <label className="label">
           Email
         </label>
         <Input onChange={handleChange} value={values.email} name="email" />
@@ -103,7 +103,7 @@ function EditUserFormComponent(props) {
         )}
       </div>
       <div className="mb-5">
-        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+        <label className="label">
           Phone
         </label>
         <Input
@@ -118,7 +118,7 @@ function EditUserFormComponent(props) {
         )}
       </div>
       <div className="mb-5">
-        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+        <label className="label">
           Password
         </label>
         <Input
@@ -134,7 +134,7 @@ function EditUserFormComponent(props) {
         )}
       </div>
       <div>
-        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+        <label className="label">
           Re-password
         </label>
         <Input

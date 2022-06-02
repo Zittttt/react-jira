@@ -7,6 +7,7 @@ import { assignUserProjectAction } from "../../redux/actions/assignUserProjectAc
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { removeUserFromProject } from "../../redux/actions/removeUserFromProjectAction";
+import DeleteButtonComponent from "../DeleteButtonComponent/DeleteButtonComponent";
 
 function MemberListComponent(props) {
   const { projectDetail } = props;
@@ -32,8 +33,7 @@ function MemberListComponent(props) {
               name: member.name,
               avatar: <Avatar src={member.avatar}></Avatar>,
               action: (
-                <button
-                  className="bg-red-500 w-8 h-6 rounded-md flex justify-center items-center pb-1"
+                <DeleteButtonComponent
                   onClick={async () => {
                     const action = removeUserFromProject({
                       projectId: projectDetail.id,
@@ -46,9 +46,7 @@ function MemberListComponent(props) {
                       dispatch(getProjectDetailAction(projectDetail.id));
                     }
                   }}
-                >
-                  <DeleteOutlined className="text-lg" />
-                </button>
+                />
               ),
             };
           });

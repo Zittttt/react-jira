@@ -44,29 +44,27 @@ export default function HomeTemplate(props) {
     };
   }
 
+  const account = useSelector(
+    (rootReducer) => rootReducer.userReducer.userLogin
+  );
+
+  const avatar = account.avatar;
+  const name = account.name;
+
   const items = [
     getItem("Project", "project", <PieChartOutlined />, [
       getItem("Project Management", ""),
       getItem("Create Project", "/createproject"),
     ]),
     getItem("User", "/user", <UserOutlined />),
-  ];
-
-  const account = useSelector(
-    (rootReducer) => rootReducer.userReducer.userLogin
-  );
-  const avatar = account.avatar;
-  const name = account.name;
-
-  const profile = [
     getItem(
       name,
-      "User",
+      "Profile",
       <img
         src={avatar}
         className="w-[35px] rounded-full h-[35px] user-image"
       />,
-      [getItem("Profile", "profile"), getItem("Log out", "logOut")]
+      [getItem("Profile", "/profile"), getItem("Log out", "logOut")]
     ),
   ];
 
@@ -81,7 +79,7 @@ export default function HomeTemplate(props) {
 
   return (
     <div>
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: "100vh", backgroundColor: "#fff" }}>
         <Sider
           collapsible
           collapsed={collapsed}
@@ -98,16 +96,6 @@ export default function HomeTemplate(props) {
               mode="inline"
               items={items}
               className="pt-2"
-              onClick={(e) => {
-                history.push(e.key);
-              }}
-            />
-            <Menu
-              theme="dark"
-              defaultSelectedKeys={[""]}
-              mode="inline"
-              items={profile}
-              className="account"
               onClick={(e) => {
                 if (e.key === "logOut") {
                   localStorage.removeItem(TOKEN);
@@ -127,7 +115,7 @@ export default function HomeTemplate(props) {
             />
           </div>
         </Sider>
-        <Layout className="site-layout p-10 bg-white">
+        <Layout className="site-layout bg-white container">
           <Route
             exact
             path={path}

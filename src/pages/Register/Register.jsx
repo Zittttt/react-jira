@@ -53,7 +53,7 @@ export default function Register(props) {
       className="flex flex-col justify-center items-center w-screen/2 h-screen"
       onSubmit={handleSubmit}
     >
-      <h3 className="text-4xl m-0">Register</h3>
+      <h3 className="text-4xl m-0 text-secondary-800">Register</h3>
       <input
         type="text"
         className={props.inputStyle}
@@ -109,10 +109,7 @@ export default function Register(props) {
         <p className="m-0 text-red-600">{errors.confirmPassword}</p>
       ) : null}
 
-      <button
-        className="loginButton bg-[#345da7] w-2/5 mt-5 p-2.5 text-white rounded-md border-2 border-transparent hover:border-[#4bb4de]"
-        type="submit"
-      >
+      <button className={props.buttonStyle} type="submit">
         Register
       </button>
       <p>

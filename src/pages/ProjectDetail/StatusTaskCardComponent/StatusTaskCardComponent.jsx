@@ -18,8 +18,10 @@ function StatusTaskCardComponent(props) {
   );
 
   return (
-    <div className="p-2 bg-[#f4f5f7] rounded-sm shadow-md w-1/4 min-h-[135px]">
-      <h3 className=" text-[#5e6c84] text-[12.5px] ml-3">{task.statusName}</h3>
+    <div className="p-2 bg-secondary-50 rounded-sm shadow-md w-1/4 min-h-[135px]">
+      <h3 className=" text-secondary-500 text-[12.5px] ml-3">
+        {task.statusName}
+      </h3>
       <Droppable droppableId={task.statusId.toString()}>
         {(provided) => {
           return (
@@ -40,7 +42,7 @@ function StatusTaskCardComponent(props) {
                         {(provided) => {
                           return (
                             <div
-                              className="flex flex-col justify-between p-3 text-[15px] bg-white rounded-md hover:bg-[#ebecf0] group shadow-b-md shadow-md text-[#0747a6]"
+                              className="flex flex-col justify-between p-3 text-[15px] bg-white rounded-md hover:bg-secondary-100 group shadow-b-md shadow-md text-primary-500 font-medium"
                               onClick={async (e) => {
                                 await dispatch(
                                   getTaskDetailAction(task.taskId)
