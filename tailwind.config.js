@@ -30,6 +30,11 @@ module.exports = {
         },
       },
     },
+    screens: {
+      mobile: { max: "640px" },
+      tablet: { max: "768px" },
+      desktop: { max: "1280px" },
+    },
   },
   plugins: [],
 };

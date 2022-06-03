@@ -32,11 +32,11 @@ a {
 }
 
 .title {
-  @apply text-3xl text-primary-800;
+  @apply text-3xl text-primary-800 mobile:text-xl;
 }
 
-.container {
-  @apply w-4/5 mx-auto mt-8;
+.my-container {
+  /* @apply; */
 }
 
 @tailwind components;
@@ -62,6 +62,19 @@ body {
   position: sticky !important;
   bottom: 0;
 } */
+
+.ant-table-measure-row {
+  display: none;
+}
+
+@media screen and (max-width: 640px) {
+  .ant-table table {
+    @apply text-xs;
+  }
+  .ant-layout-sider-trigger {
+    width: 50px !important;
+  }
+}
 
 ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collapsed
   > li
@@ -111,4 +124,11 @@ ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collap
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 8px 0 !important;
 }

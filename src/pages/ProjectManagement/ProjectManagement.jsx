@@ -11,9 +11,14 @@ import MemberListComponent from "../../component/MemberListComponent/MemberListC
 import { NavLink } from "react-router-dom";
 import { OPEN_FORM } from "../../util/constant/configSystem";
 import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
 import DeleteButtonComponent from "../../component/DeleteButtonComponent/DeleteButtonComponent";
+import TableComponent from "../../component/TableComponent/TableComponent";
 
 export default function ProjectManagement(props) {
   const action = getProjectAction();
@@ -45,20 +50,22 @@ export default function ProjectManagement(props) {
       dataIndex: "id",
       sorter: (a, b) => a.id - b.id,
       defaultSortOrder: "ascend",
-      width: "5%",
+      width: "10%",
       align: "center",
+      responsive: ["xl", "lg", "md"],
     },
     {
       title: "Project Name",
       dataIndex: "projectName",
       key: "projectName",
-      width: "40%",
+      width: "25%",
     },
     {
       title: "Category",
       key: "category",
       dataIndex: "categoryName",
-      width: "10%",
+      width: "20%",
+      align: "center",
       filters: [
         {
           text: "Dự án web",
@@ -77,6 +84,7 @@ export default function ProjectManagement(props) {
         return (
           <span>
             <Tag
+              className="text-xs"
               color={
                 record.categoryName === "Dự án phần mềm"
                   ? "volcano"
@@ -95,13 +103,14 @@ export default function ProjectManagement(props) {
     {
       title: "Creator",
       dataIndex: "creator",
-      width: "10%",
+      width: "15%",
     },
     {
       title: "Member",
       key: "members",
       dataIndex: "members",
       width: "25%",
+      responsive: ["lg", "sm"],
       render: (text, record, index) => {
         return <MemberListComponent projectDetail={record} />;
       },
@@ -110,7 +119,7 @@ export default function ProjectManagement(props) {
       title: "Action",
       key: "action",
       dataIndex: "action",
-      width: "10%",
+      width: "5%",
       align: "center",
       render: (data, record, index) => (
         <div className="flex justify-center text-white">
@@ -177,7 +186,7 @@ export default function ProjectManagement(props) {
   });
 
   return (
-    <div>
+    <div className="w-full">
       <h3 className="title">Project management</h3>
       <form
         onSubmit={(e) => {
@@ -190,17 +199,12 @@ export default function ProjectManagement(props) {
           className="input"
           ref={inputSearch}
         />
-        <button className="btn ml-5" type="submit">
-          Search Project
+        <button className="btn ml-3" type="submit">
+          <span className="mobile:hidden">Search Project</span>
+          <SearchOutlined className="hidden mobile:block" />
         </button>
       </form>
-      <Table
-        columns={columns}
-        dataSource={data}
-        size={"middle"}
-        className="table-project w-full"
-        pagination={{ position: ["topRight"] }}
-      />
+      <TableComponent columns={columns} dataSource={data} />
     </div>
   );
 }

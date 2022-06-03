@@ -12,6 +12,9 @@ import {
   FileOutlined,
   TeamOutlined,
   UserOutlined,
+  MailOutlined,
+  AppstoreOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { LOGIN } from "../../redux/types/userType";
 import useSelection from "antd/lib/table/hooks/useSelection";
@@ -26,14 +29,17 @@ import {
 export default function HomeTemplate(props) {
   const dispatch = useDispatch();
   const { Component, path } = props;
-  const [state, setState] = useState({ collapsed: false });
+  const [state, setState] = useState({ collapsed: true });
+  const [siderWidth, setSiderWidth] = useState(
+    "mobile:w-[50px] mobile:min-w-[50px] mobile:max-w-[50px]"
+  );
 
   const history = useHistory();
   useEffect(() => {
     dispatch(testTokenAction(history));
   }, []);
 
-  const { Header, Content, Footer, Sider } = Layout;
+  const { Sider } = Layout;
 
   function getItem(label, key, icon, children) {
     return {
@@ -70,6 +76,12 @@ export default function HomeTemplate(props) {
 
   const onCollapse = (collapsed) => {
     console.log(collapsed);
+    if (collapsed) {
+      setSiderWidth("mobile:w-[50px] mobile:min-w-[50px] mobile:max-w-[50px]");
+    } else {
+      setSiderWidth("w-[200px] min-w-[200px] max-w-[200px]");
+      console.log(siderWidth);
+    }
     setState({
       collapsed,
     });
@@ -79,12 +91,19 @@ export default function HomeTemplate(props) {
 
   return (
     <div>
-      <Layout style={{ minHeight: "100vh", backgroundColor: "#fff" }}>
+      <Layout
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#fff",
+          maxWidth: "100vw",
+        }}
+        className="pt-8 pl-32 pr-12 mobile:pl-14 mobile:pr-2"
+      >
         <Sider
           collapsible
           collapsed={collapsed}
           onCollapse={onCollapse}
-          className="relative"
+          className={`fixed top-0 left-0 h-full z-10 ${siderWidth}`}
         >
           <div className="sticky top-0 left-0">
             <NavLink to={"/"} className="logo flex justify-center py-10">
@@ -115,7 +134,36 @@ export default function HomeTemplate(props) {
             />
           </div>
         </Sider>
-        <Layout className="site-layout bg-white container">
+        {/* <Menu
+          mode="horizontal"
+          defaultSelectedKeys={["mail"]}
+          className="fixed top-0 bg-secondary-500"
+        >
+          <Menu.Item key="mail" icon={<MailOutlined />}>
+            Navigation One
+          </Menu.Item>
+          <Menu.SubMenu
+            key="SubMenu"
+            title="Navigation Two - Submenu"
+            icon={<SettingOutlined />}
+          >
+            <Menu.Item key="two" icon={<AppstoreOutlined />}>
+              Navigation Two
+            </Menu.Item>
+            <Menu.Item key="three" icon={<AppstoreOutlined />}>
+              Navigation Three
+            </Menu.Item>
+            <Menu.ItemGroup title="Item Group">
+              <Menu.Item key="four" icon={<AppstoreOutlined />}>
+                Navigation Four
+              </Menu.Item>
+              <Menu.Item key="five" icon={<AppstoreOutlined />}>
+                Navigation Five
+              </Menu.Item>
+            </Menu.ItemGroup>
+          </Menu.SubMenu>
+        </Menu> */}
+        <Layout className="site-layout bg-white w-full">
           <Route
             exact
             path={path}

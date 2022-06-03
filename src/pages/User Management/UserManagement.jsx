@@ -1,10 +1,16 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { Avatar, Popconfirm, Table, Tooltip } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteButtonComponent from "../../component/DeleteButtonComponent/DeleteButtonComponent";
 import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
 import EditUserFormComponent from "../../component/EditUserFormComponent/EditUserFormComponent";
+import TableComponent from "../../component/TableComponent/TableComponent";
 import { deleteUserAction } from "../../redux/actions/deleteUserAction";
 
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
@@ -43,6 +49,7 @@ export default function UserManagerment(props) {
       key: "userId",
       width: "5%",
       align: "center",
+      responsive: ["lg, xl, lg"],
     },
     {
       title: "Avatar",
@@ -51,20 +58,43 @@ export default function UserManagerment(props) {
       render: (text, record, index) => {
         return <Avatar src={record.avatar} />;
       },
-      width: "10%",
+      width: "15%",
       align: "center",
+      className: "mr-",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: "30%",
+      width: "25%",
+      render: (text, record, index) => {
+        return (
+          <div>
+            <p class="hidden mobile:block m-0">
+              {record.email.length > 8
+                ? `${record.email.slice(0, 8)}...`
+                : record.email}
+            </p>
+            <p className="mobile:hidden m-0">{record.email}</p>
+          </div>
+        );
+      },
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       width: "25%",
+      render: (text, record, index) => (
+        <div>
+          <p class="hidden mobile:block m-0">
+            {record.name.length > 8
+              ? `${record.name.slice(0, 8)}...`
+              : record.name}
+          </p>
+          <p className="mobile:hidden m-0">{record.name}</p>
+        </div>
+      ),
     },
     {
       title: "Phone",
@@ -123,8 +153,9 @@ export default function UserManagerment(props) {
             className="input"
             ref={inputSearch}
           />
-          <button className="ml-5 btn" type="submit">
-            Search User
+          <button className="btn ml-3" type="submit">
+            <span className="mobile:hidden">Search User</span>
+            <SearchOutlined className="hidden mobile:block" />
           </button>
         </form>
         <Tooltip
@@ -148,13 +179,14 @@ export default function UserManagerment(props) {
         </Tooltip>
       </div>
 
-      <Table
+      {/* <Table
         columns={columns}
         dataSource={data}
         size={"middle"}
         className="w-full"
         pagination={{ position: ["topRight"] }}
-      />
+      /> */}
+      <TableComponent columns={columns} dataSource={data} />
     </div>
   );
 }

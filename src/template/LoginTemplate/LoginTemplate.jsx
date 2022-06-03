@@ -22,11 +22,11 @@ export default function LoginTemplate(props) {
       path={path}
       render={(propsRoute) => {
         return (
-          <Row className="background grid-col-2 h-screen w-screen">
-            <Col span={14} className="h-full w-full">
+          <div className="background flex flex-row h-screen w-screen">
+            <div className="h-full basis-3/5 tablet:hidden">
               <img src={bg} alt="" className="object-cover h-full w-full" />
-            </Col>
-            <Col span={10}>
+            </div>
+            <div className="basis-2/5 w-full tablet:basis-auto">
               <Component
                 exact
                 path={path}
@@ -34,8 +34,8 @@ export default function LoginTemplate(props) {
                 buttonStyle={buttonStyle}
                 {...propsRoute}
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
         );
       }}
     ></Route>
