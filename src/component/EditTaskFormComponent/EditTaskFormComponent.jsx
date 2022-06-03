@@ -109,15 +109,16 @@ function EditTaskFormComponent(props) {
     const htmlString = description;
     const parse = require("html-react-parser");
     return (
-      <div className="w-full h-full">
+      <div className="w-full h-full ">
         {visibleEditor ? (
-          <div>
+          <div className="w-full">
             <Editor
               onInit={(evt, editor) => (editorRef.current = editor)}
               onEditorChange={editorHandleChange}
               value={description}
               name="description"
               id="description"
+              className="w-full"
               init={{
                 height: 350,
                 menubar: false,
@@ -177,7 +178,7 @@ function EditTaskFormComponent(props) {
             onClick={() => {
               setVisibleEditor(true);
             }}
-            className="w-full h-full"
+            className="w-full h-full border-2 rounded-md border-transparent hover:border-primary-400 duration-300 cursor-pointer"
             value={description}
           >
             {parse(htmlString)}
@@ -205,39 +206,32 @@ function EditTaskFormComponent(props) {
   });
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ width: (window.innerWidth * 3) / 5 }}
-    >
-      <div className="left-side grid grid-cols-3 -mx-3 mb-5">
-        <div className="w-full px-3 col-span-2">
-          <div className="col-span-2">
-            <Select
-              bordered={false}
-              value={typeId}
-              className="text-[13px] w-[120px]"
-              optionFilterProp="label"
-              onChange={(option) => setFieldValue("typeId", option)}
-              name="typeId"
-            >
-              {taskType.map((type, index) => {
-                return (
-                  <Option value={type.id} label="bug" key={index}>
-                    <div className="flex items-center">
-                      {type.id === 1 ? (
-                        <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
-                      ) : (
-                        <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />
-                      )}
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex w-full">
+        <Select
+          bordered={false}
+          value={typeId}
+          className="text-[13px] w-[120px]"
+          optionFilterProp="label"
+          onChange={(option) => setFieldValue("typeId", option)}
+          name="typeId"
+        >
+          {taskType.map((type, index) => {
+            return (
+              <Option value={type.id} label="bug" key={index}>
+                <div className="flex items-center">
+                  {type.id === 1 ? (
+                    <BugOutlined className="bg-red-500 mr-2 text-white p-1 rounded-full" />
+                  ) : (
+                    <CheckOutlined className="bg-cyan-500 mr-2 text-white p-1 rounded-full" />
+                  )}
 
-                      <span>{type.taskType}</span>
-                    </div>
-                  </Option>
-                );
-              })}
-            </Select>
-          </div>
-        </div>
+                  <span>{type.taskType}</span>
+                </div>
+              </Option>
+            );
+          })}
+        </Select>
         <div className="w-full px-3 text-right pr-10 relative flex flex-row-reverse">
           <DeleteButtonComponent
             title="Are you sure to delete this task?"
@@ -247,10 +241,10 @@ function EditTaskFormComponent(props) {
           />
         </div>
       </div>
-      <div className="left-side grid grid-cols-3 -mx-3 mb-5">
-        <div className="w-full px-3 col-span-2">
+      <div className="h-full w-full flex flex-wrap mobile:flex-col justify-between">
+        <div className="w-2/3 px-3 h-full tablet:w-1/2 mobile:w-full mobile:mb-10">
+          {/* left */}
           <h3
-            // bordered={false}
             className="text-2xl font-medium rounded-md pl-3 text-secondary-800"
             id="taskName"
             type="text"
@@ -258,34 +252,33 @@ function EditTaskFormComponent(props) {
           >
             {taskName}
           </h3>
+          <div className="w-full px-3 h-96">
+            <label className="label">Description</label>
+            {renderDescription()}
+          </div>
         </div>
-        <div className="w-full px-3">
-          <label className="label">STATUS</label>
-          <Select
-            style={{ width: "100%" }}
-            value={statusId}
-            className="text-[13px]"
-            name="statusId"
-            onChange={(option) => {
-              setFieldValue("statusId", option);
-            }}
-          >
-            {taskStatus.map((status, index) => {
-              return (
-                <Option value={status.statusId} key={index}>
-                  {status.statusName}
-                </Option>
-              );
-            })}
-          </Select>
-        </div>
-      </div>
-      <div className="left-side grid grid-cols-3 -mx-3 mb-5 pl-3">
-        <div className="w-full px-3 col-span-2">
-          <label className="label">Description</label>
-          {renderDescription()}
-        </div>
-        <div className="w-full px-3">
+        <div className="w-1/3 pl-5  tablet:w-1/2 mobile:w-full">
+          {/* right */}
+          <div className="mb-5">
+            <label className="label">STATUS</label>
+            <Select
+              style={{ width: "100%" }}
+              value={statusId}
+              className="text-[13px]"
+              name="statusId"
+              onChange={(option) => {
+                setFieldValue("statusId", option);
+              }}
+            >
+              {taskStatus.map((status, index) => {
+                return (
+                  <Option value={status.statusId} key={index}>
+                    {status.statusName}
+                  </Option>
+                );
+              })}
+            </Select>
+          </div>
           <div className="mb-5">
             <label className="label">ASSIGNESS</label>
             <Select
@@ -314,7 +307,6 @@ function EditTaskFormComponent(props) {
               ""
             )}
           </div>
-
           <div className="mb-5">
             <label className="label">PRIORITY</label>
             <Select
@@ -375,7 +367,6 @@ function EditTaskFormComponent(props) {
               </p>
             )}
           </div>
-
           <div className="mb-5">
             <label className="label">TIME TRACKING</label>
             <Slider
@@ -393,7 +384,7 @@ function EditTaskFormComponent(props) {
             </div>
             <div className="grid grid-cols-2 gap-1">
               <div>
-                <label className="label">Time spent (hours)</label>
+                <span className="font-medium text-xs">Time spent</span>
                 <InputNumber
                   className="w-full"
                   name="timeTrackingSpent"
@@ -406,7 +397,7 @@ function EditTaskFormComponent(props) {
                 />
               </div>
               <div>
-                <label className="label">Time remaining (hours)</label>
+                <label className="font-medium text-xs">Time remaining</label>
                 <InputNumber
                   className="w-full"
                   name="timeTrackingRemaining"
@@ -422,11 +413,9 @@ function EditTaskFormComponent(props) {
           </div>
         </div>
       </div>
-      <div className="left-side grid grid-cols-3 -mx-3 mb-5 pl-3">
-        <div className="w-full px-3 col-span-2">
-          <label className={`$"label" mb-2`}>Comments</label>
-          <CommentComponent taskId={taskId} />
-        </div>
+      <div className="w-full">
+        <label className={`$"label" mb-2`}>Comments</label>
+        <CommentComponent taskId={taskId} />
       </div>
     </form>
   );

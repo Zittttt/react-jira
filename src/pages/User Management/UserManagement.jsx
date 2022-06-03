@@ -70,12 +70,17 @@ export default function UserManagerment(props) {
       render: (text, record, index) => {
         return (
           <div>
+            <p class="hidden tablet:block mobile:hidden m-0">
+              {record.email.length > 20
+                ? `${record.email.slice(0, 20)}...`
+                : record.email}
+            </p>
             <p class="hidden mobile:block m-0">
               {record.email.length > 8
                 ? `${record.email.slice(0, 8)}...`
                 : record.email}
             </p>
-            <p className="mobile:hidden m-0">{record.email}</p>
+            <p className="mobile:hidden tablet:hidden m-0">{record.email}</p>
           </div>
         );
       },

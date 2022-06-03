@@ -31,11 +31,12 @@ const ModalComponent = () => {
         onCancel={handleCancel}
         width={"null"}
         bodyStyle={{
-          padding: "20px",
-          marginRight: "10px",
+          padding: "1.25rem",
+          // paddingTop: "10px",
         }}
         centered
         transitionName=""
+        className="w-2/3 tablet:w-11/12 mobile:w-full rounded-lg overflow-hidden"
       >
         {modalContent}
       </Modal>

@@ -80,7 +80,6 @@ export default function HomeTemplate(props) {
       setSiderWidth("mobile:w-[50px] mobile:min-w-[50px] mobile:max-w-[50px]");
     } else {
       setSiderWidth("w-[200px] min-w-[200px] max-w-[200px]");
-      console.log(siderWidth);
     }
     setState({
       collapsed,
@@ -95,9 +94,9 @@ export default function HomeTemplate(props) {
         style={{
           minHeight: "100vh",
           backgroundColor: "#fff",
-          maxWidth: "100vw",
+          // maxWidth: "100vw",
         }}
-        className="pt-8 pl-32 pr-12 mobile:pl-14 mobile:pr-2"
+        className="pt-8 pl-32 pr-12 mobile:pl-16 mobile:pr-4"
       >
         <Sider
           collapsible
@@ -105,7 +104,7 @@ export default function HomeTemplate(props) {
           onCollapse={onCollapse}
           className={`fixed top-0 left-0 h-full z-10 ${siderWidth}`}
         >
-          <div className="sticky top-0 left-0">
+          <div className="absolute w-full top-0 left-0">
             <NavLink to={"/"} className="logo flex justify-center py-10">
               <img src={logo} width={"50px"} />
             </NavLink>

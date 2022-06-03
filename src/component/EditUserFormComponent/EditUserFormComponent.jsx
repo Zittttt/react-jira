@@ -67,18 +67,17 @@ function EditUserFormComponent(props) {
 
   return (
     <form className="w-full" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-2 h-full">
+      <div className="grid grid-cols-2 h-full mobile:grid-cols-1">
+        <div className="flex justify-center items-center w-full mb-5">
+          <Avatar size={180} src={userDetail.avatar} />
+        </div>
         <div className="w-full mt-2">
           <div className="mb-5">
-            <label className="label">
-              ID
-            </label>
+            <label className="label">ID</label>
             <Input disabled value={userId} name="id" />
           </div>
           <div className="mb-5">
-            <label className="label">
-              NAME
-            </label>
+            <label className="label">NAME</label>
             <Input onChange={handleChange} value={values.name} name="name" />
             {errors.name ? (
               <p className="text-red-500 text-xs italic">{errors.name}</p>
@@ -87,14 +86,9 @@ function EditUserFormComponent(props) {
             )}
           </div>
         </div>
-        <div className="flex justify-center items-center w-full ">
-          <Avatar size={180} src={userDetail.avatar} />
-        </div>
       </div>
       <div className="mb-5">
-        <label className="label">
-          Email
-        </label>
+        <label className="label">Email</label>
         <Input onChange={handleChange} value={values.email} name="email" />
         {errors.email ? (
           <p className="text-red-500 text-xs italic">{errors.email}</p>
@@ -103,9 +97,7 @@ function EditUserFormComponent(props) {
         )}
       </div>
       <div className="mb-5">
-        <label className="label">
-          Phone
-        </label>
+        <label className="label">Phone</label>
         <Input
           onChange={handleChange}
           value={values.phoneNumber}
@@ -118,9 +110,7 @@ function EditUserFormComponent(props) {
         )}
       </div>
       <div className="mb-5">
-        <label className="label">
-          Password
-        </label>
+        <label className="label">Password</label>
         <Input
           type="password"
           name="passWord"
@@ -134,9 +124,7 @@ function EditUserFormComponent(props) {
         )}
       </div>
       <div>
-        <label className="label">
-          Re-password
-        </label>
+        <label className="label">Re-password</label>
         <Input
           name="passwordConfirm"
           type="password"

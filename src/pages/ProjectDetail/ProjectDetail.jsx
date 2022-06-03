@@ -101,7 +101,7 @@ function ProjectDetail(props) {
         </Tooltip>
       </div>
 
-      <div className="statusTask flex justify-between gap-3 w-full">
+      <div className="statusTask grid grid-cols-4 gap-3 w-full tablet:grid-cols-2">
         <DragDropContext onDragEnd={handleDragEnd}>
           {projectDetail.lstTask?.map((lstTask, index) => {
             return (

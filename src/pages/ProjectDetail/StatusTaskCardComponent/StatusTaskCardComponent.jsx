@@ -1,3 +1,4 @@
+import { CiCircleFilled, InfoCircleFilled } from "@ant-design/icons";
 import { Avatar } from "antd";
 import Item from "antd/lib/list/Item";
 import React, { memo } from "react";
@@ -18,9 +19,14 @@ function StatusTaskCardComponent(props) {
   );
 
   return (
-    <div className="p-2 bg-secondary-50 rounded-sm shadow-md w-1/4 min-h-[135px]">
-      <h3 className=" text-secondary-500 text-[12.5px] ml-3">
+    <div className="p-2 bg-secondary-50 rounded-sm shadow-md min-h-[135px]">
+      <h3 className=" text-secondary-500 text-[12.5px] ml-3 tablet:hidden">
         {task.statusName}
+      </h3>
+      <h3 className=" text-secondary-500 text-[12.5px] ml-3 hidden tablet:block">
+        {task.statusName.length > 12
+          ? `${task.statusName.slice(0, 12)}...`
+          : task.statusName}
       </h3>
       <Droppable droppableId={task.statusId.toString()}>
         {(provided) => {
@@ -56,7 +62,14 @@ function StatusTaskCardComponent(props) {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                             >
-                              <span className="flex-1">{task.taskName}</span>
+                              <span className="flex-1 tablet:hidden">
+                                {task.taskName}
+                              </span>
+                              <span className="flex-1 hidden tablet:block">
+                                {task.taskName.length > 8
+                                  ? `${task.taskName.slice(0, 8)}...`
+                                  : task.taskName}
+                              </span>
 
                               <div className="taskStatus flex justify-between items-center h-3 mt-5">
                                 <span
@@ -70,9 +83,14 @@ function StatusTaskCardComponent(props) {
                                       : "text-blue-500"
                                   } `}
                                 >
-                                  {task.priorityTask.priority}
+                                  <span className="tablet:hidden">
+                                    {task.priorityTask.priority}
+                                  </span>
+                                  <span className="hidden tablet:block">
+                                    <InfoCircleFilled />
+                                  </span>
                                 </span>
-                                <div>
+                                <div className="flex mobile:hidden">
                                   {task.assigness.map((member, index) => {
                                     return (
                                       <Avatar

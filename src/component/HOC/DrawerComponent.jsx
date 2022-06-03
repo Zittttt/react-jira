@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useLayoutEffect, useState } from "react";
 import { Drawer, Button, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_DRAWER } from "../../util/constant/configSystem";
@@ -13,6 +13,7 @@ function Modal(props) {
   const dispatch = useDispatch();
 
   const { resetForm } = useSelector((state) => state.formikReducer);
+  const [size, setSize] = useState(0);
 
   const onClose = () => {
     dispatch({
@@ -21,11 +22,24 @@ function Modal(props) {
     //Clear form sau khi tắt drawer
     resetForm();
   };
+
+  useEffect(() => {
+    setDrawerSize();
+  }, []);
+
+  const setDrawerSize = () => {
+    if (window.innerWidth < 1280) {
+      setSize(window.innerWidth);
+    } else {
+      setSize((window.innerWidth / 5) * 2);
+    }
+  };
+
   return (
     <>
       <Drawer
         title={title}
-        width={720}
+        width={size}
         onClose={onClose}
         visible={visible}
         footer={

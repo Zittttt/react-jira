@@ -58,7 +58,7 @@ export default function CreateUserComponent() {
   const { email, passWord, name, phoneNumber, passwordConfirm } = values;
 
   return (
-    <form style={{ width: 500 }}>
+    <form >
       <h3 className="title text-center">Create User</h3>
       <div className="mb-5">
         <label className="label">Name</label>

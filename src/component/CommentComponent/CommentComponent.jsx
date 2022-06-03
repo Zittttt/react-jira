@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteCommentAction } from "../../redux/actions/deleteCommentAction";
 import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
 import { insertCommentAction } from "../../redux/actions/insertCommentAction";
+import * as Yup from "yup";
 
 function CommentComponent(props) {
   const { taskId } = props;
@@ -28,6 +29,9 @@ function CommentComponent(props) {
       dispatch(insertCommentAction(values));
       resetForm();
     },
+    validationSchema: Yup.object().shape({
+      contentComment: Yup.string().required(),
+    }),
   });
   console.log("Comment");
 

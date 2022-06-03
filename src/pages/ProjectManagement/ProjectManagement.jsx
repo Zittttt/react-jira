@@ -84,7 +84,7 @@ export default function ProjectManagement(props) {
         return (
           <span>
             <Tag
-              className="text-xs"
+              className="text-sm mobile:hidden"
               color={
                 record.categoryName === "Dự án phần mềm"
                   ? "volcano"
@@ -94,6 +94,18 @@ export default function ProjectManagement(props) {
               }
             >
               {record.categoryName.toUpperCase()}
+            </Tag>
+            <Tag
+              className="text-xs hidden mobile:block p-0"
+              color={
+                record.categoryName === "Dự án phần mềm"
+                  ? "volcano"
+                  : record.categoryName === "Dự án web"
+                  ? "green"
+                  : "geekblue"
+              }
+            >
+              {record.categoryName.toUpperCase().slice(5, 99)}
             </Tag>
           </span>
         );

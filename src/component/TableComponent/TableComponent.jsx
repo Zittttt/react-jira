@@ -8,6 +8,7 @@ export default function TableComponent(props) {
       dataSource={props.dataSource}
       className="w-full mx-auto"
       pagination={{ position: ["topRight"] }}
+      size="small"
     />
   );
 }

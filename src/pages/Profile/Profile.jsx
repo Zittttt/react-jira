@@ -60,8 +60,11 @@ export default function Profile() {
     <div className="w-full">
       <h3 className="title">Profile</h3>
       <form className="w-full" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-3 mb-5">
-          <div className="w-full col-span-2">
+        <div className="flex mb-5 items-center tablet:flex-col">
+          <div className="flex justify-center items-center w-1/3 tablet:w-full tablet:mb-5 ">
+            <img src={avatar} width="70%" className="rounded-md" />
+          </div>
+          <div className="w-2/3 tablet:w-full">
             <div className="">
               <div className="mb-5">
                 <label className="label">NAME</label>
@@ -137,16 +140,15 @@ export default function Profile() {
               )}
             </div>
           </div>
-          <div className="flex justify-center items-center col-span-1 ">
-            <img src={avatar} width="60%" className="rounded-md" />
-          </div>
         </div>
-        <button
-          className="rounded-md px-5 py-2 bg-[#002140] hover:bg-[#1890ff] text-white transition-all duration-200"
-          type="submit"
-        >
-          Save
-        </button>
+        <div className="flex-row-reverse flex">
+          <button
+            className="rounded-md px-5 py-2 bg-[#002140] hover:bg-[#1890ff] text-white transition-all duration-200"
+            type="submit"
+          >
+            Save
+          </button>
+        </div>
       </form>
     </div>
   );

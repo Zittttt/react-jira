@@ -35,10 +35,6 @@ a {
   @apply text-3xl text-primary-800 mobile:text-xl;
 }
 
-.my-container {
-  /* @apply; */
-}
-
 @tailwind components;
 @tailwind utilities;
 
@@ -58,11 +54,6 @@ body {
   position: relative;
 }
 
-/* .account {
-  position: sticky !important;
-  bottom: 0;
-} */
-
 .ant-table-measure-row {
   display: none;
 }
@@ -72,8 +63,34 @@ body {
     @apply text-xs;
   }
   .ant-layout-sider-trigger {
-    width: 50px !important;
+    display: none;
   }
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td,
+  .ant-table tfoot > tr > th,
+  .ant-table tfoot > tr > td {
+    padding: 8px 0 !important;
+  }
+}
+
+#root
+  > div
+  > section
+  > section
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div
+  > table
+  > thead
+  > tr
+  > th:nth-child(2)
+  > div
+  > span.ant-dropdown-trigger.ant-table-filter-trigger {
+  margin: 0;
 }
 
 ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collapsed
@@ -94,6 +111,10 @@ ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collap
   > div
   > span {
   display: none;
+}
+
+.ant-drawer-right.ant-drawer-open .ant-drawer-content-wrapper {
+  box-shadow: none;
 }
 
 .account .ant-menu-item-selected {
@@ -124,11 +145,4 @@ ul.ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collap
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.ant-table-thead > tr > th,
-.ant-table-tbody > tr > td,
-.ant-table tfoot > tr > th,
-.ant-table tfoot > tr > td {
-  padding: 8px 0 !important;
 }
