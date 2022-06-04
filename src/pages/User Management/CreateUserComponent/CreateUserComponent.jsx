@@ -2,13 +2,10 @@ import { Input } from "antd";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  CLOSE_MODAL,
-  SET_RESET_FORM_FUNCTION,
-  SET_SUBMIT_MODAL_FUNCTION,
-} from "../../../util/constant/configSystem";
 import * as Yup from "yup";
 import { registerAction } from "../../../redux/actions/registerAction";
+import { SET_RESET_FORM_FUNCTION, SET_SUBMIT_MODAL_FUNCTION } from "../../../redux/types/types";
+
 
 export default function CreateUserComponent() {
   const dispatch = useDispatch();

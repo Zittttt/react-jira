@@ -1,10 +1,9 @@
 import { projectService } from "../../services/baseService";
-import { STATUS_CODE } from "../../util/config";
 import {
   DISPLAY_LOADING,
-  HIDE_LOADING,
-} from "../../util/constant/configSystem";
-import { GET_PROJECT } from "../types/projectType";
+  HIDE_LOADING
+} from "../../redux/types/types";
+import { GET_PROJECT } from "../types/types";
 
 export const getProjectAction = (keyword) => {
   return async (dispatch) => {
@@ -14,7 +13,6 @@ export const getProjectAction = (keyword) => {
       });
       //gọi api
       let { data, status } = await projectService.getProject(keyword);
-      console.log(data);
       dispatch({
         type: GET_PROJECT,
         value: data.content,

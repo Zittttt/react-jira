@@ -4,12 +4,11 @@ import { TOKEN } from "../../util/config";
 import {
   DISPLAY_LOADING,
   HIDE_LOADING,
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-  STATUS_CODE,
   USER_LOGIN,
-} from "../../util/constant/configSystem";
-import { LOGIN } from "../types/userType";
+} from "../../redux/types/types";
+import { LOGIN } from "../types/types";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const loginAction = (userLogin, props) => {
   return async (dispatch) => {

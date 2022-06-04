@@ -1,14 +1,13 @@
 import { Avatar, Input } from "antd";
 import { useFormik } from "formik";
-import React, { memo, useCallback, useEffect, useMemo } from "react";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import * as Yup from "yup";
+import { editUserAction } from "../../../redux/actions/editUserAction";
 import {
   SET_RESET_FORM_FUNCTION,
   SET_SUBMIT_DRAWER_FUNCTION,
-} from "../../util/constant/configSystem";
-import { editUserAction } from "../../redux/actions/editUserAction";
+} from "../../../redux/types/types";
 
 function EditUserFormComponent(props) {
   const dispatch = useDispatch();

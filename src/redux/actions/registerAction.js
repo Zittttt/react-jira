@@ -1,8 +1,8 @@
 import { userServices } from "../../services/baseService";
 import {
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const registerAction = (data, resetForm) => {
   return async (dispatch) => {

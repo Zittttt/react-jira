@@ -1,5 +1,5 @@
-import { GET_PROJECT_DETAIL } from "../../util/constant/configSystem";
-import { GET_CATEGORY, GET_PROJECT } from "../types/projectType";
+import { GET_PROJECT_DETAIL } from "../../redux/types/types";
+import { GET_CATEGORY, GET_PROJECT } from "../types/types";
 
 const stateDefault = {
   projectArr: [],

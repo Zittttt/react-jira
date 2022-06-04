@@ -2,9 +2,9 @@ import { projectService } from "../../services/baseService";
 import {
   DISPLAY_LOADING,
   HIDE_LOADING,
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const createProjectAction = (data) => {
   return async (dispatch) => {

@@ -3,7 +3,7 @@ import {
   OPEN_DRAWER,
   OPEN_FORM,
   SET_SUBMIT_DRAWER_FUNCTION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 
 const initialState = {
   visible: false,

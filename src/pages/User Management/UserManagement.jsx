@@ -1,31 +1,19 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import { Avatar, Popconfirm, Table, Tooltip } from "antd";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { Avatar, Tooltip } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteButtonComponent from "../../component/DeleteButtonComponent/DeleteButtonComponent";
 import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
-import EditUserFormComponent from "../../component/EditUserFormComponent/EditUserFormComponent";
+import EditUserFormComponent from "./EditUserFormComponent/EditUserFormComponent";
 import TableComponent from "../../component/TableComponent/TableComponent";
 import { deleteUserAction } from "../../redux/actions/deleteUserAction";
-
 import { getAllUserAction } from "../../redux/actions/getAllUserAction";
-import {
-  OPEN_DRAWER,
-  OPEN_FORM,
-  OPEN_MODAL,
-} from "../../util/constant/configSystem";
+import { OPEN_FORM, OPEN_MODAL } from "../../redux/types/types";
 import CreateUserComponent from "./CreateUserComponent/CreateUserComponent";
 
 export default function UserManagerment(props) {
   const dispatch = useDispatch();
   const userLst = useSelector((state) => state.userReducer.userSearch);
-
-  console.log("UserManagement");
 
   useEffect(() => {
     dispatch(getAllUserAction());
@@ -70,12 +58,12 @@ export default function UserManagerment(props) {
       render: (text, record, index) => {
         return (
           <div>
-            <p class="hidden tablet:block mobile:hidden m-0">
+            <p className="hidden tablet:block mobile:hidden m-0">
               {record.email.length > 20
                 ? `${record.email.slice(0, 20)}...`
                 : record.email}
             </p>
-            <p class="hidden mobile:block m-0">
+            <p className="hidden mobile:block m-0">
               {record.email.length > 8
                 ? `${record.email.slice(0, 8)}...`
                 : record.email}
@@ -92,7 +80,7 @@ export default function UserManagerment(props) {
       width: "25%",
       render: (text, record, index) => (
         <div>
-          <p class="hidden mobile:block m-0">
+          <p className="hidden mobile:block m-0">
             {record.name.length > 8
               ? `${record.name.slice(0, 8)}...`
               : record.name}

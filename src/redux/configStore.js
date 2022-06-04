@@ -1,16 +1,15 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { userReducer } from "./reducers/userReducer";
-import { projectReducer } from "./reducers/projectReducer";
-import loadingReducer from "./reducers/loadingReducer";
-import notificationReducer from "./reducers/notificationReducer";
+import commentReducer from "./reducers/commentReducer";
 import { drawerReducer } from "./reducers/drawerReducer";
 import { editorContentReducer } from "./reducers/editorContentReducer";
-import { taskReducer } from "./reducers/taskReducer";
-import modalReducer from "./reducers/modalReducer";
-import commentReducer from "./reducers/commentReducer";
 import { formikReducer } from "./reducers/formikReducer";
+import loadingReducer from "./reducers/loadingReducer";
+import modalReducer from "./reducers/modalReducer";
+import notificationReducer from "./reducers/notificationReducer";
+import { projectReducer } from "./reducers/projectReducer";
+import { taskReducer } from "./reducers/taskReducer";
+import { userReducer } from "./reducers/userReducer";
 
 const rootReducer = combineReducers({
   //state

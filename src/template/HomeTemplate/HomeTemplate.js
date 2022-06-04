@@ -1,30 +1,19 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Link, NavLink, Route, useHistory } from "react-router-dom";
-import HeaderHome from "./HeaderHome";
-import ProjectManagement from "../../pages/ProjectManagement/ProjectManagement";
-
-import logo from "../../assets/img/logo.png";
-
-import { Layout, Menu, Breadcrumb, Button } from "antd";
 import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-  MailOutlined,
-  AppstoreOutlined,
-  SettingOutlined,
+  PieChartOutlined, UserOutlined
 } from "@ant-design/icons";
-import { LOGIN } from "../../redux/types/userType";
-import useSelection from "antd/lib/table/hooks/useSelection";
+import { Layout, Menu } from "antd";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TOKEN } from "../../util/config";
+import { NavLink, Route, useHistory } from "react-router-dom";
+import logo from "../../assets/img/logo.png";
 import { testTokenAction } from "../../redux/actions/testTokenAction";
+import { TOKEN } from "../../util/config";
 import {
-  NOTIFICATION_ICON,
-  SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+  SHOW_NOTIFICATION
+} from "../../redux/types/types";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
+
+
 
 export default function HomeTemplate(props) {
   const dispatch = useDispatch();
@@ -96,7 +85,7 @@ export default function HomeTemplate(props) {
           backgroundColor: "#fff",
           // maxWidth: "100vw",
         }}
-        className="pt-8 pl-32 pr-12 mobile:pl-16 mobile:pr-4"
+        className="pt-8 pl-32 pr-12 mobile:pl-16 mobile:pr-4 mobile:pt-4"
       >
         <Sider
           collapsible
@@ -106,7 +95,7 @@ export default function HomeTemplate(props) {
         >
           <div className="absolute w-full top-0 left-0">
             <NavLink to={"/"} className="logo flex justify-center py-10">
-              <img src={logo} width={"50px"} />
+              <img src={logo} className="w-12 mobile:w-10" />
             </NavLink>
             <Menu
               theme="dark"
@@ -133,35 +122,6 @@ export default function HomeTemplate(props) {
             />
           </div>
         </Sider>
-        {/* <Menu
-          mode="horizontal"
-          defaultSelectedKeys={["mail"]}
-          className="fixed top-0 bg-secondary-500"
-        >
-          <Menu.Item key="mail" icon={<MailOutlined />}>
-            Navigation One
-          </Menu.Item>
-          <Menu.SubMenu
-            key="SubMenu"
-            title="Navigation Two - Submenu"
-            icon={<SettingOutlined />}
-          >
-            <Menu.Item key="two" icon={<AppstoreOutlined />}>
-              Navigation Two
-            </Menu.Item>
-            <Menu.Item key="three" icon={<AppstoreOutlined />}>
-              Navigation Three
-            </Menu.Item>
-            <Menu.ItemGroup title="Item Group">
-              <Menu.Item key="four" icon={<AppstoreOutlined />}>
-                Navigation Four
-              </Menu.Item>
-              <Menu.Item key="five" icon={<AppstoreOutlined />}>
-                Navigation Five
-              </Menu.Item>
-            </Menu.ItemGroup>
-          </Menu.SubMenu>
-        </Menu> */}
         <Layout className="site-layout bg-white w-full">
           <Route
             exact

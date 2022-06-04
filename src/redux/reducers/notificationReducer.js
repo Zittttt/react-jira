@@ -1,6 +1,5 @@
-import { Action } from "history";
-import { SHOW_NOTIFICATION } from "../../util/constant/configSystem";
-import { Button, notification, Space } from "antd";
+import { notification } from "antd";
+import { SHOW_NOTIFICATION } from "../../redux/types/types";
 
 const initialState = {
   message: "",

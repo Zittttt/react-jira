@@ -1,18 +1,15 @@
-import { CiCircleFilled, InfoCircleFilled } from "@ant-design/icons";
+import { InfoCircleFilled } from "@ant-design/icons";
 import { Avatar } from "antd";
-import Item from "antd/lib/list/Item";
 import React, { memo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import EditTaskFormComponent from "../../../component/EditTaskFormComponent/EditTaskFormComponent";
 import { getTaskDetailAction } from "../../../redux/actions/getTaskDetailAction";
-import { OPEN_MODAL } from "../../../util/constant/configSystem";
+import { OPEN_MODAL } from "../../../redux/types/types";
+import EditTaskFormComponent from "../EditTaskFormComponent/EditTaskFormComponent";
 
 function StatusTaskCardComponent(props) {
   const dispatch = useDispatch();
   const { task } = props;
-
-  console.log("StatusTaskCard");
 
   const taskSorted = task.lstTaskDeTail?.sort((a, b) =>
     a.priorityTask.priorityId > b.priorityTask.priorityId ? 1 : -1

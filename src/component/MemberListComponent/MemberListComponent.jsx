@@ -1,4 +1,4 @@
-import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
+import { UserAddOutlined } from "@ant-design/icons";
 import { AutoComplete, Avatar, Popover, Table, Tooltip } from "antd";
 import React, { memo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +17,6 @@ function MemberListComponent(props) {
   const [value, setValue] = useState("");
 
   const history = useHistory();
-
-  console.log("memberlist");
 
   return (
     <div className="flex">
@@ -46,6 +44,8 @@ function MemberListComponent(props) {
                       dispatch(getProjectDetailAction(projectDetail.id));
                     }
                   }}
+                  title="Are you sure to delete this member?"
+                  placement="bottom"
                 />
               ),
             };
@@ -102,7 +102,7 @@ function MemberListComponent(props) {
 
       <Tooltip placement="top" title={"Add member"}>
         <Popover
-          placement="rightTop"
+          placement="bottom"
           title={"Add member"}
           trigger="click"
           content={() => {

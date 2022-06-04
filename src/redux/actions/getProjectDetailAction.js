@@ -1,10 +1,9 @@
-import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
 import { projectService } from "../../services/baseService";
 import {
   DISPLAY_LOADING,
   GET_PROJECT_DETAIL,
   HIDE_LOADING,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 
 export const getProjectDetailAction = (id) => {
   return async (dispatch) => {

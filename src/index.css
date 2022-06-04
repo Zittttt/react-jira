@@ -1,4 +1,18 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif !important;
+}
 
 h1 {
   @apply text-2xl;
@@ -24,7 +38,7 @@ a {
 }
 
 .input {
-  @apply h-8 p-2 border-2 border-secondary-800 hover:border-primary-600 focus:outline-primary-600 rounded-md duration-300;
+  @apply h-8 p-2 border-2 border-secondary-800 hover:border-primary-600 focus:outline-primary-600 rounded-md duration-300 mobile:w-28;
 }
 
 .label {
@@ -35,28 +49,9 @@ a {
   @apply text-3xl text-primary-800 mobile:text-xl;
 }
 
-@tailwind components;
-@tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Roboto", sans-serif !important;
-}
-
-.ant-layout-sider-children {
+/* .ant-layout-sider-children {
   position: relative;
-}
-
-.ant-table-measure-row {
-  display: none;
-}
+} */
 
 @media screen and (max-width: 640px) {
   .ant-table table {

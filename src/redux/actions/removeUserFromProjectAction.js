@@ -1,10 +1,10 @@
 import { message } from "antd";
 import { projectService } from "../../services/baseService";
 import {
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 import { getProjectAction } from "./getProjectAction";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const removeUserFromProject = (value) => {
   return async (dispatch) => {

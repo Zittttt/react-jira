@@ -1,23 +1,17 @@
+import { Editor } from "@tinymce/tinymce-react";
+import { Input, Select } from "antd";
+import { useFormik } from "formik";
 import React, { memo, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SET_RESET_FORM_FUNCTION,
-  SET_SUBMIT_DRAWER_FUNCTION,
-} from "../../util/constant/configSystem";
-import { connect } from "react-redux";
-import { useFormik, withFormik } from "formik";
 import * as Yup from "yup";
-import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
-import { updateProjectAction } from "../../redux/actions/updateProjectAction";
-import { Editor } from "@tinymce/tinymce-react";
-import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
-import { Input, Select } from "antd";
+import { getProjectCategoryAction } from "../../../redux/actions/getProjectCategoryAction";
+import { updateProjectAction } from "../../../redux/actions/updateProjectAction";
+import { SET_RESET_FORM_FUNCTION, SET_SUBMIT_DRAWER_FUNCTION } from "../../../redux/types/types";
+
 
 const { Option } = Select;
 
 function EditProjectFormComponent(props) {
-  console.log("editProjectForm");
-
   const dispatch = useDispatch();
 
   const { categoryArr, projectDetail } = useSelector(

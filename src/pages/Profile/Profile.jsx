@@ -1,18 +1,14 @@
+import { Input } from "antd";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUserAction } from "../../redux/actions/getAllUserAction";
 import * as Yup from "yup";
 import { editUserAction } from "../../redux/actions/editUserAction";
-import { Avatar, Button, Input } from "antd";
 
 export default function Profile() {
   const dispatch = useDispatch();
 
   const { userLogin } = useSelector((state) => state.userReducer);
-
-  console.log(userLogin);
-
   const { id, avatar, email, name, phoneNumber } = userLogin;
 
   const formik = useFormik({

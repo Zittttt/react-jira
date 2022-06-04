@@ -1,7 +1,7 @@
 import {
   DISPLAY_LOADING,
   HIDE_LOADING,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 
 const initialState = {
   loadingStatus: false,

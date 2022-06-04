@@ -1,5 +1,4 @@
-import { LOGIN } from "../redux/types/userType";
-import { http, TOKEN } from "../util/config";
+import { http } from "../util/config";
 
 export default class UserServices {
   login(data) {

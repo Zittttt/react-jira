@@ -1,10 +1,9 @@
-import { useHistory } from "react-router-dom";
 import {
   GET_ALL_USER,
   GET_USER_DETAIL,
-  USER_LOGIN,
-} from "../../util/constant/configSystem";
-import { LOGIN, REGISTER } from "../types/userType";
+  USER_LOGIN
+} from "../../redux/types/types";
+import { LOGIN, REGISTER } from "../types/types";
 
 let user = {};
 

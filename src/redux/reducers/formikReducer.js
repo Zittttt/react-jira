@@ -1,4 +1,4 @@
-import { SET_RESET_FORM_FUNCTION } from "../../util/constant/configSystem";
+import { SET_RESET_FORM_FUNCTION } from "../../redux/types/types";
 
 const initialState = {
   resetForm: () => {},

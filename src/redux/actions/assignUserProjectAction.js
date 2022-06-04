@@ -1,11 +1,9 @@
-import { useHistory } from "react-router-dom";
 import { projectService } from "../../services/baseService";
 import {
-  NOTIFICATION_ICON,
-  SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
-import { GET_PROJECT } from "../types/projectType";
+  SHOW_NOTIFICATION
+} from "../../redux/types/types";
 import { getProjectAction } from "./getProjectAction";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const assignUserProjectAction = (value) => {
   return async (dispatch) => {

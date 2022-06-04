@@ -1,12 +1,12 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_SUBMIT_DRAWER_FUNCTION } from "../../util/constant/configSystem";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Editor } from "@tinymce/tinymce-react";
 import { BugOutlined, CheckOutlined } from "@ant-design/icons";
 import { Avatar, Input, InputNumber, Select, Slider } from "antd";
-import { createTaskAction } from "../../redux/actions/createTaskAction";
+import { createTaskAction } from "../../../redux/actions/createTaskAction";
+import { SET_SUBMIT_DRAWER_FUNCTION } from "../../../redux/types/types";
 
 const { Option } = Select;
 

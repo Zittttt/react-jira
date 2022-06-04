@@ -1,11 +1,5 @@
-import { useHistory } from "react-router-dom";
 import { userServices } from "../../services/baseService";
-import {
-  DISPLAY_LOADING,
-  HIDE_LOADING,
-  STATUS_CODE,
-} from "../../util/constant/configSystem";
-import { getProjectAction } from "./getProjectAction";
+import { STATUS_CODE } from "../../util/constant/configSystem";
 
 export const testTokenAction = (props, login) => {
   return async (dispatch) => {

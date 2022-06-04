@@ -1,5 +1,4 @@
 import { taskServices } from "../../services/baseService";
-import { getProjectDetailAction } from "./getProjectDetailAction";
 
 export const updateStatusAction = (data, projectId) => {
   return async (dispatch) => {

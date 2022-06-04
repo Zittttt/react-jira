@@ -3,7 +3,7 @@ import {
   DISPLAY_LOADING,
   GET_TASK_DETAIL,
   HIDE_LOADING,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 
 export const getTaskDetailAction = (id) => {
   return async (dispatch) => {

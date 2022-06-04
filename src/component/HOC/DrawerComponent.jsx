@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useLayoutEffect, useState } from "react";
 import { Drawer, Button, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_DRAWER } from "../../util/constant/configSystem";
+import { CLOSE_DRAWER } from "../../redux/types/types";
 
 function Modal(props) {
   // const [visible, setVisible] = useState(false);
@@ -13,33 +13,43 @@ function Modal(props) {
   const dispatch = useDispatch();
 
   const { resetForm } = useSelector((state) => state.formikReducer);
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(window.innerWidth);
 
   const onClose = () => {
     dispatch({
       type: CLOSE_DRAWER,
     });
-    //Clear form sau khi tắt drawer
     resetForm();
   };
 
   useEffect(() => {
-    setDrawerSize();
+    window.onload = () => {
+      setSize(window.innerWidth);
+    };
+
+    window.onresize = () => {
+      setSize(window.innerWidth);
+    };
+
+    return () => {
+      window.removeEventListener("onload");
+      window.removeEventListener("onresize");
+    };
   }, []);
 
-  const setDrawerSize = () => {
-    if (window.innerWidth < 1280) {
-      setSize(window.innerWidth);
-    } else {
-      setSize((window.innerWidth / 5) * 2);
-    }
-  };
+  let drawerSize = 0;
+
+  if (size < 1280) {
+    drawerSize = size;
+  } else {
+    drawerSize = (size / 5) * 2;
+  }
 
   return (
     <>
       <Drawer
         title={title}
-        width={size}
+        width={drawerSize}
         onClose={onClose}
         visible={visible}
         footer={

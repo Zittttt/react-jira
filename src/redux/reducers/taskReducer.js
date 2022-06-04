@@ -3,7 +3,7 @@ import {
   GET_TASK_DETAIL,
   GET_TASK_STATUS,
   GET_TASK_TYPE,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 
 const initialState = {
   taskStatus: [],

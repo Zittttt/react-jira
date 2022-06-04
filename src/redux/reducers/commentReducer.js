@@ -1,4 +1,4 @@
-import { GET_ALL_COMMENT } from "../../util/constant/configSystem";
+import { GET_ALL_COMMENT } from "../../redux/types/types";
 
 const initialState = {
   lstComment: [],

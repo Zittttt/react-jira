@@ -1,7 +1,7 @@
 import { Button, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_MODAL } from "../../util/constant/configSystem";
+import { CLOSE_MODAL } from "../../redux/types/types";
 
 const ModalComponent = () => {
   //   const [isModalVisible, setIsModalVisible] = useState(false);

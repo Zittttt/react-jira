@@ -1,37 +1,24 @@
-import {
-  BugOutlined,
-  CheckOutlined,
-  DeleteOutlined,
-  WindowsFilled,
-} from "@ant-design/icons";
+import { BugOutlined, CheckOutlined } from "@ant-design/icons";
 import { Editor } from "@tinymce/tinymce-react";
-import { Avatar, InputNumber, Popconfirm, Select, Slider } from "antd";
-import Input from "antd/lib/input/Input";
-import { useFormik, withFormik } from "formik";
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { Avatar, InputNumber, Select, Slider } from "antd";
+import { useFormik } from "formik";
+import React, { memo, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
-import { getPriorityAction } from "../../redux/actions/getPriorityAction";
-import { getTaskDetailAction } from "../../redux/actions/getTaskDetailAction";
-import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
-import { removeTaskAction } from "../../redux/actions/removeTaskAction";
-import { updateTaskAction } from "../../redux/actions/updateTaskAction";
+import DeleteButtonComponent from "../../../component/DeleteButtonComponent/DeleteButtonComponent";
+import { removeTaskAction } from "../../../redux/actions/removeTaskAction";
+import { updateTaskAction } from "../../../redux/actions/updateTaskAction";
 import {
   SET_RESET_FORM_FUNCTION,
   SET_SUBMIT_MODAL_FUNCTION,
-} from "../../util/constant/configSystem";
+} from "../../../redux/types/types";
 import CommentComponent from "../CommentComponent/CommentComponent";
-import parse from "html-react-parser";
-import DeleteButtonComponent from "../DeleteButtonComponent/DeleteButtonComponent";
 
 const { Option } = Select;
 
 function EditTaskFormComponent(props) {
   const editorRef = useRef(null);
   const dispatch = useDispatch();
-
-  console.log("EditTask");
 
   const { taskDetail } = useSelector((state) => state.taskReducer);
   const [visibleEditor, setVisibleEditor] = useState(false);

@@ -3,10 +3,10 @@ import {
   CLOSE_MODAL,
   DISPLAY_LOADING,
   HIDE_LOADING,
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 import { getProjectDetailAction } from "./getProjectDetailAction";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const updateTaskAction = (data) => {
   return async (dispatch) => {

@@ -2,7 +2,7 @@ import {
   CLOSE_MODAL,
   OPEN_MODAL,
   SET_SUBMIT_MODAL_FUNCTION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 
 const initialState = {
   isModalVisible: false,

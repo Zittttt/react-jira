@@ -1,7 +1,6 @@
 import React from "react";
-import { Row, Col } from "antd";
-import bg from "../../assets/img/bg.png";
 import { Route } from "react-router-dom";
+import bg from "../../assets/img/bg.png";
 
 export default function LoginTemplate(props) {
   // const onFinish = (values) => {

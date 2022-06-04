@@ -1,17 +1,17 @@
 import { PlusOutlined } from "@ant-design/icons";
-import React, { memo, useEffect, useMemo, useState } from "react";
+import { Tooltip } from "antd";
+import React, { memo, useEffect } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
+import CreateTaskFormComponent from "./CreateTaskFormComponent/CreateTaskFormComponent";
+import MemberListComponent from "../../component/MemberListComponent/MemberListComponent";
+import { getPriorityAction } from "../../redux/actions/getPriorityAction";
 import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
 import { getTaskStatusAction } from "../../redux/actions/getTaskStatusAction";
-import { OPEN_FORM } from "../../util/constant/configSystem";
-import StatusTaskCardComponent from "./StatusTaskCardComponent/StatusTaskCardComponent";
-import CreateTaskFormComponent from "../../component/CreateTaskFormComponent/CreateTaskFormComponent";
-import MemberListComponent from "../../component/MemberListComponent/MemberListComponent";
-import { DragDropContext } from "react-beautiful-dnd";
-import { updateStatusAction } from "../../redux/actions/updateStatusAction";
 import { getTaskTypeAction } from "../../redux/actions/getTaskTypeAction";
-import { getPriorityAction } from "../../redux/actions/getPriorityAction";
-import { Tooltip } from "antd";
+import { updateStatusAction } from "../../redux/actions/updateStatusAction";
+import { OPEN_FORM } from "../../redux/types/types";
+import StatusTaskCardComponent from "./StatusTaskCardComponent/StatusTaskCardComponent";
 
 function ProjectDetail(props) {
   const dispatch = useDispatch();
@@ -30,10 +30,7 @@ function ProjectDetail(props) {
 
   // const { resetForm } = useSelector((state) => state.formikReducer);
 
-  console.log("ProjectDetail");
-
   const handleDragEnd = (result) => {
-    console.log("result", result);
     const { lstTask } = projectDetail;
 
     const { source, destination, draggableId } = result;

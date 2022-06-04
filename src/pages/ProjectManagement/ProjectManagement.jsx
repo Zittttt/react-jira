@@ -1,29 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import { projectService, userServices } from "../../services/baseService";
-import { Table, Tag, Space, Popconfirm } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Tag } from "antd";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectAction } from "../../redux/actions/getProjectAction";
-import ProjectManagementTable from "../../component/ProjectTableComponent/ProjectManagementTable";
-import { testTokenAction } from "../../redux/actions/testTokenAction";
-import { deleteProjectAction } from "../../redux/actions/deleteProjectAction";
-import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
-import MemberListComponent from "../../component/MemberListComponent/MemberListComponent";
 import { NavLink } from "react-router-dom";
-import { OPEN_FORM } from "../../util/constant/configSystem";
-import EditProjectFormWithFormik from "../../component/EditProjectFormComponent/EditProjectFormComponent";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
 import DeleteButtonComponent from "../../component/DeleteButtonComponent/DeleteButtonComponent";
+import EditButtonComponent from "../../component/EditButtonComponent/EditButtonComponent";
+import MemberListComponent from "../../component/MemberListComponent/MemberListComponent";
 import TableComponent from "../../component/TableComponent/TableComponent";
+import { deleteProjectAction } from "../../redux/actions/deleteProjectAction";
+import { getProjectAction } from "../../redux/actions/getProjectAction";
+import { getProjectDetailAction } from "../../redux/actions/getProjectDetailAction";
+import { OPEN_FORM } from "../../redux/types/types";
+import EditProjectFormComponent from "./EditProjectFormComponent/EditProjectFormComponent";
 
 export default function ProjectManagement(props) {
   const action = getProjectAction();
-
-  console.log("ProjectManagement");
 
   let projectArr = useSelector(
     (rootReducer) => rootReducer.projectReducer.projectArr
@@ -142,7 +133,7 @@ export default function ProjectManagement(props) {
               dispatch(action);
               const actionOpenForm = {
                 type: OPEN_FORM,
-                Component: <EditProjectFormWithFormik />,
+                Component: <EditProjectFormComponent />,
                 title: `Edit Project (${record.id})`,
               };
               //dispatch actionOpenForm với nội dung component là EditProjectFormWithFormik

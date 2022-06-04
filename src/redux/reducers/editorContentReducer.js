@@ -1,4 +1,4 @@
-import { POST_EDITOR_CONTENT } from "../../util/constant/configSystem";
+import { POST_EDITOR_CONTENT } from "../../redux/types/types";
 
 const initialState = {
   content: "",

@@ -4,7 +4,7 @@ import {
   GET_ALL_USER,
   GET_USER_DETAIL,
   HIDE_LOADING,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 export const getAllUserAction = (keyword, quantity) => {
   return async (dispatch) => {
     // dispatch({ type: DISPLAY_LOADING });

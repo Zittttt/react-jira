@@ -1,12 +1,12 @@
 import { Avatar, Button, Popconfirm } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useFormik } from "formik";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCommentAction } from "../../redux/actions/deleteCommentAction";
-import { getAllCommentAction } from "../../redux/actions/getAllCommentAction";
-import { insertCommentAction } from "../../redux/actions/insertCommentAction";
 import * as Yup from "yup";
+import { deleteCommentAction } from "../../../redux/actions/deleteCommentAction";
+import { getAllCommentAction } from "../../../redux/actions/getAllCommentAction";
+import { insertCommentAction } from "../../../redux/actions/insertCommentAction";
 
 function CommentComponent(props) {
   const { taskId } = props;
@@ -33,7 +33,6 @@ function CommentComponent(props) {
       contentComment: Yup.string().required(),
     }),
   });
-  console.log("Comment");
 
   return (
     <div>

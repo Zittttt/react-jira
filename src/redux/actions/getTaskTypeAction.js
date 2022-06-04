@@ -1,5 +1,5 @@
 import { taskServices } from "../../services/baseService";
-import { GET_TASK_TYPE } from "../../util/constant/configSystem";
+import { GET_TASK_TYPE } from "../../redux/types/types";
 
 export const getTaskTypeAction = () => {
   return async (dispatch) => {

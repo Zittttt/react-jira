@@ -2,10 +2,10 @@ import { taskServices } from "../../services/baseService";
 import {
   CLOSE_MODAL,
   HIDE_LOADING,
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 import { getProjectDetailAction } from "./getProjectDetailAction";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const removeTaskAction = (id, projectId) => {
   return async (dispatch) => {

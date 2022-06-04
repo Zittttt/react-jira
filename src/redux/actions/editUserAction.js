@@ -3,10 +3,10 @@ import {
   CLOSE_DRAWER,
   DISPLAY_LOADING,
   HIDE_LOADING,
-  NOTIFICATION_ICON,
   SHOW_NOTIFICATION,
-} from "../../util/constant/configSystem";
+} from "../../redux/types/types";
 import { getAllUserAction } from "./getAllUserAction";
+import { NOTIFICATION_ICON } from "../../util/constant/configSystem";
 
 export const editUserAction = (userDetail) => {
   return async (dispatch) => {

@@ -1,12 +1,11 @@
-import { useFormik, withFormik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
-import * as Yup from "yup";
 import { Editor } from "@tinymce/tinymce-react";
-import { connect } from "react-redux";
-import { createProjectAction } from "../../redux/actions/createProjectAction";
 import { Input, Select } from "antd";
+import { useFormik } from "formik";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import { createProjectAction } from "../../redux/actions/createProjectAction";
+import { getProjectCategoryAction } from "../../redux/actions/getProjectCategoryAction";
 
 const { Option } = Select;
 
@@ -22,14 +21,7 @@ export default function CreateProject(props) {
 
   const editorRef = useRef(null);
 
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
-
   const editorHandleChange = (content, editor) => {
-    console.log(content);
     setValues({ ...values, description: content });
   };
 
